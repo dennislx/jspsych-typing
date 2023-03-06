@@ -1,0 +1,30 @@
+
+#keypress-hist {
+    bottom: 0;
+    left: 0;
+    font-size: 2rem;
+    padding: 1em 0em;
+}
+
+ul#keypress-hist li { background-color: #fff; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); color: #333; margin: 5px; padding: 5px; text-align: center; display: flex; justify-content: center; align-items: center; font-size:14px; width: 16px; height: 16px;}
+
+ul#keypress-hist { list-style-type: none; margin: 0; padding: 0; flex-wrap: wrap; justify-content: right; display: flex; }
+
+#eypress-timer {
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    padding: 1rem;
+}
+
+.response-display-wrapper {
+    padding-top: 5em;
+    text-align: right;
+}
+
+table.response-display-wrapper tbody > tr{
+    visibility: hidden;
+}
+
+td:first-child { text-align: left }
