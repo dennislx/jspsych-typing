@@ -1,23 +1,25 @@
 name: Build Experiment
 
-push: [main]
+on: [push]
 
-permissions:
-  contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    if: "startsWith(github.event.head_commit.message, '@deploy')"
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Install and Build 🔧
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install and Build
         run: |
-          npm install
-          npm run build
-
+            npm install
+            npm run build
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist # The folder the action should deploy
-          branch: gh-pages
+          folder: dist # The folder the action should deploy.
