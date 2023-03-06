@@ -1,5 +1,5 @@
 import keyboardResponse from "@jspsych/plugin-html-keyboard-response"
-import jsPsych, { settings, stimulus } from "../prepare"
+import jsPsych, { settings } from "../prepare"
 import jsypchKeyboardDisplay from "../parts/jsypch-keyboard-display"
 
 function makeRoundIntro(round){

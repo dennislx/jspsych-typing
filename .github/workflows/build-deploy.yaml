@@ -1,8 +1,7 @@
 name: Build Experiment
 
-on:
-    push: 
-        - main
+push: [main]
+
 permissions:
   contents: write
 jobs:
