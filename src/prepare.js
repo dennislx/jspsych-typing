@@ -1,4 +1,19 @@
 import { initJsPsych } from "jspsych";
+import PreloadPlugin from "@jspsych/plugin-preload";
+import SurveyMultiSelectPlugin from "@jspsych/plugin-survey-multi-select";
+import FullscreenPlugin from "@jspsych/plugin-fullscreen";
+import InstructionsPlugin from "@jspsych/plugin-instructions";
+import HtmlKeyboardResponsePlugin from "@jspsych/plugin-html-keyboard-response";
+import jspsychKeyboardDisplay from "./trials/jspsych-keyboard-display";
+
+export const dict = {
+  'preload': PreloadPlugin,
+  'checkbox': SurveyMultiSelectPlugin,
+  'fullscreen': FullscreenPlugin,
+  'instruct': InstructionsPlugin,
+  'response': HtmlKeyboardResponsePlugin,
+  'display': jspsychKeyboardDisplay
+}
 
 export const settings = {
     colorOrder: Math.floor(Math.random()*2),
@@ -29,4 +44,3 @@ export default jsPsych = initJsPsych({
     jsPsych.data.displayData();
   }
 })
-

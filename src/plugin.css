@@ -8,6 +8,18 @@
 
 ul#keypress-hist li { background-color: #fff; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); color: #333; margin: 5px; padding: 5px; text-align: center; display: flex; justify-content: center; align-items: center; font-size:14px; width: 16px; height: 16px;}
 
+#keystroke {
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    background-color: #fff; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    color: #333; 
+    text-align: center;
+    line-height: 1em;  
+}
+
 ul#keypress-hist { list-style-type: none; margin: 0; padding: 0; flex-wrap: wrap; justify-content: right; display: flex; }
 
 #eypress-timer {
@@ -28,3 +40,36 @@ table.response-display-wrapper tbody > tr{
 }
 
 td:first-child { text-align: left }
+
+dl { 
+    display: grid;
+    grid-template-columns: max-content auto;
+    row-gap: 20px;
+}
+  
+dt {
+    grid-column-start: 1;
+    font-weight: 600;
+    margin-inline-start: 0px;
+}
+  
+dd {
+    grid-column-start: 2;
+    margin-inline-start: 20px;
+}
+
+.instruction {
+    text-align:left; 
+    background-color:lightgrey; 
+    padding:10px; 
+    max-width:900px; 
+    border-radius: 10px; 
+    padding: 20px
+}
+
+table.jspsych-content-wrapper{
+    border-collapse: collapse;   
+    width: 100%;
+    margin: 20px 0px;
+    text-align-last: center;
+}

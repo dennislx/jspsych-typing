@@ -1,6 +1,6 @@
 import keyboardResponse from "@jspsych/plugin-html-keyboard-response"
 import jsPsych, { settings } from "../prepare"
-import jsypchKeyboardDisplay from "../parts/jsypch-keyboard-display"
+import jsypchKeyboardDisplay from "./jspsych-keyboard-display"
 
 function makeRoundIntro(round){
     return {
@@ -26,7 +26,8 @@ export const round1Intro = {
 function makeDelay(round){
     return {
         type: jsypchKeyboardDisplay,
-        stimulus: "type d and then k as many as you can",
+        stimulus: "",
+        prompt: "<p>type d and then k as many as you can</p>",
         choices: ["d","k"],
         remain_time_display: true,
         num_keypress_display: 4,

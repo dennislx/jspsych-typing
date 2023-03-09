@@ -6,12 +6,14 @@
   "scripts": {
     "dev": "vite --host --port 8080",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --host"
   },
   "devDependencies": {
     "@jspsych/plugin-html-keyboard-response": "^1.0.0",
     "@jspsych/plugin-instructions": "^1.0.0",
+    "@jspsych/plugin-preload": "^1.1.2",
     "@jspsych/plugin-survey-multi-choice": "^1.0.0",
+    "@jspsych/plugin-survey-multi-select": "^1.1.2",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7",
@@ -19,6 +21,7 @@
   },
   "dependencies": {
     "@jspsych/plugin-fullscreen": "^1.0.0",
+    "js-yaml": "^4.1.0",
     "jspsych": "^7.0.0"
   }
 }

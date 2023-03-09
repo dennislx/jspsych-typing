@@ -1,6 +1,6 @@
 import keyboardResponse from "@jspsych/plugin-html-keyboard-response"
 import { ParameterType } from "jspsych";
-import { countDownTimer, displayKeysList, keysPressed } from "../utils";
+import { countDownTimer, displayKeysList, keysPressed, checkEmpty } from "../utils";
 
 const info = {
     name: "html-display-response",
@@ -86,14 +86,24 @@ const info = {
  * @email dennisl@udel.edu
  */
 class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
+    /**
+     * 
+     * @param {HTML string} stimulus    The html elements to be displayed.
+     * @param {string[]} choices        The array contains keys to respond to stimulus
+     * @param {HTML string} prompt           The content displayed below the stimulus (e.g., reminder)
+     * @param {numeric} stimulus_duration    How long to display the stimulus in milliseconds
+     * @param {numeric} trial_duration       How long will the trial wait for a keyboard response (inf if set to null)
+     * @param {boolean} response_ends_trial  Whether the trial ends immediately when a response is made
+     * @param {numeric} num_keypress_display How many recent keyboard presses are displayed
+     * @param {boolean} remain_time_display  Whether the remaining trial duration will be displayed in seconds
+     */
 
     trial(display_element, trial) {
         var new_html = `
         <div id="jspsych-html-keyboard-response-stimulus" style="display: flex; flex-direction: column"> 
-            <h2>${trial.stimulus}</h2>
+            <h1 id="keypress-count"></h2>
             <table class="response-display-wrapper">
             <tr class="row-time"> <td>time left: </td> <td><span id="keypress-timer">${trial.trial_duration/1000} sec</span></td></tr>
-            <tr class="row-count"> <td>valid scores: </td> <td><span id="keypress-count">0</span></td></tr>
             <tr class="row-hist"> <td>you typed: </td> <td> <ul id="keypress-hist"> </ul></td></tr>
             </table>
         </div>`;
@@ -103,20 +113,28 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
         display_element.innerHTML = new_html;
         // data saving
         var response = {
-            rt: null, key: [], score: 0
+            rt_valid: null, rt_typed: null, typed: 0, score: 0,
         };
         // function to end trial when it is time
         const end_trial = () => {
             // kill any remaining setTimeout handlers
             this.jsPsych.pluginAPI.clearAllTimeouts();
             // kill keyboard listeners
-            if (typeof keyboardListener !== "undefined") {
-                this.jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
+            if (typeof validKeyListener !== "undefined") {
+                this.jsPsych.pluginAPI.cancelKeyboardResponse(validKeyListener);
+            }
+            if (typeof typedKeyListener !== "undefined") {
+                this.jsPsych.pluginAPI.cancelKeyboardResponse(typedKeyListener);
+            }
+            // kill keydown listener to detect keyboard press
+            if (typeof keyboardHistory !== "undefined"){
+                document.removeEventListener('keydown', keyboardHistory, true)
             }
             // gather the data to store for the trial
             var trial_data = {
-                rt: response.rt,
-                response: JSON.stringify(response.key),
+                rt_valid: response.rt_valid,
+                rt_typed: response.rt_typed,
+                typed: response.typed,
                 score: response.score
             };
             // clear the display
@@ -126,26 +144,35 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
         };
         // function to handle responses by the subject
         let i = 0, n = trial.choices.length;
-        var after_response = (info) => {
+        var after_valid_response = (info) => {
             // after a valid response, the stimulus will have the CSS class 'responded'
             // which can be used to provide visual feedback that a response was recorded
             display_element.querySelector("#jspsych-html-keyboard-response-stimulus").className +=
                 " responded";
-            if (response.key == null) { //only push the first response time
-                response.rt = info.rt 
+            if (response.score === 0) { //only record the first reaction time to start valid typing
+                response.rt_valid = info.rt 
             }
             // if we have the right typing in order, we score a point
             if (jsPsych.pluginAPI.compareKeys(info.key, trial.choices[i])) {
                 response.score++;
-                $("span#keypress-count").html(response.score.toString());
+                $("#keypress-count").html(response.score.toString());
                 keysPressed.push(true);
                 i = (i+1)%n;
             }
-            response.key.push(info.key)
             if (trial.response_ends_trial) { 
                 end_trial(); 
             }
         };
+        
+        var after_typed_response = (info) => {
+            /* Here I am counting all keyboard press behaviors
+            */
+           if (response.typed === 0){ //only record the first raction time to start typing, valid or invalid
+            response.rt_typed = info.rt;
+           };
+           response.typed++;
+        };
+
         // start a timer if necesary
         if (trial.remain_time_display){
             $('tr.row-time').css('visibility', 'visible');
@@ -155,18 +182,24 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
         // start a listener that display keyboard press history
         if (trial.num_keypress_display > 0){
             $('tr.row-hist').css('visibility', 'visible');
-            displayKeysList("keypress-hist", trial.num_keypress_display)
+            var keyboardHistory = displayKeysList("keypress-hist", trial.num_keypress_display)
         }
         // start the response listener
         if (trial.choices != "NO_KEYS") {
-            $('tr.row-count').css('visibility', 'visible');
-            var keyboardListener = this.jsPsych.pluginAPI.getKeyboardResponse({
-                callback_function: after_response,
+            $('.row-count').css('visibility', 'visible');
+            var validKeyListener = this.jsPsych.pluginAPI.getKeyboardResponse({
+                callback_function: after_valid_response,
                 valid_responses: trial.choices,
                 rt_method: "performance",
                 persist: !trial.response_ends_trial,
                 allow_held_key: false,
             });
+            var typedKeyListener = this.jsPsych.pluginAPI.getKeyboardResponse({
+                callback_function: after_typed_response,
+                rt_method: "performance",
+                persist: !trial.response_ends_trial,
+                allow_held_key: false,
+            })
         }
 
         // hide stimulus if stimulus_duration is set

@@ -1,0 +1,139 @@
+# global settings
+
+images_to_preload: []
+fullscreen: false
+show_progress_bar: false
+
+
+# practice round
+practice:
+  numOfTrial: 5
+  trial_duration: 10 #seconds
+  num_keypress_display: 4
+  fixation_duration: 3 #seconds
+  data: 
+    phrase: practice
+  list:
+    - d,k
+    - f,j
+    - s,l
+    - a,l
+    - t,u
+
+bonus:
+  numOfTrial: 2
+
+
+
+# consent pages
+
+consent_page: &p1 >
+  <div class='instruction'> 
+  <h2 class='jspsych-content'>Welcome</h2>
+  <dl>
+      <dt>Purpose</dt>
+      <dd>The purpose of the study is to understand people’s decisions and experiences over time. </dd>
+
+      <dt>Procedures</dt>
+      <dd>If you choose to participate, you will be asked to complete a series of short tasks and answer some questions about it. The anticipated duration is indicated in the study description on the participant platform (Mturk; Prolific). </dd>
+
+      <dt>Risks</dt>
+      <dd>There are no anticipated risks or discomforts from this research.</dd>
+
+      <dt>Benefits</dt>
+      <dd>There are no anticipated benefits to you from this research.</dd>
+
+      <dt>Risks</dt>
+      <dd>There are no anticipated risks or discomforts from this research.</dd>
+
+      <dt>Costs and Compensation</dt>
+      <dd>If you decide to participate there will be no additional cost to you and you will be compensated at an approximate rate of $8.00/hour.</dd>
+
+      <dt>Participation</dt>
+      <dd>Taking part or not in this research study is your decision. You can decide to participate and then change your mind at any point.</dd>
+
+      <dt>Contact Information</dt>
+      <dd>If you have any questions about the purpose, procedures, or any other issues related to this research study you may contact the Principal Investigator, Dr. Silverman, at jasilv@udel.edu. </dd>
+  </dl>
+  </div>
+
+consent:
+  type: checkbox
+  data: 
+    phrase: consent
+  questions:
+    - prompt: *p1
+      timing_post_trial: 0
+      options: ["I have read and understood the information in this form and I agree to participate in the study. I am 18 years of age or older. I have been given the opportunity to ask any questions I had and those questions have been answered to my satisfaction. I understand that I can print or request a copy of this form for my records"]
+      required: true
+  required_message: To proceed to the experiment, please ensure that you have checked the checkbox
+  button_label: Next
+
+practice_p1: &p1 >
+  <div class='instruction'> 
+  <p>In this study, you will be completing a series of typing tasks.</p>
+  <p>Specifically, you will be asked to type two letters sequentially as many times as possible in the allotted time. </p>
+  <p>During the task, a counter at the center of the screen will increase by one for each correct letter you press in sequence. If you press an incorrect letter, the counter will not increase.</p>
+  <p>For instance, if the typing task is to repeatedly type <span id=keystroke>a</span> then <span id=keystroke>b</span> and I type <span id=keystroke>a</span><span id=keystroke>b</span><span id=keystroke>a</span><span id=keystroke>b</span><span id=keystroke>x</span> the counter will display <b>4</b>. If I press <span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>x</span> the counter will display <b>1</b>.</p>
+  </div>
+
+practice_p2: &p2 >
+  <div class='instruction'> 
+  <p>First, you will complete some practice typing tasks during the <b>practice</b> phase to get used to the task. During the practice phase, your goal is to type the letters as many times as possible during the allotted time.</p>
+  <p>Then, you will complete several typing tasks during the <b>bonus</b> phase. You will have the opportunity to earn additional bonus money based on your performance during the bonus phase. You will learn more about earning bonus money after the practice phase.</p>
+  <p>Press the <span class="jspsych-btn">Next ></span> button to start the practice phase. All of the rounds of the practice phase will occur one right after the other, with only a brief break in between to inform you of the letters you will press in the next round.</p>
+  </div>
+
+
+practice_instruction:
+  type: instruct
+  pages:
+    - *p1
+    - *p2
+  show_clickable_nav: true
+  show_page_number: true
+  data: 
+    phrase: practice_instruction
+
+
+practice_end:
+  type: instruct
+  pages: 
+    - statistics
+  show_clickable_nav: true
+  data: 
+    phrase: practice_verification
+
+
+bonus_start: &p1 >
+  <div class='instruction'> 
+  <p>Thank you for completing the practice phase.</p>
+  <p>Next, you will proceed to the bonus phase. You will again have an allotted amount of time to press two keys as many times as possible.</p>
+  <p>Additionally, there will be a target score. The target score is random and varies for each round. You will not be told the target score until the end of each round.</p>
+  <p>You will have successfully completed a round if you reach the target score before the allotted time is up. Completing rounds allows you to earn bonus money.</p>
+
+bonus_end: &p2 >
+  </div>
+
+bianry_streak: &g1 >
+  Your goal is to <b>build streaks</b> by completing as many rounds in a row as possible! Specifically, each time you complete <b>three consecutive rounds</b>, you will earn a <b>$0.30 bonus</b>. 
+
+continuous streak: &g2 >
+  Your goal is to <b>build streaks</b> by completing as many rounds in a row as possible! Specifically, for <b>every consecutive round</b> you complete, you will earn a <b>$0.10 bonus</b>. 
+
+binary framing: &g3 >
+  Your goal is to complete as many rounds as possible! For <b>every round</b> you complete, you will earn a <b>$0.10 bonus</b>. 
+
+bonus_instruction:
+  type: instruct
+  pages:
+    - *p1
+    - *p2
+  groups:
+    binary streak: *g1
+    continuous streak: *g2
+    binary framing: *g3
+  show_clickable_nav: true
+  show_page_number: true
+  data: 
+    phrase: bonus_instruction
