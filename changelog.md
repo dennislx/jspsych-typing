@@ -11,6 +11,12 @@ rt_typed:  this is the reaction time to start making first keyboard pressing, va
 score:     how many valid keyboard pressings there is
 typed:     how many keyboard pressings participants have tried before the trial times out
 ```
+|  stats 	| rt_valid 	| rt_typed 	| typed 	| score 	|
+|:------:	|:--------:	|:--------:	|:-----:	|:-----:	|
+| mean   	| 124.00   	| 94.00    	| 1.60  	| 1.20  	|
+| stdDev 	| 0.00     	| 0.00     	| 2.44  	| 1.83  	|
+| min    	| 124.00   	| 94.00    	| 0.00  	| 0.00  	|
+| max    	| 124.00   	| 94.00    	| 8.00  	| 6.00  	|
 
 2. I have finished setups for trials during the practice phase. 
 

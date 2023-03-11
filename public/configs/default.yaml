@@ -1,29 +1,66 @@
-# global settings
-
-images_to_preload: []
-fullscreen: false
+# ========= global settings ===================================================
+is_fullscreen: &fullscreen false
 show_progress_bar: false
+screenwidth: 960px
+fontsize: &fontsize 20px
+remove_prompt_below: &rr true
+# ========= practice settings ===================================================
+practice_trial_rounds: &ptr 1
+practice_trial_time: &ptt 2
+show_practice_result: &pts true
+# ========= bonus settings ======================================================
+bonus_trial_rounds: &btr 10
+bonus_trial_time: &btt 200
+target_number_dist: &btd 
+  choice: uniform
+  normal: {std: 5}
+  uniform: {range: 5}
+# ========= bonus settings ======================================================
+list_of_available_pair_keys: &llll
+  - d,k
+  - f,j
+  - s,l
+  - a,l
+  - t,u
 
+# fullscreen
+fullscreen:
+  type: fullscreen
+  fullscreen_mode: *fullscreen # doesn't work in MAC
+  message: <p>The experiment will switch to full screen mode when you press the button below</p>
 
 # practice round
 practice:
-  numOfTrial: 5
-  trial_duration: 10 #seconds
+  numOfTrial: *ptr
+  trial_duration: *ptt
   num_keypress_display: 4
-  fixation_duration: 3 #seconds
+  fixation_duration: 2 #2 sec for guideline and 1 sec for fixation
+  fontsize: *fontsize  #fontsize of displayed stimulus
+  no_prompt: *rr
+  show_stat: *pts
   data: 
     phrase: practice
-  list:
-    - d,k
-    - f,j
-    - s,l
-    - a,l
-    - t,u
+  list: *llll
+
 
 bonus:
-  numOfTrial: 2
+  numOfTrial: *btr
+  trial_duration: *btt
+  target_dist: *btd
+  fixation_duration: 2 
+  fontsize: *fontsize
+  no_prompt: *rr
+  data: 
+    phrase: bonus
+  list: *llll
 
-
+# preload images
+images_to_preload:
+  type: preload
+  data: 
+    phase: preload
+  images:
+    - 
 
 # consent pages
 
@@ -96,44 +133,61 @@ practice_instruction:
     phrase: practice_instruction
 
 
-practice_end:
-  type: instruct
-  pages: 
-    - statistics
-  show_clickable_nav: true
-  data: 
-    phrase: practice_verification
-
-
-bonus_start: &p1 >
-  <div class='instruction'> 
+bonus_welcome: &p1 >
   <p>Thank you for completing the practice phase.</p>
   <p>Next, you will proceed to the bonus phase. You will again have an allotted amount of time to press two keys as many times as possible.</p>
   <p>Additionally, there will be a target score. The target score is random and varies for each round. You will not be told the target score until the end of each round.</p>
   <p>You will have successfully completed a round if you reach the target score before the allotted time is up. Completing rounds allows you to earn bonus money.</p>
 
-bonus_end: &p2 >
-  </div>
-
 bianry_streak: &g1 >
   Your goal is to <b>build streaks</b> by completing as many rounds in a row as possible! Specifically, each time you complete <b>three consecutive rounds</b>, you will earn a <b>$0.30 bonus</b>. 
 
-continuous streak: &g2 >
+continuous_streak: &g2 >
   Your goal is to <b>build streaks</b> by completing as many rounds in a row as possible! Specifically, for <b>every consecutive round</b> you complete, you will earn a <b>$0.10 bonus</b>. 
 
-binary framing: &g3 >
+binary_framing: &g3 >
   Your goal is to complete as many rounds as possible! For <b>every round</b> you complete, you will earn a <b>$0.10 bonus</b>. 
 
+bonus_survey_question1: &q1
+  prompt: To complete a round, you must press the two keys…
+  options: 
+    - 10 times
+    - 30 times
+    - <b>At least</b> as many times as the threshold amount (which is not known until the end of the round)
+    - Exactly as many times as the threshold amount (which is not known until the end of the round)
+
+bonus_survey_question2: &q2
+  prompt: If you successfully complete the first two rounds in a row, you will have earned…
+  options:
+    - $0.00
+    - $0.10
+    - $0.20
+    - $0.25
+
+bonus_survey_question3: &q3
+  prompt: If you successfully complete the first three rounds in a row, you will have earned…
+  options:
+    - $0.00
+    - $0.10
+    - $0.20
+    - $0.30
+
+bonus_survey_success: &success >
+  <p>Congratulations, you are ready to start earning bonus</p>
+
+bonus_suvey_failure: &failure >
+  <p>Oops, you have missed question(s) on the comprehension check</p>
+  <p>To make sure you understand the game, please continue to re-read the instructions.</p>
+
 bonus_instruction:
-  type: instruct
-  pages:
-    - *p1
-    - *p2
-  groups:
+  instruction: *p1
+  instruction_by_groups: 
     binary streak: *g1
     continuous streak: *g2
-    binary framing: *g3
-  show_clickable_nav: true
-  show_page_number: true
+    binary: *g3
+  questions: [*q1, *q2, *q3]
+  randomize_order: true 
   data: 
     phrase: bonus_instruction
+  feedback_success: *success
+  feedback_failure: *failure

@@ -79,47 +79,26 @@ export function countDownTimer(tag) {
   }, 1000);
 };
 
-export let keysPressed = [];
-
-export function displayKeysList(tag, n_hist) {
-  const func = function(event) {
-    let color
-    if (keysPressed.at(-1) === true) {
-      keysPressed.pop(); color = 'green'
-    } else {
-      color = 'red'
-    }
-    keysPressed.push({key: event.key, color: color})
-    console.log(keysPressed.length);
-    if (keysPressed.length > n_hist) {
-        keysPressed.shift();
-    }
-    let keysList = document.getElementById(tag);
-    keysList.innerHTML = '';
-    keysPressed.forEach(function(obj) {
-      let li = document.createElement('li');
-      li.textContent = obj.key
-      li.style.color = obj.color
-      keysList.appendChild(li);
-    })
-  }
-  keysPressed = [];
-  document.addEventListener('keydown', func, true);
-  return func
-};
 
 export function renderPlugin(obj, dict, group, func){
   obj.type = dict[obj.type];
   if (group){
-    obj.pages = ["".concat(obj.pages[0], obj.groups[group], obj.pages[1])]
+    obj.pages = ["".concat(obj.pages[0], obj.groups[group], obj.pages[1])];
     delete obj[group];
-  }
-  if (func) {
-    obj.on_start = func
-  }
+  };
+  if (func)
+    obj.on_start = func;
   return obj
 }
 
+export const partialFunc = (func, ...args) => {
+  return (...rest) => {
+    if ((typeof func === "function") && (/^\s*class\s+/.test(func.toString()))) {
+      return new func(...rest, ...args);
+    }
+    return func(...rest, ...args);
+  };
+};
 
 export function createTable(dataList, keyList) {
   // Calculate statistics for each column
@@ -176,6 +155,14 @@ export function createTable(dataList, keyList) {
     });
     dataRows.push(tr);
   });
+
+  // We return only the mean to each recorded measures
+  const mean = Object.entries(stats).reduce(
+    (d, [k, stat]) => {
+      d[k] = stat.mean;
+      return d
+    }, {}
+  );
 
   return table;
 }

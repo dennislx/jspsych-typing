@@ -1,6 +1,6 @@
 import keyboardResponse from "@jspsych/plugin-html-keyboard-response"
 import { ParameterType } from "jspsych";
-import { countDownTimer, displayKeysList, keysPressed, checkEmpty } from "../utils";
+import { countDownTimer, partialFunc } from "../utils";
 
 const info = {
     name: "html-display-response",
@@ -69,6 +69,18 @@ const info = {
             type: ParameterType.BOOL,
             pretty_name: "Buttom right will display the remaining time from trial duration",
             default: false,
+        },
+        /**
+         * Array of keyboard response callbacks
+         * Each of which is an Object which defines the following:
+         *      @param callback_function 
+         *      @param accept_allkeys default: true
+         *      @param allow_held_key default: false
+         */
+        response_callbacks: {
+            type: ParameterType.FUNCTION,
+            pretty_name: "Array of keyboard response callbacks",
+            default: [],
         }
     }
 };
@@ -96,6 +108,7 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
      * @param {boolean} response_ends_trial  Whether the trial ends immediately when a response is made
      * @param {numeric} num_keypress_display How many recent keyboard presses are displayed
      * @param {boolean} remain_time_display  Whether the remaining trial duration will be displayed in seconds
+     * @param {function[]} response_callbacks  Whether the remaining trial duration will be displayed in seconds
      */
 
     trial(display_element, trial) {
@@ -115,21 +128,14 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
         var response = {
             rt_valid: null, rt_typed: null, typed: 0, score: 0,
         };
+        // list of keyboard listener
+        var keyListeners = [], keysPressed = [];
         // function to end trial when it is time
         const end_trial = () => {
             // kill any remaining setTimeout handlers
             this.jsPsych.pluginAPI.clearAllTimeouts();
             // kill keyboard listeners
-            if (typeof validKeyListener !== "undefined") {
-                this.jsPsych.pluginAPI.cancelKeyboardResponse(validKeyListener);
-            }
-            if (typeof typedKeyListener !== "undefined") {
-                this.jsPsych.pluginAPI.cancelKeyboardResponse(typedKeyListener);
-            }
-            // kill keydown listener to detect keyboard press
-            if (typeof keyboardHistory !== "undefined"){
-                document.removeEventListener('keydown', keyboardHistory, true)
-            }
+            this.jsPsych.pluginAPI.cancelAllKeyboardResponses();
             // gather the data to store for the trial
             var trial_data = {
                 rt_valid: response.rt_valid,
@@ -142,65 +148,37 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
             // move on to the next trial
             this.jsPsych.finishTrial(trial_data);
         };
-        // function to handle responses by the subject
-        let i = 0, n = trial.choices.length;
-        var after_valid_response = (info) => {
-            // after a valid response, the stimulus will have the CSS class 'responded'
-            // which can be used to provide visual feedback that a response was recorded
-            display_element.querySelector("#jspsych-html-keyboard-response-stimulus").className +=
-                " responded";
-            if (response.score === 0) { //only record the first reaction time to start valid typing
-                response.rt_valid = info.rt 
-            }
-            // if we have the right typing in order, we score a point
-            if (jsPsych.pluginAPI.compareKeys(info.key, trial.choices[i])) {
-                response.score++;
-                $("#keypress-count").html(response.score.toString());
-                keysPressed.push(true);
-                i = (i+1)%n;
-            }
-            if (trial.response_ends_trial) { 
-                end_trial(); 
-            }
-        };
-        
-        var after_typed_response = (info) => {
-            /* Here I am counting all keyboard press behaviors
-            */
-           if (response.typed === 0){ //only record the first raction time to start typing, valid or invalid
-            response.rt_typed = info.rt;
-           };
-           response.typed++;
-        };
 
         // start a timer if necesary
         if (trial.remain_time_display){
             $('tr.row-time').css('visibility', 'visible');
             countDownTimer('keypress-timer')
         }
-        
-        // start a listener that display keyboard press history
+
+        // make keyboard pressing history visible in HTML
         if (trial.num_keypress_display > 0){
             $('tr.row-hist').css('visibility', 'visible');
-            var keyboardHistory = displayKeysList("keypress-hist", trial.num_keypress_display)
         }
+        
         // start the response listener
         if (trial.choices != "NO_KEYS") {
             $('.row-count').css('visibility', 'visible');
-            var validKeyListener = this.jsPsych.pluginAPI.getKeyboardResponse({
-                callback_function: after_valid_response,
-                valid_responses: trial.choices,
-                rt_method: "performance",
-                persist: !trial.response_ends_trial,
-                allow_held_key: false,
+            trial.response_callbacks.forEach((obj) => {
+                let counter = { i: 0};  //primitive doesn't work here
+                keyListeners.push(
+                    this.jsPsych.pluginAPI.getKeyboardResponse({
+                        callback_function: partialFunc(
+                            obj.callback_function, response, trial, 
+                            keysPressed, counter, display_element, end_trial
+                        ),
+                        valid_responses: obj.accept_allkeys? "ALL_KEYS" : trial.choices,
+                        persist: !trial.response_ends_trial,
+                        allow_held_key: false,
+                        rt_method: "performance"
+                    })
+                );
             });
-            var typedKeyListener = this.jsPsych.pluginAPI.getKeyboardResponse({
-                callback_function: after_typed_response,
-                rt_method: "performance",
-                persist: !trial.response_ends_trial,
-                allow_held_key: false,
-            })
-        }
+        };
 
         // hide stimulus if stimulus_duration is set
         if (trial.stimulus_duration !== null) {
@@ -213,7 +191,6 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
         if (trial.trial_duration !== null) {
             this.jsPsych.pluginAPI.setTimeout(end_trial, trial.trial_duration);
         }
-
     }
 }
 HtmlKeyboardDisplayResponsePlugin.info = info;

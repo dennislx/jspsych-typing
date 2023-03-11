@@ -59,17 +59,29 @@ dd {
 }
 
 .instruction {
+    margin: auto;
     text-align:left; 
     background-color:lightgrey; 
     padding:10px; 
-    max-width:900px; 
     border-radius: 10px; 
-    padding: 20px
+    padding: 20px;
+    max-width: 100vw;
 }
 
-table.jspsych-content-wrapper{
+body.jspsych-display-element > table {
     border-collapse: collapse;   
     width: 100%;
     margin: 20px 0px;
     text-align-last: center;
+}
+
+.jspsych-content {
+    max-width: 960px !important; /* this is mainly an IE 10-11 fix */
+    text-align: center;
+    margin: auto; /* this is for overflowing content */
+}
+
+p#display-prompt {
+    font-size: small;
+    margin-top: 5vh;
 }
