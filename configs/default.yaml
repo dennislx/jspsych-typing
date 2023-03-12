@@ -6,13 +6,13 @@ fontsize: &fontsize 20px
 remove_prompt_below: &rr false
 
 # ========= practice settings ===================================================
-practice_trial_rounds: &ptr 5
-practice_trial_time: &ptt 20
+practice_trial_rounds: &ptr 1
+practice_trial_time: &ptt 2
 show_practice_result: &pts true
 
 # ========= bonus settings ======================================================
-bonus_trial_rounds: &btr 10
-bonus_trial_time: &btt 20
+bonus_trial_rounds: &btr 1
+bonus_trial_time: &btt 2
 target_number_dist: &btd 
   choice: uniform
   normal: {std: 20}
