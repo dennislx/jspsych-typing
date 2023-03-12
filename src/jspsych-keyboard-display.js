@@ -1,6 +1,6 @@
 import keyboardResponse from "@jspsych/plugin-html-keyboard-response"
 import { ParameterType } from "jspsych";
-import { countDownTimer, partialFunc } from "../utils";
+import { countDownTimer, partialFunc } from "./utils";
 
 const info = {
     name: "html-display-response",
@@ -108,7 +108,7 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
      * @param {boolean} response_ends_trial  Whether the trial ends immediately when a response is made
      * @param {numeric} num_keypress_display How many recent keyboard presses are displayed
      * @param {boolean} remain_time_display  Whether the remaining trial duration will be displayed in seconds
-     * @param {function[]} response_callbacks  Whether the remaining trial duration will be displayed in seconds
+     * @param {function[]} response_callbacks Some keyboard callbacks that are activated in each trial
      */
 
     trial(display_element, trial) {
@@ -131,7 +131,7 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
         // list of keyboard listener
         var keyListeners = [], keysPressed = [];
         // function to end trial when it is time
-        const end_trial = () => {
+        const end_trial = (trial_data) => {
             // kill any remaining setTimeout handlers
             this.jsPsych.pluginAPI.clearAllTimeouts();
             // kill keyboard listeners
@@ -141,7 +141,8 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
                 rt_valid: response.rt_valid,
                 rt_typed: response.rt_typed,
                 typed: response.typed,
-                score: response.score
+                score: response.score,
+                ...trial_data
             };
             // clear the display
             display_element.innerHTML = "";
@@ -163,7 +164,7 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
         // start the response listener
         if (trial.choices != "NO_KEYS") {
             $('.row-count').css('visibility', 'visible');
-            trial.response_callbacks.forEach((obj) => {
+            trial.response_callbacks().forEach((obj) => {
                 let counter = { i: 0};  //primitive doesn't work here
                 keyListeners.push(
                     this.jsPsych.pluginAPI.getKeyboardResponse({

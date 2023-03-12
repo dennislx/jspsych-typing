@@ -33,6 +33,8 @@ ul#keypress-hist { list-style-type: none; margin: 0; padding: 0; flex-wrap: wrap
 .response-display-wrapper {
     padding-top: 5em;
     text-align: right;
+    max-width: 70vw;
+    place-self: center;
 }
 
 table.response-display-wrapper tbody > tr{
@@ -76,9 +78,9 @@ body.jspsych-display-element > table {
 }
 
 .jspsych-content {
-    max-width: 960px !important; /* this is mainly an IE 10-11 fix */
     text-align: center;
     margin: auto; /* this is for overflowing content */
+    text-align: -webkit-center !important;
 }
 
 p#display-prompt {

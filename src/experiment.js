@@ -2,7 +2,7 @@ import "jspsych/css/jspsych.css";
 import "./style.css";
 import jsPsych from "./prepare"
 import { readYaml, checkEmpty, fullScreenHandler} from "./utils";
-import {practicePhase, renderPlugin, bonusInstruction, bonusPhase} from "./trials/jspsych-typing";
+import {practicePhase, renderPlugin, bonusInstruction, bonusPhase, DICT} from "./jspsych-typing";
 
 
 
@@ -12,7 +12,7 @@ const args = await readYaml('configs/default.yaml')
 // group condition and global data
 args.condition = jsPsych.randomization.sampleWithoutReplacement(
     ['binary streak', 'continuous streak', 'binary'], 1
-)
+)[0];
 jsPsych.data.addProperties({
     date: new Date(),
     condition: args.condition
@@ -31,26 +31,41 @@ const fullscreen_onstart = (trial) => {
     document.addEventListener('fullscreenchange', fullScreenHandler)
 };
 timeline.push( renderPlugin({args: args.fullscreen, on_start: fullscreen_onstart}));
-$('div#jspsych-content').css('max-width', args.screenwidth);
 
 // consent page
-// timeline.push( renderPlugin({args: args.consent}))
+timeline.push( renderPlugin({args: args.consent}))
 
 // instruction page
-// timeline.push( renderPlugin({args: args.practice_instruction}))
+timeline.push( renderPlugin({args: args.practice_instruction}))
 
-// practice phases
+// practice phase
 timeline.push( new practicePhase(args.practice).getTrial() )
 
-
-// bonus phase instruction
-// timeline.push( bonusInstruction({condition: args.condition, ...args.bonus_instruction}))
+// bonus phase
+timeline.push( bonusInstruction({condition: args.condition, ...args.bonus_instruction}))
 
 
 // bonus phase trials start here
 timeline.push( new bonusPhase({condition: args.condition, ...args.bonus}).getTrial() )
 
+// debrief
+const debrief = [];
+args.debrief.timeline.map(e => {
+    e.type = DICT[e.type];
+    if (e.name === "email"){
+        e.on_start = (trial) => {
+            const totalBonus = jsPsych.data.get().filter({phase: 'bonus_feedback'}).select('bonus').sum();
+            trial.preamble = trial.preamble.replaceAll('${totalBonus}', totalBonus);
+        }
+    }
+    debrief.push(e);
+});
+timeline.push({
+    timeline: debrief
+})
 
 
-jsPsych.opts.show_progress_bar = args.show_progress_bar
-jsPsych.run(timeline)
+jsPsych.opts.show_progress_bar = args.show_progress_bar;
+// $('div#jspsych-content').css({max-width: `${args.screenwidth} px`}); can achieve similar result
+jsPsych.opts.experiment_width = args.screenwidth;
+jsPsych.run(timeline);

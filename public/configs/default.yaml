@@ -1,22 +1,25 @@
 # ========= global settings ===================================================
 is_fullscreen: &fullscreen false
 show_progress_bar: false
-screenwidth: 960px
+screenwidth: 1024
 fontsize: &fontsize 20px
-remove_prompt_below: &rr true
+remove_prompt_below: &rr false
+
 # ========= practice settings ===================================================
-practice_trial_rounds: &ptr 1
-practice_trial_time: &ptt 2
+practice_trial_rounds: &ptr 5
+practice_trial_time: &ptt 20
 show_practice_result: &pts true
+
 # ========= bonus settings ======================================================
 bonus_trial_rounds: &btr 10
-bonus_trial_time: &btt 200
+bonus_trial_time: &btt 20
 target_number_dist: &btd 
   choice: uniform
-  normal: {std: 5}
-  uniform: {range: 5}
-# ========= bonus settings ======================================================
-list_of_available_pair_keys: &llll
+  normal: {std: 20}
+  uniform: {range: 20}
+
+# ========= stimulus simulation =================================================
+list_of_available_pair_keys: &llll 
   - d,k
   - f,j
   - s,l
@@ -39,9 +42,22 @@ practice:
   no_prompt: *rr
   show_stat: *pts
   data: 
-    phrase: practice
+    phase: practice
   list: *llll
 
+bonus_feedback_success: &bfs >
+  <div style="font-size:30px; padding-bottom: 30px"> 
+    <p>Congratulations, you reach the target = <span id="target-number"></span></p>
+    <p id="bonus-number"></p>
+  </div>
+  <p>Get ready for the next round!</p>
+
+bonus_feedback_failure: &bff >
+  <div style="font-size:30px; padding-bottom: 30px"> 
+    <p>Sorry, you miss the target = <span id="target-number"></span></p>
+    <p id="bonus-number"></p>
+  </div>
+  <p>Get ready for the next round!</p>
 
 bonus:
   numOfTrial: *btr
@@ -51,8 +67,10 @@ bonus:
   fontsize: *fontsize
   no_prompt: *rr
   data: 
-    phrase: bonus
+    phase: bonus
   list: *llll
+  success_feedback: *bfs
+  failure_feedback: *bff
 
 # preload images
 images_to_preload:
@@ -97,7 +115,7 @@ consent_page: &p1 >
 consent:
   type: checkbox
   data: 
-    phrase: consent
+    phase: consent
   questions:
     - prompt: *p1
       timing_post_trial: 0
@@ -130,22 +148,22 @@ practice_instruction:
   show_clickable_nav: true
   show_page_number: true
   data: 
-    phrase: practice_instruction
+    phase: practice_instruction
 
 
-bonus_welcome: &p1 >
+bonus_welcome: &i >
   <p>Thank you for completing the practice phase.</p>
   <p>Next, you will proceed to the bonus phase. You will again have an allotted amount of time to press two keys as many times as possible.</p>
   <p>Additionally, there will be a target score. The target score is random and varies for each round. You will not be told the target score until the end of each round.</p>
   <p>You will have successfully completed a round if you reach the target score before the allotted time is up. Completing rounds allows you to earn bonus money.</p>
 
-bianry_streak: &g1 >
+i_bianry_streak: &ig1 >
   Your goal is to <b>build streaks</b> by completing as many rounds in a row as possible! Specifically, each time you complete <b>three consecutive rounds</b>, you will earn a <b>$0.30 bonus</b>. 
 
-continuous_streak: &g2 >
+i_continuous_streak: &ig2 >
   Your goal is to <b>build streaks</b> by completing as many rounds in a row as possible! Specifically, for <b>every consecutive round</b> you complete, you will earn a <b>$0.10 bonus</b>. 
 
-binary_framing: &g3 >
+i_binary_framing: &ig3 >
   Your goal is to complete as many rounds as possible! For <b>every round</b> you complete, you will earn a <b>$0.10 bonus</b>. 
 
 bonus_survey_question1: &q1
@@ -180,14 +198,75 @@ bonus_suvey_failure: &failure >
   <p>To make sure you understand the game, please continue to re-read the instructions.</p>
 
 bonus_instruction:
-  instruction: *p1
-  instruction_by_groups: 
-    binary streak: *g1
-    continuous streak: *g2
-    binary: *g3
+  instruction: 
+    title: *i
+    binary streak: *ig1
+    continuous streak: *ig2
+    binary: *ig3
+  example: 
+    title: [*bfs, *bff]
+    header:
+      - "<p style='text-align: left; max-width: 70vw'>For example, if you succeed the 1st round with the target number equals to <span id='target-number'></span>, you'll see the following feedback: </p>"
+      - "<p style='text-align: left; max-width: 70vw'>For example, if you fail the 1st round with the target number equals to <span id='target-number'></span>, you'll see the following feedback: </p>"
+    binary streak:
+      - "Current Streak: 1/3"
+      - "Current Streak: 0/3"
+    continuous streak:
+      - "Current Streak: 1"
+      - "Current Streak: 0"
+    binary: 
+      - "Bonus: +$0.10"
+      - "Bonus: +$0.00"
   questions: [*q1, *q2, *q3]
   randomize_order: true 
   data: 
-    phrase: bonus_instruction
+    phase: bonus_instruction
   feedback_success: *success
   feedback_failure: *failure
+
+debrief_page: &debrief >
+  <p>Thank you for participating!</p>
+  <p>In total, you won <b>$${totalBonus}</b> in bonus money!</p>
+  <br>
+  <p>Within one week, you will receive your bonus money. Your $1.50 for participating will be delivered immediately</p>
+  <p>To receive payment, enter your Prolific ID in the space below.</p>
+
+debrief:
+  timeline:
+    - name: gender
+      type: button
+      stimulus: '<p>Gender: </p>'
+      choices: [Male, Female, Other]
+    - name: age
+      type: text
+      questions:
+        - prompt: 'Age:' 
+          name: age
+    - name: ethnicity
+      type: button
+      stimulus: '<p>Ethnicity: </p>'
+      choices: [White / Caucasian, Black / African American, Asian / Pacific Islander, Hispanic, Native American, Other]
+    - name: english
+      type: button
+      stimulus: '<p>Is English your native language?:</p>'
+      choices: [Yes, No]
+    - name: suggestion
+      type: text
+      questions:
+        - prompt: Questions? Comments? Complains? Provide your feedback here!
+          rows: 10
+          columns: 100
+          name: finalWord
+    - name: email
+      type: text
+      questions:
+        - prompt: ""
+          placeholder: Prolific ID
+          name: "PID"
+          columns: 50
+          required: true
+      button_label: [CLICK HERE TO FINISH]
+      preamble: *debrief
+
+    
+      

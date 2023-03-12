@@ -70,12 +70,12 @@ export function countDownTimer(tag) {
   let input = document.getElementById(tag);
   let seconds = parseInt(input.innerHTML || 5);
   let timer = setInterval(function() {
+    seconds--;
     if (seconds < 0) {
       clearInterval(timer);
     } else {
-      input.innerHTML = `${seconds} sec`
+      input.innerHTML = `${seconds} sec`;
     }
-    seconds--;
   }, 1000);
 };
 
