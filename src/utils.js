@@ -12,12 +12,13 @@ export async function readYaml(url) {
   }
 }
 
-const letters = 'abcdefghijklmnopqrstuvwxyz';
+const LETTERS = 'abcdefghijklmnopqrstuvwxyz';
 
 export function twoLetterPair(num){
   let rtn_list = []; 
-  letters.split('').forEach(function(first) {
-    letters.split('').forEach(function(second) {
+  let letters = LETTERS.split('').filter(l => !'oil'.includes(l))
+  letters.forEach(function(first) {
+    letters.forEach(function(second) {
       const pair = `${first},${second}`;
       if (rtn_list.indexOf(pair) === -1 && first !== second){
         rtn_list.push(pair)

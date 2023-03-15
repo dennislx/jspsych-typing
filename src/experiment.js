@@ -1,20 +1,23 @@
 import "jspsych/css/jspsych.css";
 import "./style.css";
 import jsPsych from "./prepare"
+import jsPsychPipe from '@jspsych-contrib/plugin-pipe';
 import { readYaml, checkEmpty, fullScreenHandler} from "./utils";
 import {practicePhase, renderPlugin, bonusInstruction, bonusPhase, DICT} from "./jspsych-typing";
 
 
 
 // read configurations
-const args = await readYaml('configs/default.yaml')
+const args = await readYaml('configs/default.yaml');
 
-// group condition and global data
-args.condition = jsPsych.randomization.sampleWithoutReplacement(
-    ['binary streak', 'continuous streak', 'binary'], 1
-)[0];
+// obtain subject id and assign their group condition 
+const subject_id = jsPsych.randomization.randomID(10); 
+const condition = await jsPsychPipe.getCondition(args.exp_id);
+args.condition = ['binary streak', 'continuous streak', 'binary'][condition];
+
 jsPsych.data.addProperties({
     date: new Date(),
+    subject_id: subject_id,
     condition: args.condition
 });
 console.log(`you are in group ${args.condition}`);
@@ -64,6 +67,25 @@ timeline.push({
     timeline: debrief
 })
 
+// save data via DataPiepe
+timeline.push({
+    type: jsPsychPipe,
+    action: 'save',
+    experiment_id: args.exp_id,
+    filename: `${subject_id}.csv`,
+    data_string: () => {
+        const data = jsPsych.data.get().csv();
+        return data;
+    },
+    on_finish: () => {
+        document.body.innerHTML = `
+        <div align='center' style="margin: 10%">
+            <p>Thank you for participating in the study!<p>
+            <p>You may close your window now<p> 
+        </div>
+        `
+    }
+})
 
 jsPsych.opts.show_progress_bar = args.show_progress_bar;
 // $('div#jspsych-content').css({max-width: `${args.screenwidth} px`}); can achieve similar result

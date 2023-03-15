@@ -9,6 +9,7 @@
     "preview": "vite preview --host"
   },
   "devDependencies": {
+    "@jspsych/plugin-fullscreen": "^1.1.2",
     "@jspsych/plugin-html-button-response": "^1.1.2",
     "@jspsych/plugin-html-keyboard-response": "^1.0.0",
     "@jspsych/plugin-instructions": "^1.0.0",
@@ -22,7 +23,7 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
-    "@jspsych/plugin-fullscreen": "^1.0.0",
+    "@jspsych-contrib/plugin-pipe": "^0.3.0",
     "js-yaml": "^4.1.0",
     "jspsych": "^7.0.0"
   }

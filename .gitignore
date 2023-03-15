@@ -134,4 +134,4 @@ dist
 # temporarily only
 src/configs
 src/trials/qs.js
-
+src/jspsych-demos.js

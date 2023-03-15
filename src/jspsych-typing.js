@@ -315,7 +315,7 @@ function getDist(args){
     if (args.choice === "normal"){
         return (mean) => {
             const {std} = args[args.choice];
-            return Math.ceil(jsPsych.randomization.sampleNormal(mean, std));
+            return Math.floor(jsPsych.randomization.sampleNormal(mean, std));
         }
     } else if (args.choice === "uniform"){
         const {range} = args[args.choice];
@@ -326,13 +326,15 @@ function getDist(args){
 }
 
 export class bonusPhase extends practicePhase {
-    constructor({ numOfTrial = 1, trial_duration = 5, fixation_duration = 3, fontsize = "", no_prompt = false, list = [], data = {}, target_dist = {}, condition = undefined, success_feedback = undefined, failure_feedback = undefined} = {}) {
+    constructor({ numOfTrial = 1, trial_duration = 5, fixation_duration = 3, feedback_duration = 2,  fontsize = "", no_prompt = false, list = [], data = {}, target_dist = {}, condition = undefined, success_feedback = undefined, failure_feedback = undefined, early_stop = undefined} = {}) {
         super({ numOfTrial: numOfTrial, trial_duration: trial_duration, fixation_duration: fixation_duration, fontsize: fontsize, no_prompt: no_prompt, list: list, data: data });
         this.dist = getDist(target_dist);
         this.phase = "bonus";
         this.success_feedback = success_feedback;
         this.failure_feedback = failure_feedback;
         this.condition = condition;
+        this.early_stop = early_stop;
+        this.feedback_duration = feedback_duration * 1000;
         this.reward_agent = (condition === "binary") ?
             new Binary() : (condition === "continuous streak") ?
             new ContinuousStreak() : new BinaryStreak()
@@ -349,7 +351,7 @@ export class bonusPhase extends practicePhase {
                 keypressCallback(info, response, trial, response_history, counter, display_html, end_trial);
                 if (response.score >= trial.data.target) {
                     trial.data.success = true;
-                    end_trial(trial.data);
+                    this.early_stop && end_trial(trial.data);
                 }
             }, 
             accept_allkeys: true, 
@@ -365,7 +367,7 @@ export class bonusPhase extends practicePhase {
         const mean = jsPsych.data.get().select('avg_score').mean() || Infinity; //a default infinity is applied if we cannot find avg-score information in the database 
         trial.data = {
             success: false,             //whether or not participants win this round
-            target: this.dist(mean),    //a random number based on practice performance
+            target: Math.max(this.dist(mean), 0),    //a random number based on practice performance
             ...trial.data
         }
     }
@@ -398,7 +400,7 @@ export class bonusPhase extends practicePhase {
             type: HtmlKeyboardResponsePlugin,
             stimulus: "",
             choices: "NO_KEYS",
-            trial_duration: 2000,
+            trial_duration: this.feedback_duration,
             data: { phase: "bonus_feedback" },
         })
     }

@@ -27,6 +27,6 @@ export const text = {
 
 export default jsPsych = initJsPsych({
   on_finish: () => {
-    jsPsych.data.displayData();
+    // jsPsych.data.displayData();
   }
 })

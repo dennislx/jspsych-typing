@@ -1,3 +1,41 @@
+## Mar 15
+
+A couple of updates here
+
+1. two parameters are added during bonus phase, `feedback_duration` and `stop_when_pass_target`
+
+```yaml
+feedback_duration:      controls how long the feedback window lasts before the start of next trial
+stop_when_pass_target:  controls whether or not end this trial immediately after the number of pressing surpasses the target threshold
+```
+
+2. add a timeline in the end of the experiment to save data on OSF platform
+
+```js
+// specify your exp_id (from DataPipe) in the yaml file
+exp_id: eUraQJoXlcw8
+
+// obtain subject id and assign their group condition 
+const subject_id = jsPsych.randomization.randomID(10); 
+const condition = await jsPsychPipe.getCondition(args.exp_id);
+
+// save data
+timeline.push({
+    type: jsPsychPipe,
+    action: 'save',
+    experiment_id: args.exp_id,    //specified in yaml
+    filename: `${subject_id}.csv`, //filename shown in your osf page
+    data_string: () => {
+        // post-process your data here
+        return data
+    }
+})
+```
+
+3. target number is rounded down and always non-negative
+
+4. avoid `i, o, l` keys as they may confuse participants (e.g., `i` looks like `l`)
+
 ## Mar 11
 
 The game's initial version has been completed and is available on [Github](https://dennislx.github.io/jspsych-typing/). The experiment can be effortlessly modified through the YAML file located at `public/configs/default.yaml`. The following key parameters are crucial in determining the game:
