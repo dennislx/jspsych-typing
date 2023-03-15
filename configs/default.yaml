@@ -5,25 +5,28 @@ screenwidth: 1024
 fontsize: &fontsize 20px
 remove_prompt_below: &rr false
 
+# ========= osf/datapipe/prolific settings ======================================
+exp_id: eUraQJoXlcw8
+
 # ========= practice settings ===================================================
 practice_trial_rounds: &ptr 5
 practice_trial_time: &ptt 20
-show_practice_result: &pts true
+show_practice_result: &pts false
 
 # ========= bonus settings ======================================================
 bonus_trial_rounds: &btr 10
 bonus_trial_time: &btt 20
+feedback_duration: &fbd 2
 target_number_dist: &btd 
   choice: uniform
   normal: {std: 20}
   uniform: {range: 20}
+stop_when_pass_target: &swpt false
 
 # ========= stimulus simulation =================================================
 list_of_available_pair_keys: &llll 
   - d,k
   - f,j
-  - s,l
-  - a,l
   - t,u
 
 # fullscreen
@@ -66,11 +69,13 @@ bonus:
   fixation_duration: 2 
   fontsize: *fontsize
   no_prompt: *rr
+  feedback_duration: *fbd
   data: 
     phase: bonus
   list: *llll
   success_feedback: *bfs
   failure_feedback: *bff
+  early_stop: *swpt
 
 # preload images
 images_to_preload:
