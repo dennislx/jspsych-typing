@@ -8,6 +8,7 @@ import jspsychKeyboardDisplay from "./jspsych-keyboard-display";
 import SurveyMultiChoicePlugin from "@jspsych/plugin-survey-multi-choice";
 import HtmlButtonResponsePlugin from "@jspsych/plugin-html-button-response";
 import SurveyTextPlugin from "@jspsych/plugin-survey-text";
+import SurveyPlugin from "@jspsych/plugin-survey";
 
 export const DICT = {
     'preload': PreloadPlugin,
@@ -18,7 +19,8 @@ export const DICT = {
     'response': HtmlKeyboardResponsePlugin,
     'display': jspsychKeyboardDisplay,
     'button': HtmlButtonResponsePlugin,
-    'text': SurveyTextPlugin
+    'text': SurveyTextPlugin,
+    'survey': SurveyPlugin
 }
 /** 
 * @summary The function does the following:
@@ -121,8 +123,9 @@ export function bonusInstruction({
     example.title.forEach( (title, index) => {
         title = example.header[index] + title;
         let display_html = $('<div />', {html: title});
-        display_html.find('p#bonus-number').html(example[condition][index]);
+        display_html.find('div#bonus-number').html(example[condition][Math.floor(index/2)]);
         display_html.find('span#target-number').html('10');
+        display_html.find('span#current-number').html(index===0? '12' : '8');
         pages.push(display_html.html());
     })
     
@@ -326,15 +329,16 @@ function getDist(args){
 }
 
 export class bonusPhase extends practicePhase {
-    constructor({ numOfTrial = 1, trial_duration = 5, fixation_duration = 3, feedback_duration = 2,  fontsize = "", no_prompt = false, list = [], data = {}, target_dist = {}, condition = undefined, success_feedback = undefined, failure_feedback = undefined, early_stop = undefined} = {}) {
-        super({ numOfTrial: numOfTrial, trial_duration: trial_duration, fixation_duration: fixation_duration, fontsize: fontsize, no_prompt: no_prompt, list: list, data: data });
+    constructor({ numOfTrial = 1, fontsize = "", no_prompt = false, list = [], data = {}, target_dist = {}, condition = undefined, feedback = undefined, early_stop = undefined, time = undefined} = {}) {
+        const {trial_time, fix_time, score_time, reward_time} = time;
+        super({ numOfTrial: numOfTrial, trial_duration: trial_time, fixation_duration: fix_time, fontsize: fontsize, no_prompt: no_prompt, list: list, data: data });
         this.dist = getDist(target_dist);
         this.phase = "bonus";
-        this.success_feedback = success_feedback;
-        this.failure_feedback = failure_feedback;
         this.condition = condition;
         this.early_stop = early_stop;
-        this.feedback_duration = feedback_duration * 1000;
+        this.score_time = score_time * 1000;
+        this.reward_time = reward_time * 1000;
+        this.feedback = feedback;
         this.reward_agent = (condition === "binary") ?
             new Binary() : (condition === "continuous streak") ?
             new ContinuousStreak() : new BinaryStreak()
@@ -364,45 +368,57 @@ export class bonusPhase extends practicePhase {
          * generate a target threshold number for this trial/round
          */
         super.getStimulusOnStart(trial);
-        const mean = jsPsych.data.get().select('avg_score').mean() || Infinity; //a default infinity is applied if we cannot find avg-score information in the database 
+        const max = jsPsych.data.get().select('avg_score').max() || Infinity; //a default infinity is applied if we cannot find avg-score information in the database 
         trial.data = {
             success: false,             //whether or not participants win this round
-            target: Math.max(this.dist(mean), 0),    //a random number based on practice performance
+            target: Math.max(this.dist(max), 0),    //a random number based on practice performance
             ...trial.data
         }
     }
 
     getFeedback(timeline) {
+        const {main_feedback, success_feedback, failure_feedback} = this.feedback;
+        let success = 0, target = 0, current = 0, bonus = 0, bonus_msg = undefined;
+        const make_page = function(duration, phase, on_start) {
+            return {
+                type: HtmlKeyboardResponsePlugin,
+                stimulus: "",
+                choices: "NO_KEYS",
+                trial_duration: duration,
+                data: { phase: phase }, 
+                on_start: on_start
+            }
+        };
+        const on_start = (trial) => {
+            let stimulus = "";
+            if (trial.data.phase === 'bonus_feedback_reward'){
+                stimulus = success? success_feedback : failure_feedback;
+            } else {
+                stimulus = main_feedback;
+                trial.data.bonus = bonus;
+            }
+            let display_html = $('<div />', {html: stimulus});
+            display_html.find('div#bonus-number').html(bonus_msg);
+            display_html.find('span#target-number').html(target);
+            display_html.find('span#current-number').html(current);
+            trial.stimulus = display_html.html();
+        };
         timeline.push({
-            on_start: (trial) => {
+            timeline: [
+                make_page(this.score_time, 'bonus_feedback_score', on_start),
+                make_page(this.reward_time, 'bonus_feedback_reward', on_start)
+            ],
+            on_timeline_start: () => {
                 const response = jsPsych.data.getLastTrialData().trials[0];
-                const bonus_message = this.reward_agent.step(response.success)
-                let feedback = "";
-                if (response.success) {
-                    feedback = this.success_feedback;
-                } else {
-                    feedback = this.failure_feedback;
-                }
-                let feedback_html = $('<div />', {html: feedback});
-                feedback_html.find('p#bonus-number').html(bonus_message);
-                feedback_html.find('span#target-number').html(response.target);
-                trial.stimulus = feedback_html.html();
-            },
-            on_finish: (data) => {
-                let bonus =  this.reward_agent.bonus;
+                ({success, target, score: current} = response);
+                bonus = this.reward_agent.bonus;
+                bonus_msg = this.reward_agent.step(success);
                 if (this.condition === "continuous streak" && this.trial_i === this.numOfTrial) {
                     // the bonus in the last round isn't counted when under this condition
                     bonus = +(0.1 * this.reward_agent.streak).toPrecision(2);
                 }
-                data.bonus =  bonus;
-                data.streak = this.reward_agent.streak || 0;
-            },
-            type: HtmlKeyboardResponsePlugin,
-            stimulus: "",
-            choices: "NO_KEYS",
-            trial_duration: this.feedback_duration,
-            data: { phase: "bonus_feedback" },
-        })
+            }
+        });
     }
 }
 
@@ -430,13 +446,21 @@ class ContinuousStreak extends Binary {
     }
     step(succcess) {
         this.bonus = this.score(succcess);
+        // show streak length when increase or initiate a streak
         if(succcess){
             this.streak += 1;
             return `Current Streak: ${this.streak}`;
+        // show bonus information only when break a streak, show streak length when cannot initiate
         } else {
             this.overall_bonus += this.bonus;
-            this.streak = 0;
-            return `Current Streak: 0 <br> Bonus: + $${this.bonus.toFixed(2)}`; 
+            if (this.streak === 0){
+                // fail to initiate, after a failure
+                return "Current Streak: 0";
+            } else {
+                // break a streak
+                this.streak = 0;
+                return `Bonus: + $${this.bonus.toFixed(2)}`;
+            }
         }
     }
     score(succcess){
@@ -453,13 +477,21 @@ class BinaryStreak extends ContinuousStreak {
             if (this.bonus) {
                 this.overall_bonus += this.bonus;
                 this.streak = 0;
-                return `Current Streak: 3/3 <br> Bonus: + $${this.bonus.toFixed(2)}`
+                // streak complete: participants earn bonus money
+                return `Bonus: + $${this.bonus.toFixed(2)}`
             } else {
+                // streak increase: show streak length
                 return `Current Streak: ${this.streak}/3`
             }
         } else {
-            this.streak = 0; 
-            return `Current Streak: 0/3`
+            if (this.streak === 0){
+                // fail to initiate (could be after a failure or after a complete streak)
+                return `Current Streak: 0/3`
+            } else {
+                this.streak = 0; 
+                // fail to break
+                return `Bonus: + $${this.bonus.toFixed(2)}`
+            }
         }
     }
     score(success){

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host --port 8080",
     "build": "vite build",
-    "preview": "vite preview --host"
+    "preview": "vite preview --host",
+    "test": "vitest"
   },
   "devDependencies": {
     "@jspsych/plugin-fullscreen": "^1.1.2",
@@ -14,17 +15,22 @@
     "@jspsych/plugin-html-keyboard-response": "^1.0.0",
     "@jspsych/plugin-instructions": "^1.0.0",
     "@jspsych/plugin-preload": "^1.1.2",
+    "@jspsych/plugin-survey": "^0.2.1",
     "@jspsych/plugin-survey-multi-choice": "^1.0.0",
     "@jspsych/plugin-survey-multi-select": "^1.1.2",
     "@jspsych/plugin-survey-text": "^1.1.2",
+    "@jspsych/test-utils": "^1.1.2",
     "autoprefixer": "^10.4.13",
+    "jsdom": "^21.1.1",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7",
-    "vite": "^4.0.0"
+    "vite": "^4.0.0",
+    "vitest": "^0.29.3"
   },
   "dependencies": {
     "@jspsych-contrib/plugin-pipe": "^0.3.0",
     "js-yaml": "^4.1.0",
-    "jspsych": "^7.0.0"
+    "jspsych": "^7.0.0",
+    "survey-knockout": "^1.9.78"
   }
 }

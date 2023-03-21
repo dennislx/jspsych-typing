@@ -132,6 +132,6 @@ dist
 .pnp.*
 
 # temporarily only
-src/configs
-src/trials/qs.js
-src/jspsych-demos.js
+src/configs/**
+tests/**
+src/test_experiment.js
