@@ -60,7 +60,7 @@ const survey_start = (trial) => {
 timeline.push( renderPlugin({args: args.debrief, on_start: survey_start}));
 
 const lastpage_start = (trial) => {
-    const totalBonus = jsPsych.data.get().filter({phase: 'bonus_feedback'}).select('bonus').sum();
+    const totalBonus = jsPsych.data.get().filter({phase: 'bonus_feedback_score'}).select('bonus').sum();
     trial.preamble = trial.preamble.replaceAll('${totalBonus}', totalBonus);
 }
 timeline.push( renderPlugin({args: args.lastpage, on_start: lastpage_start}));
@@ -84,6 +84,6 @@ jsPsych.opts.on_finish = () => {
     document.body.innerHTML = args.thank_you_msg;
     setTimeout(function() { 
         location.href = `https://app.prolific.co/submissions/complete?cc=${args.prolific_id}`
-    }, 5000); // 5 seconds
+    }, 2000); // 2 seconds
 }
 jsPsych.run(timeline);

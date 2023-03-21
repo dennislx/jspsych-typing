@@ -11,6 +11,53 @@ time:
   feedback_bonus_time: duration of bonus/streak length feedback
 ```
 
+<details>
+<summary>YAML configuration of feedback messages</summary>
+
+```yaml
+# bonus-1, bonus-2, bonus-3, bonus-4 classes are defined in plugin.css
+bonus_feedback_main: &bfm >
+  <div class="bonus-1" style="margin: 40px 0px">
+    <div class="bonus-2">
+      <div class="bonus-3">Your score:</div>
+      <div class="bonus-4"><span id="current-number">12</span></div>
+    </div>
+    <div class="bonus-2">
+      <div class="bonus-3">Target score:</div>
+      <div class="bonus-4" style="color: red"><span id="target-number">10</span></div>
+    </div>
+  </div>
+
+bonus_feedback_success: &bfs >
+  <div class="bonus-1">
+    <div class="bonus-2">
+      You reached the target value!
+    </div>
+    <div class="bonus-2">
+      <div id="bonus-number"></div>
+    </div>
+  </div>
+  <p>Get ready for the next round!</p>
+
+bonus_feedback_failure: &bff >
+  <div class="bonus-1">
+    <div class="bonus-2">
+      You missed the target value!
+    </div>
+    <div class="bonus-2">
+      <div id="bonus-number"></div>
+    </div>
+  </div>
+  <p>Get ready for the next round!</p>
+```
+</details>
+<details>
+
+<summary>Javascript implementations</summary>
+https://github.com/dennislx/jspsych-typing/blob/fa1311f4ae303211531f590c1b05e10862f8a89e/src/jspsych-typing.js#L382-L421
+</detail>
+
+
 |  ![](public/img/bonus-mar21-first.png) |   ![](public/img/bonus-mar21-second.png) |
 | ------------- | ------------- |
 
