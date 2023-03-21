@@ -1,3 +1,81 @@
+## Mar 20
+
+1. In the bonus phase, I added an extra feedback page that comes before the bonus feedback page. This new page will show the current score and the target score on two separate lines, with different colors and a space in between.
+
+```yaml
+# corresponding settings in the yaml file
+time:
+  bonus_trial_time:    duration of each typing task 
+  fixation_duration:   duration of a cross in the beginning
+  feedback_score_time: duration of score feedback screen
+  feedback_bonus_time: duration of bonus/streak length feedback
+```
+
+|  ![](public/img/bonus-mar21-first.png) |   ![](public/img/bonus-mar21-second.png) |
+| ------------- | ------------- |
+
+2. According to Dr. David's requirements, establish guidelines for providing bonus feedback based on the group condition of the participants.
+
+```yaml
+binary: # i use streak here for easy comparison
+    - initiate or increase a streak:
+        "Bonus +$0.01"
+    - break a streak:
+        "Bonus +$0.00"
+
+continuous streak:
+    - initiate or increase a streak:
+        "Current Streak: ${this.streak}"
+    - fail to initiate a streak:
+        "Current Streak: 0"
+    - break a streak:
+        "Bonus +${this.bonus}"
+
+binary streak:
+    - initiate or increase a streak:
+        "Current Streak: ${this.streak}/3"
+    - fail to initiate a streak:
+        "Current Streak: 0/3"
+    - break a streak:
+        "Bonus +${this.bonus}"
+    - complete a streak:
+        "Bonus +${this.bonus}"
+```
+
+3. After the participant completes the survey, redirect them to Prolific's website with a thank you message that appears 5 seconds later (is 5 sec a little bit too long to wait).
+
+```yaml
+# corresponding settings in the yaml file
+osf_id:             # the OSF id, e.g., eUraQJoXlcw8
+prolific_id:        # the prolific id, e.g., 84F912E7
+pipe_data_to_osf:   # whether or not save data to OSF
+
+thank_you_msg: >
+  <div align='center' style="margin: 10%">
+      <p>Thank you for participating in the study!<p>
+      <b>You will be automatically re-directed to Prolific in a few moments.</b>
+  </div>
+```
+
+4. Instead of using the average, I modified the distribution to be based on the maximum number of keyboard presses.
+
+```js
+// bonusPhase class in jspsych-typing.js
+getStimulusOnStart(trial) {
+    ...
+    const max = jsPsych.data.get().select('avg_score').max() || Infinity; //default is infinity
+}
+```
+
+5. I used the jspsych survey plugin to combine all survey questions onto a single page. In order to ensure that all questions, except for suggestions/comments, are answered, I modified the relevant settings in yaml to make them required.
+
+```yaml
+# in the yaml file, search `debrief` and change corresponding settings
+pages:
+    - name: age
+      required: true # change whether or not a response to age is required
+```
+
 ## Mar 15
 
 A couple of updates here
