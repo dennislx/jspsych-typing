@@ -51,17 +51,18 @@ bonus_feedback_failure: &bff >
   <p>Get ready for the next round!</p>
 ```
 </details>
-<details>
 
+<details>
 <summary>Javascript implementations</summary>
+
 https://github.com/dennislx/jspsych-typing/blob/fa1311f4ae303211531f590c1b05e10862f8a89e/src/jspsych-typing.js#L382-L421
-</detail>
+</details>
 
 
 |  ![](public/img/bonus-mar21-first.png) |   ![](public/img/bonus-mar21-second.png) |
 | ------------- | ------------- |
 
-2. According to Dr. David's requirements, establish guidelines for providing bonus feedback based on the group condition of the participants.
+2. Establish guidelines for providing bonus feedback based on the group condition of the participants.
 
 ```yaml
 binary: # i use streak here for easy comparison
@@ -89,7 +90,14 @@ binary streak:
         "Bonus +${this.bonus}"
 ```
 
-3. After the participant completes the survey, redirect them to Prolific's website with a thank you message that appears 5 seconds later (is 5 sec a little bit too long to wait).
+<details>
+<summary>Javascript implementations</summary>
+
+https://github.com/dennislx/jspsych-typing/blob/7377183296fae3e162d2e952f3129ac839413cec/src/jspsych-typing.js#L425-L500
+</details>
+
+
+3. After the participant completes the survey, redirect them to Prolific's website with a thank you message that appears 2 seconds later (the original timeout is 5 sec, which is a little bit too long to wait).
 
 ```yaml
 # corresponding settings in the yaml file
