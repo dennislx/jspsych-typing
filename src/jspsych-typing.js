@@ -1,4 +1,4 @@
-import { twoLetterPair, checkEmpty, createTable } from "./utils";
+import { twoLetterPair, checkEmpty, createTable, calQuantile } from "./utils";
 import HtmlKeyboardResponsePlugin from "@jspsych/plugin-html-keyboard-response";
 import PreloadPlugin from "@jspsych/plugin-preload";
 import SurveyMultiSelectPlugin from "@jspsych/plugin-survey-multi-select";
@@ -226,12 +226,10 @@ export class practicePhase {
             if (!checkEmpty(data)) {
                 const selected_column = ['rt_valid', 'rt_typed', 'typed', 'score'];
                 const table = createTable(data, selected_column);
-                const avg_score = jsPsych.data.get().filter({ phase: 'practice' }).select('score').mean()
                 if (this.show_stat) {
                     $("div.jspsych-content").prepend(table);
-                    jsPsych.getCurrentTrial().data.avg_score = avg_score;
                 } else {
-                    jsPsych.finishTrial({ avg_score: avg_score });
+                    jsPsych.finishTrial();
                 };
             };
         };
@@ -315,15 +313,18 @@ export class practicePhase {
 
 
 function getDist(args){
-    if (args.choice === "normal"){
-        return (mean) => {
-            const {std} = args[args.choice];
-            return Math.floor(jsPsych.randomization.sampleNormal(mean, std));
+    let {choice, quantile} = args;
+    if (choice === "normal"){
+        const {std} = args[choice];
+        return (scores) => {
+            const center = calQuantile(scores, quantile);
+            return Math.floor(jsPsych.randomization.sampleNormal(center, std));
         }
-    } else if (args.choice === "uniform"){
-        const {range} = args[args.choice];
-        return (mean) => {
-            return jsPsych.randomization.randomInt(mean-range, mean+range);
+    } else if (choice === "uniform"){
+        const {range} = args[choice];
+        return (scores) => {
+            const center = calQuantile(scores, quantile);
+            return jsPsych.randomization.randomInt(center-range, center+range);
         }
     }
 }
@@ -368,10 +369,10 @@ export class bonusPhase extends practicePhase {
          * generate a target threshold number for this trial/round
          */
         super.getStimulusOnStart(trial);
-        const max = jsPsych.data.get().select('avg_score').max() || Infinity; //a default infinity is applied if we cannot find avg-score information in the database 
+        const practice_score = jsPsych.data.get().filter({ phase: 'practice' }).select('score').values;
         trial.data = {
             success: false,             //whether or not participants win this round
-            target: Math.max(this.dist(max), 0),    //a random number based on practice performance
+            target: Math.max(this.dist(practice_score) || Infinity, 0),    //a default infinity is set by default
             ...trial.data
         }
     }

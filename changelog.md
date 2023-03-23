@@ -1,3 +1,22 @@
+## Mar 23
+
+a `quantile_practice_scores_as_target` parameter is added to specify how we want the target number to be based on from the arrays of practice scores. If we set its value to `100`, we assume a maximum practice score will be used as the center of distribution to genrate target number during the bonus phase
+
+```yaml
+# corresponding settings in the yaml file
+# ========= bonus settings ======================================================
+quantile_practice_scores_as_target:  &qpt 100 #use maximum, set 80 for 80 quantile 
+```
+
+<details>
+<summary>Javascript implementations</summary>
+
+```js
+
+```
+</details>
+
+
 ## Mar 20
 
 1. In the bonus phase, I added an extra feedback page that comes before the bonus feedback page. This new page will show the current score and the target score on two separate lines, with different colors and a space in between.

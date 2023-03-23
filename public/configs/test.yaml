@@ -11,16 +11,16 @@ prolific_id: 84F912E7
 pipe_data_to_osf: true
 
 # ========= practice settings ===================================================
-practice_trial_rounds: &ptr 5
-practice_trial_time: &ptt 20
+practice_trial_rounds: &ptr 2
+practice_trial_time: &ptt 2
 show_practice_result: &pts false
 number_of_history_keypress: &nhk 4
 
 # ========= bonus settings ======================================================
-bonus_trial_rounds: &btr 10
+bonus_trial_rounds: &btr 1
 quantile_practice_scores_as_target:  &qpt 100 #use maximum
 time:
-  bonus_trial_time: &btt 20
+  bonus_trial_time: &btt 2
   fixation_duration: &ffd 2
   feedback_score_time: &fst 2
   feedback_bonus_time: &fbt 3

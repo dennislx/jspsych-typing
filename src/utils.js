@@ -101,6 +101,27 @@ export const partialFunc = (func, ...args) => {
   };
 };
 
+function sortArr(arr){
+  let ary = arr.slice();
+  ary.sort(function(a,b){ return parseFloat(a) - parseFloat(b);});
+  return ary;
+}
+
+export function calQuantile(data, q) {
+  q = q==='max'? 100 : q;
+  q = q==='min'? 0 : q;
+  q = q/100;
+  data = sortArr(data);
+  const pos = ((data.length)-1) * q;
+  const base = Math.floor(pos);
+  const rest = pos - base;
+  if (data[base+1]!==undefined){
+      return parseFloat(data[base]) + rest * (parseFloat(data[base+1]) - parseFloat(data[base]));
+  } else{
+      return parseFloat(data[base]);
+  }
+}
+
 export function createTable(dataList, keyList) {
   // Calculate statistics for each column
   const stats = {};
