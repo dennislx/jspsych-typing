@@ -1,6 +1,6 @@
 ## Mar 23
 
-a `quantile_practice_scores_as_target` parameter is added to specify how we want the target number to be based on from the arrays of practice scores. If we set its value to `100`, we assume a maximum practice score will be used as the center of distribution to genrate target number during the bonus phase
+I added a new parameter called `quantile_practice_scores_as_target` which determines how we calculate the target number from the practice scores. If we set it to 100, we use the highest practice score as the center of the distribution (by default, uniform) to generate the target number during the bonus phase.
 
 ```yaml
 # corresponding settings in the yaml file
@@ -11,9 +11,12 @@ quantile_practice_scores_as_target:  &qpt 100 #use maximum, set 80 for 80 quanti
 <details>
 <summary>Javascript implementations</summary>
 
-```js
+This code creates a function that uses an array and a quantile parameter to generate a random target number.
 
-```
+https://github.com/dennislx/jspsych-typing/blob/11bbeb8b4b11f820aef20e760da66ba11d47479b/src/jspsych-typing.js#L315-L330
+
+
+https://github.com/dennislx/jspsych-typing/blob/11bbeb8b4b11f820aef20e760da66ba11d47479b/src/jspsych-typing.js#L367-L378
 </details>
 
 
