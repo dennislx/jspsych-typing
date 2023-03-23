@@ -18,6 +18,7 @@ number_of_history_keypress: &nhk 4
 
 # ========= bonus settings ======================================================
 bonus_trial_rounds: &btr 10
+quantile_practice_scores_as_target:  &qpt 100 #use maximum
 time:
   bonus_trial_time: &btt 20
   fixation_duration: &ffd 2
@@ -25,6 +26,7 @@ time:
   feedback_bonus_time: &fbt 3
 target_number_dist: &btd 
   choice: uniform
+  quantile: *qpt
   normal: {std: 20}
   uniform: {range: 20}
 stop_when_pass_target: &swpt false
