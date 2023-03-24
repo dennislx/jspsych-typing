@@ -124,8 +124,8 @@ export function bonusInstruction({
         title = example.header[index] + title;
         let display_html = $('<div />', {html: title});
         display_html.find('div#bonus-number').html(example[condition][Math.floor(index/2)]);
-        display_html.find('span#target-number').html('10');
-        display_html.find('span#current-number').html(index===0? '12' : '8');
+        display_html.find('span#target-number').html('200');
+        display_html.find('span#current-number').html(index===0? '212' : '188');
         pages.push(display_html.html());
     })
     
