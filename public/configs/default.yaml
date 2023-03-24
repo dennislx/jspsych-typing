@@ -67,18 +67,18 @@ bonus_feedback_main: &bfm >
   <div class="bonus-1" style="margin: 40px 0px">
     <div class="bonus-2">
       <div class="bonus-3">Your score:</div>
-      <div class="bonus-4"><span id="current-number">12</span></div>
+      <div class="bonus-4"><span id="current-number">212</span></div>
     </div>
     <div class="bonus-2">
       <div class="bonus-3">Target score:</div>
-      <div class="bonus-4" style="color: red"><span id="target-number">10</span></div>
+      <div class="bonus-4" style="color: red"><span id="target-number">200</span></div>
     </div>
   </div>
 
 bonus_feedback_success: &bfs >
   <div class="bonus-1">
     <div class="bonus-2">
-      You reached the target value!
+      You reached the target score!
     </div>
     <div class="bonus-2">
       <div id="bonus-number"></div>
@@ -89,7 +89,7 @@ bonus_feedback_success: &bfs >
 bonus_feedback_failure: &bff >
   <div class="bonus-1">
     <div class="bonus-2">
-      You missed the target value!
+      You missed the target score!
     </div>
     <div class="bonus-2">
       <div id="bonus-number"></div>
