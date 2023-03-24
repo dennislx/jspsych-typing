@@ -9,7 +9,6 @@ import jspsychSurvey from "./jspsych-demographics";
 import SurveyMultiChoicePlugin from "@jspsych/plugin-survey-multi-choice";
 import HtmlButtonResponsePlugin from "@jspsych/plugin-html-button-response";
 import SurveyTextPlugin from "@jspsych/plugin-survey-text";
-import SurveyPlugin from "@jspsych/plugin-survey";
 
 export const DICT = {
     'preload': PreloadPlugin,
