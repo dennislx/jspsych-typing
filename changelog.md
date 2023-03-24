@@ -4,6 +4,11 @@ Two updates:
 
 1. Instead of showing that participants missed the target score, the feedback for continuous streak and binary streak has been updated to show how much streak they have built successfully in this round. 
 
+<details>
+<summary>Javascript implementations</summary>
+
+https://github.com/dennislx/jspsych-typing/blob/d1c166270ed283b61b135a58295a4cf61718fa32/src/jspsych-typing.js#L406-L411
+</details>
 
 2. I modified the [jspsych-demos survey plugin](https://nivlab.github.io/jspsych-demos/tasks/self-report/experiment.html?plugin=demo) to make the demogrpahics survey page nice-looking. The new plugin is in `src/jspsych-demographics.js`
 
