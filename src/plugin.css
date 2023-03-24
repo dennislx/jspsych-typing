@@ -109,7 +109,73 @@ div.sv-action-bar.sv_nav {
     place-content: center;
 }
 
-#sv-nav-complete > div > input{
+
+.survey-demo-wrap {
+    height: 100vh;
+}
+.survey-demo-instructions {
+    margin: auto;
+    width: 800px;
+    padding: 0 0 0 0;
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.15em;
+}
+.survey-demo-container {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: auto;
+    width: 800px;
+    margin: auto;
+    background-color: #F8F8F8;
+    border-radius: 12px;
+}
+.survey-demo-row {
+    display: contents;
+    justify-items: center;
+    text-align: left;
+    font-size: 16px;
+    line-height: 1.5em;
+}
+.survey-demo-prompt {
+    padding: 12px 0 12px 15px;
+    border-top: 2px solid #ffffff;
+}
+.survey-demo-prompt label {
+    padding: 0 8px 0 0;
+    display: inline-block;
+}
+.survey-demo-response {
+    padding: 12px 0 12px 0;
+    border-top: 2px solid #ffffff;
+}
+.survey-demo-response label {
+    padding: 0 1em 0 0;
+    display: inline-block;
+}
+.survey-demo-response input[type='radio'], input[type='checkbox'] {
+    height: 13px;
+    width: 13px;
+    margin: 0 6px 0 0;
+}
+.survey-demo-response input[type='number'], input[type='text'] {
+    height: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.survey-demo-response input[type='number'] {
+    width: 40px;
+}
+.survey-demo-response input[type='text'] {
+    width: 15%;
+}
+.survey-demo-footer {
+    margin: auto;
+    width: 800px;
+    padding: 20px 0 20px 0;
+    text-align: center;
+}
+.survey-demo-footer input[type=submit] {
     display: inline-block;
     padding: 6px 12px;
     margin: 0px;
@@ -118,7 +184,6 @@ div.sv-action-bar.sv_nav {
     font-family: 'Open Sans', 'Arial', sans-serif;
     cursor: pointer;
     line-height: 1.4;
-    text-align: center;
     white-space: nowrap;
     vertical-align: middle;
     background-image: none;
@@ -129,8 +194,28 @@ div.sv-action-bar.sv_nav {
     border-color: #ccc;
 }
 
-#sv-nav-complete > div > input:hover {
+.survey-demo-footer input[type=submit]:hover {
     background-color: #ddd;
     border-color: #aaa;
 }
-  
+
+.survey-demo-suggest input{
+    display: flex;
+    flex-direction: row;
+    line-height: 1.5em;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-color: #F8F8F8;
+    align-items: center;
+}
+
+textarea#styled {
+	height: 95%;
+    width: 95%;
+	border: 2px solid #cccccc;
+    line-height: 1.5em;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-color: #F8F8F8;
+    align-items: center;
+}

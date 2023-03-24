@@ -5,6 +5,7 @@ import SurveyMultiSelectPlugin from "@jspsych/plugin-survey-multi-select";
 import FullscreenPlugin from "@jspsych/plugin-fullscreen";
 import InstructionsPlugin from "@jspsych/plugin-instructions";
 import jspsychKeyboardDisplay from "./jspsych-keyboard-display";
+import jspsychSurvey from "./jspsych-demographics";
 import SurveyMultiChoicePlugin from "@jspsych/plugin-survey-multi-choice";
 import HtmlButtonResponsePlugin from "@jspsych/plugin-html-button-response";
 import SurveyTextPlugin from "@jspsych/plugin-survey-text";
@@ -20,7 +21,7 @@ export const DICT = {
     'display': jspsychKeyboardDisplay,
     'button': HtmlButtonResponsePlugin,
     'text': SurveyTextPlugin,
-    'survey': SurveyPlugin
+    'survey': jspsychSurvey
 }
 /** 
 * @summary The function does the following:
@@ -379,7 +380,7 @@ export class bonusPhase extends practicePhase {
 
     getFeedback(timeline) {
         const {main_feedback, success_feedback, failure_feedback} = this.feedback;
-        let success = 0, target = 0, current = 0, bonus = 0, bonus_msg = undefined;
+        let success = 0, target = 0, current = 0, bonus = 0, streak = 0, bonus_msg = undefined;
         const make_page = function(duration, phase, on_start) {
             return {
                 type: HtmlKeyboardResponsePlugin,
@@ -402,6 +403,12 @@ export class bonusPhase extends practicePhase {
             display_html.find('div#bonus-number').html(bonus_msg);
             display_html.find('span#target-number').html(target);
             display_html.find('span#current-number').html(current);
+            if (this.condition === "continuous streak" && !success) {
+                display_html.find('div#bonus-2').html(`Your streak was ${streak}`);
+            }
+            if (this.condition === "binary streak" && !success) {
+                display_html.find('div#bonus-2').html(`Your streak was ${streak}/3`);
+            }
             trial.stimulus = display_html.html();
         };
         timeline.push({
@@ -412,7 +419,7 @@ export class bonusPhase extends practicePhase {
             on_timeline_start: () => {
                 const response = jsPsych.data.getLastTrialData().trials[0];
                 ({success, target, score: current} = response);
-                bonus = this.reward_agent.bonus;
+                ({bonus, streak} = this.reward_agent.property);
                 bonus_msg = this.reward_agent.step(success);
                 if (this.condition === "continuous streak" && this.trial_i === this.numOfTrial) {
                     // the bonus in the last round isn't counted when under this condition
@@ -436,6 +443,12 @@ class Binary {
     }
     score(success){
         return success? 0.1 : 0
+    }
+    get property(){
+        return {
+            streak: this.streak,
+            bonus: this.bonus
+        }
     }
 }
 

@@ -1,3 +1,28 @@
+## Mar 24
+
+Two updates:
+
+1. Instead of showing that participants missed the target score, the feedback for continuous streak and binary streak has been updated to show how much streak they have built successfully in this round. 
+
+
+2. I modified the [jspsych-demos survey plugin](https://nivlab.github.io/jspsych-demos/tasks/self-report/experiment.html?plugin=demo) to make the demogrpahics survey page nice-looking. The new plugin is in `src/jspsych-demographics.js`
+
+This is an exemplary output:
+
+```json
+{
+    "gender": "Woman",
+    "age": "23",
+    "ethnicity": [
+        "White / Caucasian",
+        "Hispanic"
+    ],
+    "english": "True",
+    "suggest": "I believe it is helpful to suggest participants use their index finger consistently when pressing keys. This will reduce variation between trials that require different pairs of key presses.\n"
+}
+```
+
+
 ## Mar 23
 
 I added a new parameter called `quantile_practice_scores_as_target` which determines how we calculate the target number from the practice scores. If we set it to 100, we use the highest practice score as the center of the distribution (by default, uniform) to generate the target number during the bonus phase.

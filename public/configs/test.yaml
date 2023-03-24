@@ -17,7 +17,7 @@ show_practice_result: &pts false
 number_of_history_keypress: &nhk 4
 
 # ========= bonus settings ======================================================
-bonus_trial_rounds: &btr 1
+bonus_trial_rounds: &btr 2
 quantile_practice_scores_as_target:  &qpt 100 #use maximum
 time:
   bonus_trial_time: &btt 2
@@ -88,7 +88,7 @@ bonus_feedback_success: &bfs >
 
 bonus_feedback_failure: &bff >
   <div class="bonus-1">
-    <div class="bonus-2">
+    <div class="bonus-2" id="bonus-2">
       You missed the target score!
     </div>
     <div class="bonus-2">
@@ -282,41 +282,9 @@ debrief_page: &debrief >
 
 debrief:
   type: survey
-  button_label_finish: Continue
+  button_label: Continue
   data: 
     phase: survey_questionaire
-  pages:
-    - type: html
-      prompt: "Please answer the following questions: "
-    - name: gender
-      type: multi-choice
-      prompt: "Gender: "
-      options: [Male, Female, Other]
-      required: true
-      columns: 3
-    - name: age
-      type: text
-      input_type: number
-      prompt: "Age: " 
-      required: true
-      textbox_columns: 3
-    - name: ethnicity
-      type: multi-select
-      prompt: "Ethnicity: "
-      options: [White / Caucasian, Black / African American, Asian / Pacific Islander, Hispanic, Native American, Other]
-      required: true
-      columns: 3
-    - name: english
-      type: multi-choice
-      prompt: "Is English your native language?: "
-      options: [Yes, No]
-      required: true
-      columns: 2
-    - name: finalWord
-      type: text
-      prompt: Questions? Comments? Complains? Provide your feedback here!
-      textbox_rows: 10
-      textbox_columns: 100
 
 lastpage:
   type: text
