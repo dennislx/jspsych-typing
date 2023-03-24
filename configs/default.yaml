@@ -282,41 +282,9 @@ debrief_page: &debrief >
 
 debrief:
   type: survey
-  button_label_finish: Continue
+  button_label: Continue
   data: 
     phase: survey_questionaire
-  pages:
-    - type: html
-      prompt: "Please answer the following questions: "
-    - name: gender
-      type: multi-choice
-      prompt: "Gender: "
-      options: [Male, Female, Other]
-      required: true
-      columns: 3
-    - name: age
-      type: text
-      input_type: number
-      prompt: "Age: " 
-      required: true
-      textbox_columns: 3
-    - name: ethnicity
-      type: multi-select
-      prompt: "Ethnicity: "
-      options: [White / Caucasian, Black / African American, Asian / Pacific Islander, Hispanic, Native American, Other]
-      required: true
-      columns: 3
-    - name: english
-      type: multi-choice
-      prompt: "Is English your native language?: "
-      options: [Yes, No]
-      required: true
-      columns: 2
-    - name: finalWord
-      type: text
-      prompt: Questions? Comments? Complains? Provide your feedback here!
-      textbox_rows: 10
-      textbox_columns: 100
 
 lastpage:
   type: text
