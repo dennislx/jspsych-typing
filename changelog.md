@@ -1,3 +1,9 @@
+## Mar 28
+
+Inform participants on the instruction page they are seeing examples in the following pages. 
+
+https://github.com/dennislx/jspsych-typing/blob/21f765ba15425787e02e559854259d3c13e449a2/public/configs/default.yaml#L199-L207
+
 ## Mar 24
 
 Two updates:
