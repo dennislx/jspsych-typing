@@ -82,7 +82,7 @@ const suggest = `
         <label for="suggest">Questions? Comments? Complains? Provide your feedback here! </label>
     </div>
     <div class="survey-demo-suggest">
-    <textarea name="suggest" id="styled">Enter your comment here...</textarea>
+    <textarea name="suggest" id="styled"></textarea>
     </div>
 </div>
 `

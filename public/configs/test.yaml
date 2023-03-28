@@ -11,7 +11,7 @@ prolific_id: 84F912E7
 pipe_data_to_osf: true
 
 # ========= practice settings ===================================================
-practice_trial_rounds: &ptr 2
+practice_trial_rounds: &ptr 0
 practice_trial_time: &ptt 2
 show_practice_result: &pts false
 number_of_history_keypress: &nhk 4
@@ -197,10 +197,14 @@ practice_instruction:
 
 
 bonus_welcome: &i >
+  <div class="instruction">
   <p>Thank you for completing the practice phase.</p>
   <p>Next, you will proceed to the bonus phase. You will again have an allotted amount of time to press two keys as many times as possible.</p>
   <p>Additionally, there will be a target score. The target score is random and varies for each round. You will not be told the target score until the end of each round.</p>
   <p>You will have successfully completed a round if you reach the target score before the allotted time is up. Completing rounds allows you to earn bonus money.</p>
+  <p>${instruction_by_group}</p>
+  <p>On the next instruction pages, you will see two examples</p>
+  </div>
 
 i_bianry_streak: &ig1 >
   Your goal is to <b>build streaks</b> by completing as many rounds in a row as possible! Specifically, each time you complete <b>three consecutive rounds</b>, you will earn a <b>$0.30 bonus</b>. 
@@ -277,7 +281,7 @@ debrief_page: &debrief >
   <p>Thank you for participating!</p>
   <p>In total, you won <b>$${totalBonus}</b> in bonus money!</p>
   <br>
-  <p>Within one week, you will receive your bonus money. Your $1.50 for participating will be delivered immediately</p>
+  <p>Within one week, you will receive your bonus money.</p>
   <p>To receive payment, enter your Prolific ID in the space below.</p>
 
 debrief:

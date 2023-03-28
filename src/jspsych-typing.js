@@ -117,9 +117,8 @@ export function bonusInstruction({
 
     let correct = false;
     const pages = [];
-    pages.push(
-        "".concat( "<div class='instruction'>", instruction.title, instruction[condition], "</div>" )
-    );
+    const firstPage = instruction.title.replaceAll('${instruction_by_group}', instruction[condition]);
+    pages.push(firstPage);
     example.title.forEach( (title, index) => {
         title = example.header[index] + title;
         let display_html = $('<div />', {html: title});
