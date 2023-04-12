@@ -1,3 +1,22 @@
+## Apr 12
+
+A couple of updates:
+
+1. The data is saved in a specific format. `rt` represents the time taken by participants to start typing since the trial began, regardless of whether their response is correct or not. We then use the `JSON2CSV` method from the `JsPsych` library to convert the JSON object to CSV. Turn off format checking in `DataPipe` so this record can be successfully saved on OSF.
+  
+https://github.com/dennislx/jspsych-typing/blob/9acfff870b5c5307c4f5d0c7cebdc89639bca42d/src/utils.js#L260-L278
+
+2. Two lines are added to recommend participants using two index fingers for the task. The local static URL to load an image will not work since the experiment is hosted on a GitHub repository. Instead I use a public URL of the image path to make it work.
+
+https://github.com/dennislx/jspsych-typing/blob/9acfff870b5c5307c4f5d0c7cebdc89639bca42d/public/configs/default.yaml#L178-L180
+
+3. Changes are made to the feedback given when participants fail the task twice in a row. This applies to both the continuous and binary streak groups.
+
+https://github.com/dennislx/jspsych-typing/blob/9acfff870b5c5307c4f5d0c7cebdc89639bca42d/src/jspsych-typing.js#L411-L417
+
+
+
+
 ## Mar 28
 
 Inform participants on the instruction page they are seeing examples in the following pages. 

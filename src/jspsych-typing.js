@@ -317,13 +317,13 @@ function getDist(args){
         const {std} = args[choice];
         return (scores) => {
             const center = calQuantile(scores, quantile);
-            return () => Math.floor(jsPsych.randomization.sampleNormal(center, std));
+            return () => Math.floor(jsPsych.randomization.sampleNormal(center, std)) || center;
         }
     } else if (choice === "uniform"){
         const {range} = args[choice];
         return (scores) => {
             const center = calQuantile(scores, quantile);
-            return () => jsPsych.randomization.randomInt(center-range, center+range);
+            return () => jsPsych.randomization.randomInt(center-range, center+range) || center;
         }
     }
 }
@@ -378,7 +378,7 @@ export class bonusPhase extends practicePhase {
 
         trial.data = {
             success: false,             //whether or not participants win this round
-            target: Math.max(this.target_dist() || Infinity, 0),    //a default infinity is set by default
+            target: Math.max(this.target_dist(), 0),    //a default infinity is set by default
             ...trial.data
         }
     }
@@ -408,11 +408,12 @@ export class bonusPhase extends practicePhase {
             display_html.find('div#bonus-number').html(bonus_msg);
             display_html.find('span#target-number').html(target);
             display_html.find('span#current-number').html(current);
-            if (this.condition === "continuous streak" && !success) {
-                display_html.find('div#bonus-2').html(`Your streak was ${streak}`);
-            }
-            if (this.condition === "binary streak" && !success) {
-                display_html.find('div#bonus-2').html(`Your streak was ${streak}/3`);
+            if (this.condition !== "binary" && !success) {
+                const div = display_html.find('div#bonus-2');
+                const streak_span = this.condition === 'binary streak'? `${streak}/3` : `${streak}`;
+                streak === 0 
+                    ? div.remove()
+                    : div.html("Your streak was " + streak_span);
             }
             trial.stimulus = display_html.html();
         };
@@ -440,6 +441,7 @@ class Binary {
     constructor() {
         this.overall_bonus = 0;
         this.bonus = 0;
+        this.streak_sofar = 0;
     }
     step(succcess) {
         this.bonus = this.score(succcess);
@@ -451,7 +453,7 @@ class Binary {
     }
     get property(){
         return {
-            streak: this.streak,
+            streak: this.streak_sofar,
             bonus: this.bonus
         }
     }
@@ -461,9 +463,10 @@ class ContinuousStreak extends Binary {
 
     constructor() {
         super();
-        this.streak = 0;
+        this.streak = this.streak_sofar;
     }
     step(succcess) {
+        this.streak_sofar = this.streak;
         this.bonus = this.score(succcess);
         // show streak length when increase or initiate a streak
         if(succcess){
@@ -472,7 +475,7 @@ class ContinuousStreak extends Binary {
         // show bonus information only when break a streak, show streak length when cannot initiate
         } else {
             this.overall_bonus += this.bonus;
-            if (this.streak === 0){
+            if (this.streak_sofar === 0){
                 // fail to initiate, after a failure
                 return "Current Streak: 0";
             } else {
@@ -483,13 +486,14 @@ class ContinuousStreak extends Binary {
         }
     }
     score(succcess){
-        return succcess? 0 : this.streak*0.1
+        return succcess? 0 : this.streak_sofar*0.1
     }
 }
 
 class BinaryStreak extends ContinuousStreak {
 
     step(success){
+        this.streak_sofar = this.streak;
         this.bonus = this.score(success);
         if(success){
             this.streak += 1;
@@ -503,7 +507,7 @@ class BinaryStreak extends ContinuousStreak {
                 return `Current Streak: ${this.streak}/3`
             }
         } else {
-            if (this.streak === 0){
+            if (this.streak_sofar === 0){
                 // fail to initiate (could be after a failure or after a complete streak)
                 return `Current Streak: 0/3`
             } else {
@@ -514,6 +518,6 @@ class BinaryStreak extends ContinuousStreak {
         }
     }
     score(success){
-        return !success? 0 : ((this.streak+1)===3) ? 0.3 : 0
+        return !success? 0 : ((this.streak_sofar+1)===3) ? 0.3 : 0
     }
 }
