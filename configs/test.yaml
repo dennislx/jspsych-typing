@@ -17,7 +17,7 @@ show_practice_result: &pts false
 number_of_history_keypress: &nhk 4
 
 # ========= bonus settings ======================================================
-bonus_trial_rounds: &btr 1
+bonus_trial_rounds: &btr 20
 quantile_practice_scores_as_target:  &qpt 100 #use maximum
 time:
   bonus_trial_time: &btt 2
@@ -175,6 +175,8 @@ practice_p1: &p1 >
   <p>Specifically, you will be asked to type two letters sequentially as many times as possible in the allotted time. </p>
   <p>During the task, a counter at the center of the screen will increase by one for each correct letter you press in sequence. If you press an incorrect letter, the counter will not increase.</p>
   <p>For instance, if the typing task is to repeatedly type <span id=keystroke>a</span> then <span id=keystroke>b</span> and I type <span id=keystroke>a</span><span id=keystroke>b</span><span id=keystroke>a</span><span id=keystroke>b</span><span id=keystroke>x</span> the counter will display <b>4</b>. If I press <span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>x</span> the counter will display <b>1</b>.</p>
+  <p>We recommend using your two index fingers to type the letters</p>
+  <img src="/img/instr-keyboard.png" id="keypress-img">
   </div>
 
 practice_p2: &p2 >
