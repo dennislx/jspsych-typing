@@ -215,18 +215,12 @@ function getPrefix(prefix, i){
 function getRecord(data, phase){
   const filter_data = data.filter({phase: phase}).values();
   const prefix = phase==='practice'? 'practice' : 'round';
-  let list_scores;
-  if (phase === 'practice') {
-    list_scores = filter_data.map((x,i) => {
-      const [k_rt, k_typed, k_score, k_target] = getPrefix(prefix, i)
-      return ({[k_rt]: x.rt_typed, [k_typed]: x.typed, [k_score]: x.score})
-    });
-  } else {
-    list_scores = filter_data.map((x,i) =>{
-      const [k_rt, k_typed, k_score, k_target] = getPrefix(prefix, i)
-      return ({[k_rt]: x.rt_typed, [k_typed]: x.typed, [k_score]: x.score, [k_target]: x.target})
-    })
-  }
+  const list_scores = filter_data.map((x, i) => {
+    const [k_rt, k_typed, k_score, k_target] = getPrefix(prefix, i)
+    return (phase === 'practice' 
+      ? {[k_rt]: x.rt_typed, [k_typed]: x.typed, [k_score]: x.score} 
+      : {[k_rt]: x.rt_typed, [k_typed]: x.typed, [k_score]: x.score, [k_target]: x.target})
+  });
   return getFlat(list_scores);
 }
 
