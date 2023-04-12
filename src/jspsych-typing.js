@@ -317,13 +317,13 @@ function getDist(args){
         const {std} = args[choice];
         return (scores) => {
             const center = calQuantile(scores, quantile);
-            return Math.floor(jsPsych.randomization.sampleNormal(center, std));
+            return () => Math.floor(jsPsych.randomization.sampleNormal(center, std));
         }
     } else if (choice === "uniform"){
         const {range} = args[choice];
         return (scores) => {
             const center = calQuantile(scores, quantile);
-            return jsPsych.randomization.randomInt(center-range, center+range);
+            return () => jsPsych.randomization.randomInt(center-range, center+range);
         }
     }
 }
@@ -332,7 +332,8 @@ export class bonusPhase extends practicePhase {
     constructor({ numOfTrial = 1, fontsize = "", no_prompt = false, list = [], data = {}, target_dist = {}, condition = undefined, feedback = undefined, early_stop = undefined, time = undefined} = {}) {
         const {trial_time, fix_time, score_time, reward_time} = time;
         super({ numOfTrial: numOfTrial, trial_duration: trial_time, fixation_duration: fix_time, fontsize: fontsize, no_prompt: no_prompt, list: list, data: data });
-        this.dist = getDist(target_dist);
+        this.target_dist = getDist(target_dist);
+        this.practice_score = 0;
         this.phase = "bonus";
         this.condition = condition;
         this.early_stop = early_stop;
@@ -342,6 +343,12 @@ export class bonusPhase extends practicePhase {
         this.reward_agent = (condition === "binary") ?
             new Binary() : (condition === "continuous streak") ?
             new ContinuousStreak() : new BinaryStreak()
+    }
+
+    on_timeline_start() {
+        super.on_timeline_start()
+        const practice_scores = jsPsych.data.get().filter({ phase: 'practice' }).select('score').values;
+        this.target_dist = this.target_dist(practice_scores);
     }
 
     getStimulusCallback(){
@@ -368,10 +375,10 @@ export class bonusPhase extends practicePhase {
          * generate a target threshold number for this trial/round
          */
         super.getStimulusOnStart(trial);
-        const practice_score = jsPsych.data.get().filter({ phase: 'practice' }).select('score').values;
+
         trial.data = {
             success: false,             //whether or not participants win this round
-            target: Math.max(this.dist(practice_score) || Infinity, 0),    //a default infinity is set by default
+            target: Math.max(this.target_dist() || Infinity, 0),    //a default infinity is set by default
             ...trial.data
         }
     }
@@ -417,8 +424,8 @@ export class bonusPhase extends practicePhase {
             on_timeline_start: () => {
                 const response = jsPsych.data.getLastTrialData().trials[0];
                 ({success, target, score: current} = response);
-                ({bonus, streak} = this.reward_agent.property);
                 bonus_msg = this.reward_agent.step(success);
+                ({bonus, streak} = this.reward_agent.property);
                 if (this.condition === "continuous streak" && this.trial_i === this.numOfTrial) {
                     // the bonus in the last round isn't counted when under this condition
                     bonus = +(0.1 * this.reward_agent.streak).toPrecision(2);

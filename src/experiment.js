@@ -2,7 +2,7 @@ import "jspsych/css/jspsych.css";
 import "./style.css";
 import jsPsych from "./prepare";
 import jsPsychPipe from '@jspsych-contrib/plugin-pipe';
-import { readYaml, checkEmpty, fullScreenHandler} from "./utils";
+import { readYaml, checkEmpty, fullScreenHandler, exportData, JSON2CSV} from "./utils";
 import {practicePhase, renderPlugin, bonusInstruction, bonusPhase, DICT} from "./jspsych-typing";
 
 
@@ -12,8 +12,8 @@ const args = await readYaml('configs/default.yaml');
 
 // obtain subject id and assign their group condition 
 const subject_id = jsPsych.randomization.randomID(10); 
-// const condition = await jsPsychPipe.getCondition(args.osf_id);
-const condition = jsPsych.randomization.randomInt(0, 2);
+const condition = await jsPsychPipe.getCondition(args.osf_id);
+// const condition = jsPsych.randomization.randomInt(0, 2);
 args.condition = ['binary streak', 'continuous streak', 'binary'][condition];
 
 jsPsych.data.addProperties({
@@ -60,7 +60,15 @@ const survey_start = (trial) => {
 timeline.push( renderPlugin({args: args.debrief, on_start: survey_start}));
 
 const lastpage_start = (trial) => {
-    const totalBonus = jsPsych.data.get().filter({phase: 'bonus_feedback_score'}).select('bonus').sum();
+    const data = jsPsych.data.get()
+    const totalBonus = +data.filter({phase: 'bonus_feedback_score'}).select('bonus').sum().toFixed(2);
+    const totalSuccess = +data.filter({phase: 'bonus'}).select('success').sum();
+    trial.data = {
+        totalBonus: totalBonus,
+        totalSuccess: totalSuccess,
+        phase: 'last_page',
+        ...trial.data,
+    }
     trial.preamble = trial.preamble.replaceAll('${totalBonus}', totalBonus);
 }
 timeline.push( renderPlugin({args: args.lastpage, on_start: lastpage_start}));
@@ -72,8 +80,9 @@ args.pipe_data_to_osf && timeline.push({
     experiment_id: args.osf_id,
     filename: `${subject_id}.csv`,
     data_string: () => {
-        const data = jsPsych.data.get().csv();
-        return data;
+        const trial_data = jsPsych.data.get();
+        const clean_data = exportData(trial_data);
+        return JSON2CSV([clean_data]);
     },
 })
 

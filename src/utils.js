@@ -195,3 +195,90 @@ export function fullScreenHandler(){
     alert("You leave the fullscreen mode, please go to full screen");
   }
 }
+
+function getFlat(list_of_object){
+  return list_of_object.reduce((acc, x) => {return {...acc, ...x}}, {});
+}
+
+function getDate(date) {
+  return (new Date(date)).toISOString().slice(0, 10);
+}
+
+function getPrefix(prefix, i){
+  const k_rt = `${prefix}${i+1}_rt`;
+  const k_typed = `${prefix}${i+1}_typed`;
+  const k_score = `${prefix}${i+1}_score`;
+  const k_target = `${prefix}${i+1}_target`;
+  return [k_rt, k_typed, k_score, k_target];
+}
+
+function getRecord(data, phase){
+  const filter_data = data.filter({phase: phase}).values();
+  const prefix = phase==='practice'? 'practice' : 'round';
+  let list_scores;
+  if (phase === 'practice') {
+    list_scores = filter_data.map((x,i) => {
+      const [k_rt, k_typed, k_score, k_target] = getPrefix(prefix, i)
+      return ({[k_rt]: x.rt_typed, [k_typed]: x.typed, [k_score]: x.score})
+    });
+  } else {
+    list_scores = filter_data.map((x,i) =>{
+      const [k_rt, k_typed, k_score, k_target] = getPrefix(prefix, i)
+      return ({[k_rt]: x.rt_typed, [k_typed]: x.typed, [k_score]: x.score, [k_target]: x.target})
+    })
+  }
+  return getFlat(list_scores);
+}
+
+export function JSON2CSV(objArray) {
+  const array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
+  let line = "";
+  let result = "";
+  const columns = [];
+  for (const row of array) {
+    for (const key in row) {
+      let keyString = key + "";
+      keyString = '"' + keyString.replace(/"/g, '""') + '",';
+      if (!columns.includes(key)) {
+        columns.push(key);
+        line += keyString;
+      }
+    }
+  }
+  line = line.slice(0, -1); // removes last comma
+  result += line + "\r\n";
+  for (const row of array) {
+    line = "";
+    for (const col of columns) {
+      let value = typeof row[col] === "undefined" ? "" : row[col];
+      if (typeof value == "object") {
+        value = JSON.stringify(value);
+      }
+      const valueString = value + "";
+      line += '"' + valueString.replace(/"/g, '""') + '",';
+    }
+    line = line.slice(0, -1);
+    result += line + "\r\n";
+  }
+  return result;
+}
+
+export function exportData(data) {
+  const r_prac = getRecord(data, 'practice', 'practice');
+  const r_bonus = getRecord(data, 'bonus', 'round');
+  const [{gender, age, suggest}] = data.filter({trial_type: 'survey-demo'}).select('responses').values
+  const [{date, subject_id: id, condition: cond, response: {PID: pid}, totalSuccess, totalBonus}] = data.last().values();
+  return {
+    subject_id: id,
+    date: getDate(date),
+    condition: cond,
+    ...r_prac,
+    ...r_bonus,
+    total_earned: totalBonus,
+    total_success: totalSuccess,
+    gender: gender,
+    age: age,
+    comment: suggest,
+    pid: pid
+  }
+}
