@@ -18,6 +18,7 @@ number_of_history_keypress: &nhk 4
 
 # ========= bonus settings ======================================================
 bonus_trial_rounds: &btr 10
+bonus_target_minimum: &btm 1
 quantile_practice_scores_as_target:  &qpt 100 #use maximum
 time:
   bonus_trial_time: &btt 20
@@ -101,6 +102,7 @@ bonus_feedback_failure: &bff >
 bonus:
   numOfTrial: *btr
   target_dist: *btd
+  target_min: *btm
   fontsize: *fontsize
   no_prompt: *rr
   time:

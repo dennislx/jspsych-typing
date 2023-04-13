@@ -329,10 +329,11 @@ function getDist(args){
 }
 
 export class bonusPhase extends practicePhase {
-    constructor({ numOfTrial = 1, fontsize = "", no_prompt = false, list = [], data = {}, target_dist = {}, condition = undefined, feedback = undefined, early_stop = undefined, time = undefined} = {}) {
+    constructor({ numOfTrial = 1, fontsize = "", no_prompt = false, list = [], data = {}, target_dist = {}, target_min = 1, condition = undefined, feedback = undefined, early_stop = undefined, time = undefined} = {}) {
         const {trial_time, fix_time, score_time, reward_time} = time;
         super({ numOfTrial: numOfTrial, trial_duration: trial_time, fixation_duration: fix_time, fontsize: fontsize, no_prompt: no_prompt, list: list, data: data });
         this.target_dist = getDist(target_dist);
+        this.target_min = target_min;
         this.practice_score = 0;
         this.phase = "bonus";
         this.condition = condition;
@@ -378,7 +379,7 @@ export class bonusPhase extends practicePhase {
 
         trial.data = {
             success: false,             //whether or not participants win this round
-            target: Math.max(this.target_dist(), 0),    //a default infinity is set by default
+            target: Math.max(this.target_dist(), this.target_min),    //a default infinity is set by default
             ...trial.data
         }
     }
