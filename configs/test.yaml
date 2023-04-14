@@ -5,7 +5,7 @@ screenwidth: 1024
 fontsize: &fontsize 20px
 remove_prompt_below: &rr false
 true_random: &tr true
-prob_win: &pw .9
+prob_win: &pw .6
 
 # ========= osf/datapipe/prolific settings ======================================
 osf_id: eUraQJoXlcw8
