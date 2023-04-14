@@ -4,8 +4,8 @@ show_progress_bar: false
 screenwidth: 1024
 fontsize: &fontsize 20px
 remove_prompt_below: &rr false
-practice_true_random: &tr true
-practice_prob_win: &pw .6
+true_random: &tr true
+prob_win: &pw .6
 
 # ========= osf/datapipe/prolific settings ======================================
 osf_id: eUraQJoXlcw8
@@ -18,9 +18,9 @@ practice_trial_time: &ptt 20
 show_practice_result: &pts false
 number_of_history_keypress: &nhk 4
 
-
 # ========= bonus settings ======================================================
-bonus_trial_rounds: &btr 20
+bonus_trial_rounds: &btr 10
+bonus_target_minimum: &btm 1
 quantile_practice_scores_as_target:  &qpt 100 #use maximum
 time:
   bonus_trial_time: &btt 20
@@ -106,6 +106,7 @@ bonus_feedback_failure: &bff >
 bonus:
   numOfTrial: *btr
   target_dist: *btd
+  target_min: *btm
   fontsize: *fontsize
   no_prompt: *rr
   time:
