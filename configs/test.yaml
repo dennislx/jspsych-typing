@@ -4,6 +4,8 @@ show_progress_bar: false
 screenwidth: 1024
 fontsize: &fontsize 20px
 remove_prompt_below: &rr false
+true_random: &tr true
+prob_win: &pw .6
 
 # ========= osf/datapipe/prolific settings ======================================
 osf_id: eUraQJoXlcw8
@@ -63,6 +65,9 @@ practice:
   data: 
     phase: practice
   list: *llll
+  true_random: *tr
+  prob_win: *pw
+
 
 bonus_feedback_main: &bfm >
   <div class="bonus-1" style="margin: 40px 0px">
@@ -118,6 +123,8 @@ bonus:
     success_feedback: *bfs
     failure_feedback: *bff
   early_stop: *swpt
+  true_random: *tr
+  prob_win: *pw
 
 # preload images
 images_to_preload:
