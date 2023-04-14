@@ -71,6 +71,22 @@ const info = {
             default: false,
         },
         /**
+         * Policy for determining target score
+         */
+        true_random: {
+            type: ParameterType.BOOL,
+            pretty_name: "When true, the probability of success is static and given by prob_success",
+            default: false,
+        },
+        /**
+         * Probability of success when target score is random
+         */
+        prob_win: {
+            type: ParameterType.INT,
+            pretty_name: "The probability of success when true_random = true",
+            default: .5,
+        },
+        /**
          * Array of keyboard response callbacks
          * Each of which is an Object which defines the following:
          *      @param callback_function 
@@ -170,7 +186,7 @@ class HtmlKeyboardDisplayResponsePlugin extends keyboardResponse {
                     this.jsPsych.pluginAPI.getKeyboardResponse({
                         callback_function: partialFunc(
                             obj.callback_function, response, trial, 
-                            keysPressed, counter, display_element, end_trial
+                            keysPressed, counter, display_element, end_trial, trial.true_random, trial.prob_win
                         ),
                         valid_responses: obj.accept_allkeys? "ALL_KEYS" : trial.choices,
                         persist: !trial.response_ends_trial,

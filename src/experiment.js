@@ -2,6 +2,8 @@ import "jspsych/css/jspsych.css";
 import "./style.css";
 import jsPsych from "./prepare";
 import jsPsychPipe from '@jspsych-contrib/plugin-pipe';
+import jsPsychSurveyLikert from '@jspsych/plugin-survey-likert';
+
 import { readYaml, checkEmpty, fullScreenHandler, exportData, JSON2CSV} from "./utils";
 import {practicePhase, renderPlugin, bonusInstruction, bonusPhase, DICT} from "./jspsych-typing";
 
@@ -51,6 +53,68 @@ timeline.push( bonusInstruction({condition: args.condition, ...args.bonus_instru
 
 // bonus phase trials start here
 timeline.push( new bonusPhase({condition: args.condition, ...args.bonus}).getTrial() )
+
+// create questionnaires and push to timeline
+const zeroToExtremely = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8<br>Extremely'];
+const zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8<br>A lot'];
+const flowQs = {
+    type: jsPsychSurveyLikert,
+    preamble: `<div style='padding-top: 50px; width: 850px; font-size:16px'>
+
+    <p>Thank you for completing the bonus round of the typing task!</strong></p>
+
+    <p>During the <strong>bonus round</strong>, to what extent did you feel immersed 
+    and engaged in what you were doing?<br>Report how immersed and engaged you felt by 
+    answering the following questions.</p></div>`,
+    questions: [
+        {prompt: `During the <strong>bonus round</strong>, to what extent did you feel absorbed in what you were doing?`,
+        name: `absorbed`,
+        labels: zeroToExtremely},
+        {prompt: `During the <strong>bonus round</strong>, to what extent did you feel immersed in what you were doing?`,
+        name: `immersed`,
+        labels: zeroToExtremely},
+        {prompt: `During the <strong>bonus round</strong>, to what extent did you feel engaged in what you were doing?`,
+        name: `engaged`,
+        labels: zeroToExtremely},
+        {prompt: `During the <strong>bonus round</strong>, to what extent did you feel engrossed in what you were doing?`,
+        name: `engrossed`,
+        labels: zeroToExtremely},
+    ],
+    randomize_question_order: false,
+    scale_width: 500,
+};
+
+timeline.push(flowQs);
+
+const enjoyQs = {
+    type: jsPsychSurveyLikert,
+    preamble: `<div style='padding-top: 50px; width: 850px; font-size:16px'>
+
+    <p>Below are a few more questions about the <strong>bonus round</strong> of the typing task.</p><p>Instead of asking about immersion and
+    engagement, these questions ask about <strong>enjoyment</strong>.<br>Report how much you <strong>enjoyed</strong> 
+    the <strong>bonus round</strong> by answering the following questions.</p></div>`,
+    questions: [
+        {prompt: `How much did you enjoy completing the <strong>bonus round</strong>?`,
+        name: `enjoyable`,
+        labels: zeroToALot},
+        {prompt: `How much did you like completing the <strong>bonus round</strong>?`,
+        name: `like`,
+        labels: zeroToALot},
+        {prompt: `How much did you dislike completing the <strong>bonus round</strong>?`,
+        name: `dislike`,
+        labels: zeroToALot},
+        {prompt: `How much fun did you have completing the <strong>bonus round</strong>?`,
+        name: `fun`,
+        labels: zeroToALot},
+        {prompt: `How entertaining was the <strong>bonus round</strong>?`,
+        name: `entertaining`,
+        labels: zeroToExtremely},
+    ],
+    randomize_question_order: false,
+    scale_width: 500,
+};
+
+timeline.push(enjoyQs);
 
 // debrief
 

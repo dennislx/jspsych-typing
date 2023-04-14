@@ -260,8 +260,10 @@ export function JSON2CSV(objArray) {
 export function exportData(data) {
   const r_prac = getRecord(data, 'practice', 'practice');
   const r_bonus = getRecord(data, 'bonus', 'round');
-  const [{gender, age, suggest}] = data.filter({trial_type: 'survey-demo'}).select('responses').values
+  const [{gender, age, suggest}] = data.filter({trial_type: 'survey-demo'}).select('responses').values;
   const [{date, subject_id: id, condition: cond, response: {PID: pid}, totalSuccess, totalBonus}] = data.last().values();
+  const {absorbed, immersed, engaged, engrossed} = data.filter({trial_type: 'survey-likert'}).select('response').values[0];
+  const {enjoyable, like, dislike, fun, entertaining} = data.filter({trial_type: 'survey-likert'}).select('response').values[1];
   return {
     subject_id: id,
     date: getDate(date),
@@ -273,6 +275,15 @@ export function exportData(data) {
     gender: gender,
     age: age,
     comment: suggest,
-    pid: pid
+    pid: pid,
+    absorbed: absorbed,
+    immersed: immersed,
+    engrossed: engrossed,
+    engaged: engaged,
+    enjoyable: enjoyable,
+    like: like,
+    dislike: dislike,
+    fun: fun,
+    entertaining: entertaining,
   }
 }

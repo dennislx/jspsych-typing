@@ -38,8 +38,8 @@ export const DICT = {
 * @param {object} counter       - a counter used to determine the expected keyboard behaviors
 * @param {html-element} display_html    - html element, i.e., the content of displayed stimulus
 * @param {function} end_trial   - a function to call before the end of this trial
-
 */
+
 function keypressCallback(info, response, trial, response_history, counter, display_html, end_trial) {
 
     display_html.querySelector("#jspsych-html-keyboard-response-stimulus").className += " responded";
@@ -178,13 +178,15 @@ export function bonusInstruction({
  * @param {numeric} fontsize             Fontsize of displayed stimulus
  */
 export class practicePhase {
-    constructor({ numOfTrial = 1, trial_duration = 5, fixation_duration = 3, num_keypress_display = 0, fontsize = "", no_prompt = false, show_stat = false, list = [], data = {} } = {}) {
+    constructor({ numOfTrial = 1, trial_duration = 5, fixation_duration = 3, num_keypress_display = 0, fontsize = "", no_prompt = false, show_stat = false, list = [], data = {}, true_random = undefined, prob_win = undefined } = {}) {
         this.numOfTrial = numOfTrial;
         this.num_keypress_display = num_keypress_display;
         this.data = data;
         this.fontsize = fontsize;
         this.no_prompt = no_prompt;
         this.show_stat = show_stat;
+        this.true_random = true_random;
+        this.prob_win = prob_win;
         if (list.length < numOfTrial) {
             // randomly generate ${numOfTrial} two-letter pairs
             const n = list.length;
@@ -275,6 +277,8 @@ export class practicePhase {
             type: jspsychKeyboardDisplay,
             stimulus: "",
             choices: jsPsych.timelineVariable("choices"),
+            true_random: this.true_random,
+            prob_win: this.prob_win,
             remain_time_display: true,
             num_keypress_display: this.num_keypress_display,
             response_ends_trial: false,
@@ -329,7 +333,7 @@ function getDist(args){
 }
 
 export class bonusPhase extends practicePhase {
-    constructor({ numOfTrial = 1, fontsize = "", no_prompt = false, list = [], data = {}, target_dist = {}, condition = undefined, feedback = undefined, early_stop = undefined, time = undefined} = {}) {
+    constructor({ numOfTrial = 1, fontsize = "", no_prompt = false, list = [], data = {}, target_dist = {}, condition = undefined, feedback = undefined, early_stop = undefined, time = undefined, true_random = undefined, prob_win = undefined} = {}) {
         const {trial_time, fix_time, score_time, reward_time} = time;
         super({ numOfTrial: numOfTrial, trial_duration: trial_time, fixation_duration: fix_time, fontsize: fontsize, no_prompt: no_prompt, list: list, data: data });
         this.target_dist = getDist(target_dist);
@@ -340,6 +344,9 @@ export class bonusPhase extends practicePhase {
         this.score_time = score_time * 1000;
         this.reward_time = reward_time * 1000;
         this.feedback = feedback;
+        this.true_random = true_random;
+        this.prob_win = prob_win;
+        this.randomDraw = -2 * ( (Math.random() < this.prob_win) - .5);
         this.reward_agent = (condition === "binary") ?
             new Binary() : (condition === "continuous streak") ?
             new ContinuousStreak() : new BinaryStreak()
@@ -360,6 +367,11 @@ export class bonusPhase extends practicePhase {
         cb.push({
             callback_function: (info, response, trial, response_history, counter, display_html, end_trial) => {
                 keypressCallback(info, response, trial, response_history, counter, display_html, end_trial);
+                if (response.score == 1) { 
+                    this.randomDraw = -2 * ( (Math.random() < this.prob_win) - .5);
+                };
+                let targetScore = response.score + (this.randomDraw * (1 + Math.floor(Math.random()*20)));
+                if (this.true_random) { trial.data.target = targetScore };
                 if (response.score >= trial.data.target) {
                     trial.data.success = true;
                     this.early_stop && end_trial(trial.data);
