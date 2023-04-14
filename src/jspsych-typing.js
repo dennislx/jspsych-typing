@@ -368,11 +368,10 @@ export class bonusPhase extends practicePhase {
         cb.push({
             callback_function: (info, response, trial, response_history, counter, display_html, end_trial) => {
                 keypressCallback(info, response, trial, response_history, counter, display_html, end_trial);
-                if (response.score == 1) { 
-                    this.randomDraw = -2 * ( (Math.random() < this.prob_win) - .5);
-                };
+                if (response.score == 1) { this.randomDraw = -2 * ( (Math.random() < this.prob_win) - .5) };
                 let targetScore = response.score + (this.randomDraw * (1 + Math.floor(Math.random()*20)));
                 if (this.true_random) { trial.data.target = targetScore };
+                if (this.trial_i == this.numOfTrial) { trial.data.target = response.score + 1 + Math.floor(Math.random()*20) };
                 if (response.score >= trial.data.target) {
                     trial.data.success = true;
                     this.early_stop && end_trial(trial.data);

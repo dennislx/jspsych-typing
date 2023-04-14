@@ -18,10 +18,14 @@ const condition = await jsPsychPipe.getCondition(args.osf_id);
 // const condition = jsPsych.randomization.randomInt(0, 2);
 args.condition = ['binary streak', 'continuous streak', 'binary'][condition];
 
+let PROLIFIC_PID = jsPsych.data.getURLVariable("PROLIFIC_PID");
+if (!PROLIFIC_PID) { PROLIFIC_PID = 0}
+
 jsPsych.data.addProperties({
     date: new Date(),
     subject_id: subject_id,
-    condition: args.condition
+    condition: args.condition,
+    PROLIFIC_PID: PROLIFIC_PID,
 });
 console.log(`you are in group ${args.condition}`);
 
