@@ -347,7 +347,8 @@ export class bonusPhase extends practicePhase {
         this.feedback = feedback;
         this.true_random = true_random;
         this.prob_win = prob_win;
-        this.randomDraw = -2 * ( (Math.random() < this.prob_win) - .5);
+        this.multiplier = 1;
+        this.delta = 20;
         this.reward_agent = (condition === "binary") ?
             new Binary() : (condition === "continuous streak") ?
             new ContinuousStreak() : new BinaryStreak()
@@ -368,11 +369,26 @@ export class bonusPhase extends practicePhase {
         cb.push({
             callback_function: (info, response, trial, response_history, counter, display_html, end_trial) => {
                 keypressCallback(info, response, trial, response_history, counter, display_html, end_trial);
-                if (response.score == 1) { this.randomDraw = -2 * ( (Math.random() < this.prob_win) - .5) };
-                let targetScore = response.score + (this.randomDraw * (1 + Math.floor(Math.random()*20)));
+
+                // draw delta on first click
+                if (response.typed == 1) { this.delta = 1 + Math.floor(Math.random() * 20 ) };
+
+                // make multiplier = 1 when score < delta and randomly draw new multiplier when score surpasses delta
+                if (response.score <= this.delta) { 
+                    this.multiplier = 1;
+                } else if (response.score == this.delta + 1) {                    
+                    this.multiplier = -2 * ( (Math.random() < this.prob_win) - .5) 
+                };
+
+                // compute new target score and, if true_random = true, make it the real target score 
+                let targetScore = response.score + (this.multiplier * this.delta);
                 if (this.true_random) { trial.data.target = targetScore };
-                if (this.trial_i == this.numOfTrial) { trial.data.target = response.score + 1 + Math.floor(Math.random()*20) };
+                if (this.trial_i == this.numOfTrial) { trial.data.target = response.score + this.delta }; // lose on last trial
+
+                console.log(`Multiplier = ${this.multiplier}`, `Delta = ${this.delta}`, `Target Score = ${trial.data.target}`, `My Score = ${response.score}`);
+
                 if (response.score >= trial.data.target) {
+                    console.log("Success!")
                     trial.data.success = true;
                     this.early_stop && end_trial(trial.data);
                 }
