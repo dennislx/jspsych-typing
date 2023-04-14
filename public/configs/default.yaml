@@ -13,7 +13,7 @@ prolific_id: 84F912E7
 pipe_data_to_osf: true
 
 # ========= practice settings ===================================================
-practice_trial_rounds: &ptr 5
+practice_trial_rounds: &ptr 2
 practice_trial_time: &ptt 20
 show_practice_result: &pts false
 number_of_history_keypress: &nhk 4
