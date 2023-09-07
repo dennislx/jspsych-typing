@@ -135,10 +135,10 @@ export function bonusInstruction({
     pages.push(page_success);
     const page_success_binary = `<div><p class=instruction-title>Then you'll see that you won a 10 cent bonus:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
-            <div style="position: relative; text-align: center; color: #118c4f; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
+            <div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
                 <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.png" style="height:25%; width:25%">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
-                    <p>You reached the target score!</p><span style="font-size: 75px; line-height:90px; font-weight: bold">+10</span>
+                    <p>You reached the target score!</p><span style="font-size: 75px; line-height:90px">+10</span>
                 </div>
             </div>
         </div>`;
@@ -158,10 +158,10 @@ export function bonusInstruction({
 
         `<div><p class=instruction-title>After three completions, you'll see that you won a 30 cent bonus:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
-            <div style="position: relative; text-align: center; color: #118c4f; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
+            <div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
                 <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.png" style="height:25%; width:25%">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
-                    <p>You reached the target score!</p>Current Streak: 3/3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+30</span>
+                    <p>You reached the target score!</p>Current Streak: 3/3<br><span style="font-size: 75px; line-height:90px">+30</span>
                 </div>
             </div>
         </div>`];
@@ -183,37 +183,44 @@ export function bonusInstruction({
                 <div class="bonus-4" style="color: red"><span id="target-number">200</span></div>
             </div>
         </div>`;
+
     pages.push(page_fail);
+
     const page_fail_binary = `<div><p class=instruction-title>Then you'll see that you failed to win a bonus:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
-            <div style="position: relative; text-align: center; width: 800px; height: 150px">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
-                    <p>You missed the target score.</p><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>
-                </div>
-            </div>
-        </div>`;
+        <div style="position: relative; text-align: center; width: 800px; height: 150px">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+        <p>You missed the target score.</p><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>
+        </div></div></div>`;
+
     const page_fail_bStrk = `<div><p class=instruction-title>Then you'll see that you failed to win a bonus:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
-            <div style="position: relative; text-align: center; width: 800px; height: 150px">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
-                    <p>You missed the target score.</p>Current Streak: 0/3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>
-                </div>
-            </div>
-        </div>`;
-    const page_fail_cStrk = `<div><p class=instruction-title>Then you'll see how much money you earned from your steak.<br>
-    For example, if you miss the target score after achieving a streak of three, you'll see:</p></div>
+        <div style="position: relative; text-align: center; width: 800px; height: 150px">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+        <p>You missed the target score.</p>Current Streak: 0/3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>
+        </div></div></div>`;
+
+    const page_fail_cStrk = [`<div><p class=instruction-title>Then you'll see how much money you earned from your steak.<br>
+        For example, if you miss the target score after achieving a streak of three, you'll see:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
-            <div style="position: relative; text-align: center; color: #118c4f; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
-                <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.png" style="height:25%; width:25%">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
-                    <p>Your streak was 3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+30</span>
-                </div>
-            </div>
-        </div>`;
+        <div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
+        <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.png" style="height:25%; width:25%">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+        <p>Your streak was 3<br><span style="font-size: 75px; line-height:90px">+30</span>
+        </div></div></div>`,
+
+        `<div><p class=instruction-title>However, if you miss the target score after failing to start a streak,<br>
+        you'll see that you failed to win a bonus:</p></div>
+        <div class="bonus-1" style="margin: 40px 0px">
+        <div style="position: relative; text-align: center; width: 800px; height: 150px">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+        <p>You missed the target score.</p>Current Streak: 0/3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>
+        </div></div></div>`];
+
     if (condition == "binary streak") {
         pages.push(page_fail_bStrk)
     } else if (condition == "continuous streak") {
-        pages.push(page_fail_cStrk) 
+        pages.push(...page_fail_cStrk) 
     } else if (condition == "binary") {
         pages.push(page_fail_binary)
     };
@@ -573,16 +580,21 @@ class Binary {
         this.bonus = 0;
         this.streak_sofar = 0;
     }
-    step(succcess) {
-        this.bonus = this.score(succcess);
+    step(success) {
+        this.bonus = this.score(success);
         this.overall_bonus += this.bonus;
-        return `<div style="position: relative; text-align: center; color: #118c4f; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
+        if (success) {
+            return `<div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
                 <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.png" style="height:25%; width:25%">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
-                    <p>You reached the target score!</p><span style="font-size: 75px; line-height:90px; font-weight: bold">+${this.bonus}</span>
+                    <p>You reached the target score!</p><span style="font-size: 75px; line-height:90px">+${this.bonus}</span>
                 </div>
             </div>`
 
+        } else {
+            return `<p>You missed the target score.</p><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>`
+        }
+         
         //return `Bonus: + $${this.bonus.toFixed(2)}`;
     }
     score(success){
@@ -602,25 +614,29 @@ class ContinuousStreak extends Binary {
         super();
         this.streak = this.streak_sofar;
     }
-    step(succcess) {
+    step(success) {
         this.streak_sofar = this.streak;
-        this.bonus = this.score(succcess);
+        this.bonus = this.score(success);
         // show streak length when increase or initiate a streak
-        if(succcess){
+        if(success){
             this.streak += 1;
-            return `Current Streak: ${this.streak}`;
+            return `<p>You reached the target score!</p>Current Streak: ${this.streak}`;        
         // show bonus information only when break a streak, show streak length when cannot initiate
         } else {
             this.overall_bonus += this.bonus;
             if (this.streak_sofar === 0){
                 // fail to initiate, after a failure
-                return "Current Streak: 0";
+                return `<p>You missed the target score.</p>Current Streak: 0/3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>`;
             } else {
                 // break a streak
                 this.streak = 0;
-                return `Bonus: + $${this.bonus}`;
+                return `<div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
+                <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.png" style="height:25%; width:25%">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                <p>Your streak was ${this.streak_sofar}<br><span style="font-size: 75px; line-height:90px">+${this.bonus}</span>
+                </div></div>`
             }
-        }
+        };
     }
     score(succcess){
         return succcess? 0 : this.streak_sofar*10
@@ -638,20 +654,24 @@ class BinaryStreak extends ContinuousStreak {
                 this.overall_bonus += this.bonus;
                 this.streak = 0;
                 // streak complete: participants earn bonus money
-                return `Bonus: + $${this.bonus}`
+                return `<div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
+                <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.png" style="height:25%; width:25%">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                <p>You achieved a streak of 3!</p><span style="font-size: 75px; line-height:90px">+${this.bonus}</span>
+                </div></div>`;            
             } else {
                 // streak increase: show streak length
-                return `Current Streak: ${this.streak}/3`
+                return `<p>You reached the target score!</p>Current Streak: ${this.streak}`;  
             }
         } else {
             if (this.streak_sofar === 0){
                 // fail to initiate (could be after a failure or after a complete streak)
-                return `Current Streak: 0/3`
+                return `<p>You missed the target score.</p>Current Streak: 0/3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>`;
             } else {
                 this.streak = 0; 
                 // fail to break
                 //return `Bonus: + $${this.bonus.toFixed(2)}`
-                return `Current Streak: 0/3`
+                return `<p>You missed the target score.</p>Current Streak: 0/3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>`;
             }
         }
     }
