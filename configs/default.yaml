@@ -89,7 +89,6 @@ bonus_feedback_success: &bfs >
       <div id="bonus-number"></div>
     </div>
   </div>
-  <p>Get ready for the next round!</p>
 
 bonus_feedback_failure: &bff >
   <div class="bonus-1" id="feedback">
@@ -100,7 +99,6 @@ bonus_feedback_failure: &bff >
       <div id="bonus-number"></div>
     </div>
   </div>
-  <p>Get ready for the next round!</p>
 
 
 bonus:
