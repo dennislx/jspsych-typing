@@ -117,8 +117,108 @@ export function bonusInstruction({
 
     let correct = false;
     const pages = [];
-    const firstPage = instruction.title.replaceAll('${instruction_by_group}', instruction[condition]);
-    pages.push(firstPage);
+    const page_1 = instruction.title.replaceAll('${instruction_by_group}', instruction[condition]);
+    const page_2 = instruction.info.replaceAll('${instruction_by_group}', instruction[condition]);
+    pages.push(page_1);
+    pages.push(page_2);
+    const page_success = `<div><p class=instruction-title>If you score <b><span id='current-number'>212</span></b> and the target score is <b><span id='target-number'>200</span></b>, you'll see:</p></div>
+        <div class="bonus-1" style="margin: 40px 0px">
+            <div class="bonus-2">
+                <div class="bonus-3">Your score:</div>
+                <div class="bonus-4"><span id="current-number">212</span></div>
+            </div>
+            <div class="bonus-2">
+                <div class="bonus-3">Target score:</div>
+                <div class="bonus-4" style="color: red"><span id="target-number">200</span></div>
+            </div>
+        </div>`;
+    pages.push(page_success);
+    const page_success_binary = `<div><p class=instruction-title>Then you'll see that you won a 10 cent bonus:</p></div>
+        <div class="bonus-1" style="margin: 40px 0px">
+            <div style="position: relative; text-align: center; color: #118c4f; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
+                <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.png" style="height:25%; width:25%">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                    <p>You reached the target score!</p><span style="font-size: 75px; line-height:90px; font-weight: bold">+10</span>
+                </div>
+            </div>
+        </div>`;
+    const page_success_cStrk = `<div><p class=instruction-title>Then you'll see the length of your current streak.<br>For example, after three consecutive completions, you'll see:</p></div>
+        <div class="bonus-1" style="margin: 40px 0px">
+            <p>You reached the target score!</p>Current Streak: 3
+        </div>`;
+    const page_success_bStrk = [`<div><p class=instruction-title>Then you'll see the length of your current streak.<br>For example, after one completion, you'll see:</p></div>
+        <div class="bonus-1" style="margin: 40px 0px">
+            <p>You reached the target score!</p>Current Streak: 1/3
+        </div>`,
+
+        `<div><p class=instruction-title>After two completions, you'll see:</p></div>
+        <div class="bonus-1" style="margin: 40px 0px">
+            <p>You reached the target score!</p>Current Streak: 2/3
+        </div>`,
+
+        `<div><p class=instruction-title>After three completions, you'll see that you won a 30 cent bonus:</p></div>
+        <div class="bonus-1" style="margin: 40px 0px">
+            <div style="position: relative; text-align: center; color: #118c4f; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
+                <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.png" style="height:25%; width:25%">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                    <p>You reached the target score!</p>Current Streak: 3/3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+30</span>
+                </div>
+            </div>
+        </div>`];
+    if (condition == "binary streak") {
+        pages.push(...page_success_bStrk)
+    } else if (condition == "continuous streak") {
+        pages.push(page_success_cStrk) 
+    } else if (condition == "binary") {
+        pages.push(page_success_binary)
+    };
+    const page_fail = `<div><p class=instruction-title>If you score <b><span id='current-number'>188</span></b> and the target score is <b><span id='target-number'>200</span></b>, you'll see:</p></div>
+        <div class="bonus-1" style="margin: 40px 0px">
+            <div class="bonus-2">
+                <div class="bonus-3">Your score:</div>
+                <div class="bonus-4"><span id="current-number">188</span></div>
+            </div>
+            <div class="bonus-2">
+                <div class="bonus-3">Target score:</div>
+                <div class="bonus-4" style="color: red"><span id="target-number">200</span></div>
+            </div>
+        </div>`;
+    pages.push(page_fail);
+    const page_fail_binary = `<div><p class=instruction-title>Then you'll see that you failed to win a bonus:</p></div>
+        <div class="bonus-1" style="margin: 40px 0px">
+            <div style="position: relative; text-align: center; width: 800px; height: 150px">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                    <p>You missed the target score.</p><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>
+                </div>
+            </div>
+        </div>`;
+    const page_fail_bStrk = `<div><p class=instruction-title>Then you'll see that you failed to win a bonus:</p></div>
+        <div class="bonus-1" style="margin: 40px 0px">
+            <div style="position: relative; text-align: center; width: 800px; height: 150px">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                    <p>You missed the target score.</p>Current Streak: 0/3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>
+                </div>
+            </div>
+        </div>`;
+    const page_fail_cStrk = `<div><p class=instruction-title>Then you'll see how much money you earned from your steak.<br>
+    For example, if you miss the target score after achieving a streak of three, you'll see:</p></div>
+        <div class="bonus-1" style="margin: 40px 0px">
+            <div style="position: relative; text-align: center; color: #118c4f; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
+                <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.png" style="height:25%; width:25%">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                    <p>Your streak was 3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+30</span>
+                </div>
+            </div>
+        </div>`;
+    if (condition == "binary streak") {
+        pages.push(page_fail_bStrk)
+    } else if (condition == "continuous streak") {
+        pages.push(page_fail_cStrk) 
+    } else if (condition == "binary") {
+        pages.push(page_fail_binary)
+    };
+
+    /*
     example.title.forEach( (title, index) => {
         title = example.header[index] + title;
         let display_html = $('<div />', {html: title});
@@ -127,6 +227,7 @@ export function bonusInstruction({
         display_html.find('span#current-number').html(index===0? '212' : '188');
         pages.push(display_html.html());
     })
+    */
     
     const welcome = {
         type: InstructionsPlugin,
@@ -433,7 +534,7 @@ export class bonusPhase extends practicePhase {
                 trial.data.bonus = bonus;
             }
             let display_html = $('<div />', {html: stimulus});
-            display_html.find('div#bonus-number').html(bonus_msg);
+            display_html.find('div#feedback').html(bonus_msg);
             display_html.find('span#target-number').html(target);
             display_html.find('span#current-number').html(current);
             if (this.condition !== "binary" && !success) {
@@ -444,6 +545,7 @@ export class bonusPhase extends practicePhase {
                     : div.html("Your streak was " + streak_span);
             }
             trial.stimulus = display_html.html();
+            //trial.stimulus = `Congrats!`;
         };
         timeline.push({
             timeline: [
@@ -457,7 +559,7 @@ export class bonusPhase extends practicePhase {
                 ({bonus, streak} = this.reward_agent.property);
                 if (this.condition === "continuous streak" && this.trial_i === this.numOfTrial) {
                     // the bonus in the last round isn't counted when under this condition
-                    bonus = +(0.1 * this.reward_agent.streak).toPrecision(2);
+                    bonus = +(10 * this.reward_agent.streak);
                 }
             }
         });
@@ -474,10 +576,17 @@ class Binary {
     step(succcess) {
         this.bonus = this.score(succcess);
         this.overall_bonus += this.bonus;
-        return `Bonus: + $${this.bonus.toFixed(2)}`;
+        return `<div style="position: relative; text-align: center; color: #118c4f; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
+                <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.png" style="height:25%; width:25%">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+                    <p>You reached the target score!</p><span style="font-size: 75px; line-height:90px; font-weight: bold">+${this.bonus}</span>
+                </div>
+            </div>`
+
+        //return `Bonus: + $${this.bonus.toFixed(2)}`;
     }
     score(success){
-        return success? 0.1 : 0
+        return success? 10 : 0
     }
     get property(){
         return {
@@ -509,12 +618,12 @@ class ContinuousStreak extends Binary {
             } else {
                 // break a streak
                 this.streak = 0;
-                return `Bonus: + $${this.bonus.toFixed(2)}`;
+                return `Bonus: + $${this.bonus}`;
             }
         }
     }
     score(succcess){
-        return succcess? 0 : this.streak_sofar*0.1
+        return succcess? 0 : this.streak_sofar*10
     }
 }
 
@@ -529,7 +638,7 @@ class BinaryStreak extends ContinuousStreak {
                 this.overall_bonus += this.bonus;
                 this.streak = 0;
                 // streak complete: participants earn bonus money
-                return `Bonus: + $${this.bonus.toFixed(2)}`
+                return `Bonus: + $${this.bonus}`
             } else {
                 // streak increase: show streak length
                 return `Current Streak: ${this.streak}/3`
@@ -541,7 +650,8 @@ class BinaryStreak extends ContinuousStreak {
             } else {
                 this.streak = 0; 
                 // fail to break
-                return `Bonus: + $${this.bonus.toFixed(2)}`
+                //return `Bonus: + $${this.bonus.toFixed(2)}`
+                return `Current Streak: 0/3`
             }
         }
     }

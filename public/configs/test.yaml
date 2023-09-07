@@ -181,17 +181,17 @@ consent:
 practice_p1: &p1 >
   <div class='instruction'> 
   <p>In this study, you will be completing a series of typing tasks.</p>
-  <p>Specifically, you will be asked to type two letters sequentially as many times as possible in the allotted time. </p>
-  <p>During the task, a counter at the center of the screen will increase by one for each correct letter you press in sequence. If you press an incorrect letter, the counter will not increase.</p>
-  <p>For instance, if the typing task is to repeatedly type <span id=keystroke>a</span> then <span id=keystroke>b</span> and I type <span id=keystroke>a</span><span id=keystroke>b</span><span id=keystroke>a</span><span id=keystroke>b</span><span id=keystroke>x</span> the counter will display <b>4</b>. If I press <span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>x</span> the counter will display <b>1</b>.</p>
+  <p>In each task, you will type two letters sequentially as many times as possible in the allotted time. </p>
+  <p>As you type, a counter at the center of the screen will increase by one for each correct letter you press in sequence. If you press an incorrect letter, the counter will not increase.</p>
+  <p>For instance, if your task is to type <span id=keystroke>a</span> then <span id=keystroke>b</span> and you type <span id=keystroke>a</span><span id=keystroke>b</span><span id=keystroke>a</span><span id=keystroke>b</span><span id=keystroke>x</span> the counter will display <b>4</b>. If you press <span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>x</span> the counter will display <b>1</b>.</p>
   <p>We recommend using your two index fingers to type the letters</p>
   <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/instr-keyboard.png" id="keypress-img">
   </div>
 
 practice_p2: &p2 >
   <div class='instruction'> 
-  <p>First, you will complete some practice typing tasks during the <b>practice</b> phase to get used to the task. During the practice phase, your goal is to type the letters as many times as possible during the allotted time.</p>
-  <p>Then, you will complete several typing tasks during the <b>bonus</b> phase. You will have the opportunity to earn additional bonus money based on your performance during the bonus phase. You will learn more about earning bonus money after the practice phase.</p>
+  <p>Next, you will complete the <b>practice</b> phase to get used to the task. During the practice phase, your goal is to type the letters as many times as possible during the allotted time.</p>
+  <p>Then, you will complete the <b>bonus</b> phase. During the bonus phase, you can earn bonus money based on your performance. You will learn more about earning bonus money after the practice phase.</p>
   <p>Press the <span class="jspsych-btn">Next ></span> button to start the practice phase. All of the rounds of the practice phase will occur one right after the other, with only a brief break in between to inform you of the letters you will press in the next round.</p>
   </div>
 
@@ -212,6 +212,14 @@ bonus_welcome: &i >
   <p>Thank you for completing the practice phase.</p>
   <p>Next, you will proceed to the bonus phase. You will again have an allotted amount of time to press two keys as many times as possible.</p>
   <p>Additionally, there will be a target score. The target score is random and varies for each round. You will not be told the target score until the end of each round.</p>
+  <p>You will have successfully completed a round if you reach the target score before the allotted time is up. Completing rounds allows you to earn bonus money.</p>
+  <p>${instruction_by_group}</p>
+  <p>On the next instruction pages, you will see two examples</p>
+  </div>
+
+bonus_welcome2: &if >
+  <div class="instruction">
+  <p>The target score is random and varies for each round. You will not be told the target score until the end of each round.</p>
   <p>You will have successfully completed a round if you reach the target score before the allotted time is up. Completing rounds allows you to earn bonus money.</p>
   <p>${instruction_by_group}</p>
   <p>On the next instruction pages, you will see two examples</p>
@@ -251,7 +259,7 @@ bonus_survey_question3: &q3
     - $0.30
 
 bonus_survey_success: &success >
-  <p>Congratulations, you are ready to start earning bonus</p>
+  <p>Congratulations, you are ready to start earning bonus money.</p>
 
 bonus_suvey_failure: &failure >
   <p>Oops, you have missed question(s) on the comprehension check</p>
@@ -262,6 +270,7 @@ bonus_suvey_failure: &failure >
 bonus_instruction:
   instruction: 
     title: *i
+    title2: *if
     binary streak: *ig1
     continuous streak: *ig2
     binary: *ig3
