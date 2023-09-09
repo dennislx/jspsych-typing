@@ -132,8 +132,9 @@ export function bonusInstruction({
                 <div class="bonus-4" style="color: red"><span id="target-number">200</span></div>
             </div>
         </div>`;
-        
+
     pages.push(page_success);
+    
     const page_success_binary = `<div><p class=instruction-title>Then you'll see that you won a 10 cent bonus:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
             <div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
@@ -143,10 +144,12 @@ export function bonusInstruction({
                 </div>
             </div>
         </div>`;
+
     const page_success_cStrk = `<div><p class=instruction-title>Then you'll see the length of your current streak.<br>For example, after three consecutive completions, you'll see:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
             <p>You reached the target score!</p>Current Streak: 3
         </div>`;
+
     const page_success_bStrk = [`<div><p class=instruction-title>Then you'll see the length of your current streak.<br>For example, after one completion, you'll see:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
             <p>You reached the target score!</p>Current Streak: 1/3
@@ -166,6 +169,7 @@ export function bonusInstruction({
                 </div>
             </div>
         </div>`];
+
     if (condition == "binary streak") {
         pages.push(...page_success_bStrk)
     } else if (condition == "continuous streak") {
@@ -173,6 +177,7 @@ export function bonusInstruction({
     } else if (condition == "binary") {
         pages.push(page_success_binary)
     };
+
     const page_fail = `<div><p class=instruction-title>If you score <b><span id='current-number'>188</span></b> and the target score is <b><span id='target-number'>200</span></b>, you'll see:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
             <div class="bonus-2">
