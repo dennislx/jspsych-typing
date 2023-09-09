@@ -189,7 +189,7 @@ practice_p1: &p1 >
 practice_p2: &p2 >
   <div class='instruction'> 
   <p>To get a feel for the typing task, you'll complete multiple <b>practice</b> rounds. During the practice rounds, your goal is to type the letters as many times as possible during the allotted time.</p>
-  <p>Press the <span class="jspsych-btn">Next ></span> button to start the practice phase.</p>
+  <p>Press the <span class="jspsych-btn">Next ></span> button to start practing.</p>
   </div>
 
 
@@ -206,29 +206,29 @@ practice_instruction:
 
 bonus_welcome_1: &i1 >
   <div class="instruction">
-  <p>Thank you! Practice is now complete. Soon, you'll complete the full version of the typing task.</p>
+  <p>Practice is now complete. Soon, you'll complete the full version of the typing task.</p>
   <p><b>During the full version of the typing task, you'll be able to earn bonus money!</b></p>
   <p>To learn how to earn bonus money, continue to the next screen.</p>
   </div>
 
 bonus_welcome_2: &i2 >
   <div class="instruction">
-  <p>During the full version of the typing task, each round will have a randomly selected <b>target score</b>. 
+  <p>During the full version of the typing task, each round will have a different <b>target score</b>. 
   If you reach the target score before time runs out, the round will be marked as "complete."</p>
-  <p>For example, if the target score is 200, you must achieve a score of 200 or more to complete the round.</p>
+  <p>For example, if the target score is 200, you need a score of 200 or more to complete the round.</p>
   <p>The target score is not revealed until the end of each round.</p>
   <p>${instruction_by_group}</p>
-  <p>For some examples of what it is like to complete (and not complete) a round, continue to the next screen.</p>
+  <p>For an illustration of the full version of the typing task, continue to the next screen.</p>
   </div>
 
 i_bianry_streak: &ig1 >
-  To earn bonus money, you must <b>build streaks</b> of three consecutive completions. Specifically, each time you complete <b>three consecutive rounds</b>, you'll earn a <b>$0.30 bonus</b>. 
+  To earn bonus money, you must <b>build streaks</b> of three consecutive completions. Specifically, each time you complete <b>three consecutive rounds</b>, you'll earn a <b>30 cent bonus</b>. 
 
 i_continuous_streak: &ig2 >
-  To earn bonus money, you must <b>build streaks</b> by completing as many rounds in a row as possible. Specifically, for <b>every consecutive round you complete</b>, you'll earn a <b>$0.10 bonus</b>. 
+  To earn bonus money, you must <b>build streaks</b> by completing as many rounds in a row as possible. Specifically, for <b>every consecutive round you complete</b>, you'll earn a <b>10 cent bonus</b>. 
 
 i_binary_framing: &ig3 >
-  To earn bonus money, you must complete as many rounds as possible. For <b>every round you complete</b>, you'll earn a <b>$0.10 bonus</b>. 
+  To earn bonus money, you must complete as many rounds as possible. For <b>every round you complete</b>, you'll earn a <b>10 cent bonus</b>. 
 
 bonus_survey_question1: &q1
   prompt: To complete a round, you must press the two keys…
@@ -241,21 +241,21 @@ bonus_survey_question1: &q1
 bonus_survey_question2: &q2
   prompt: If you complete the first two rounds in a row, but fail to complete the third round, you will have earned…
   options:
-    - $0.00
-    - $0.10
-    - $0.20
-    - $0.25
+    - 0 cents
+    - 10 cents
+    - 20 cents
+    - 25 cents
 
 bonus_survey_question3: &q3
   prompt: If you complete the first three rounds in a row, you will have earned…
   options:
-    - $0.00
-    - $0.10
-    - $0.20
-    - $0.30
+    - 0 cents
+    - 10 cents
+    - 20 cents
+    - 30 cents
 
 bonus_survey_success: &success >
-  <p>Congratulations, you are ready to start earning bonus money!</p>
+  <p>Congratulations, you're ready to start earning bonus money!</p>
 
 bonus_suvey_failure: &failure >
   <p>Oops, you have provided at least one incorrect answer.</p>
