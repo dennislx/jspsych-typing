@@ -220,6 +220,7 @@ div.sv-action-bar.sv_nav {
     position: relative; 
     text-align: center; 
     width: 800px; 
+    height: 338px;
     color: #85BB65; 
     font-weight: bold; 
     text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
