@@ -239,7 +239,7 @@ bonus_survey_question1: &q1
     - Exactly as many times as the target score (which is not revealed until the end of the round)
 
 bonus_survey_question2: &q2
-  prompt: If you complete the first two rounds in a row, but fail to complete the third round, you will have earned…
+  prompt: If you complete the first two rounds in a row, then fail to complete the third round, you will have earned…
   options:
     - 0 cents
     - 10 cents
@@ -247,7 +247,7 @@ bonus_survey_question2: &q2
     - 25 cents
 
 bonus_survey_question3: &q3
-  prompt: If you complete the first three rounds in a row, you will have earned…
+  prompt: If you complete the first three rounds in a row, then fail to complete the fourth round, you will have earned…
   options:
     - 0 cents
     - 10 cents
