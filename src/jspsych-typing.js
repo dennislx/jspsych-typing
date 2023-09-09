@@ -162,7 +162,7 @@ export function bonusInstruction({
         <div class="bonus-1" style="margin: 40px 0px">
             <div class="feedback-container">
                 <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.jpg">
-                <div class="feedback-text"><p>You reached the target score!</p>Current Streak: 3/3<br><span style="font-size: 75px; line-height:90px">+30</span></div>
+                <div class="feedback-text"><p>You got a streak of 3!</p><span style="font-size: 75px; line-height:90px">+30</span></div>
             </div>
         </div>`];
 
@@ -655,7 +655,7 @@ class BinaryStreak extends ContinuousStreak {
                 // streak complete: participants earn bonus money
                 return `<div class="feedback-container">
                 <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.jpg">
-                <div class="feedback-text"><p>You achieved a streak of 3!</p><span style="font-size: 75px; line-height:90px">+${this.bonus}</span></div>
+                <div class="feedback-text"><p>You got a streak of 3!</p><span style="font-size: 75px; line-height:90px">+${this.bonus}</span></div>
                 </div>`;            
             } else {
                 // streak increase: show streak length
