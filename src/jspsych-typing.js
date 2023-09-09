@@ -137,7 +137,7 @@ export function bonusInstruction({
     const page_success_binary = `<div><p class=instruction-title>Then you'll see that you won a 10 cent bonus:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
             <div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
-                <img src="/src/coins.jpg" style="height:25%; width:25%">
+                <img src="/jspsych-typing/src/coins.jpg" style="height:25%; width:25%">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
                     <p>You reached the target score!</p><span style="font-size: 75px; line-height:90px">+10</span>
                 </div>
@@ -160,7 +160,7 @@ export function bonusInstruction({
         `<div><p class=instruction-title>After three completions, you'll see that you won a 30 cent bonus:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
             <div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
-                <img src="/src/coins.jpg" style="height:25%; width:25%">
+                <img src="/jspsych-typing/src/coins.jpg" style="height:25%; width:25%">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
                     <p>You reached the target score!</p>Current Streak: 3/3<br><span style="font-size: 75px; line-height:90px">+30</span>
                 </div>
@@ -205,7 +205,7 @@ export function bonusInstruction({
         For example, if you miss the target score after achieving a streak of three, you'll see:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
         <div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
-        <img src="/src/coins.jpg" style="height:25%; width:25%">
+        <img src="/jspsych-typing/src/coins.jpg" style="height:25%; width:25%">
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
         <p>Your streak was 3</p><span style="font-size: 75px; line-height:90px">+30</span>
         </div></div></div>`,
@@ -586,7 +586,7 @@ class Binary {
         this.overall_bonus += this.bonus;
         if (success) {
             return `<div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
-                <img src="/src/coins.jpg" style="height:25%; width:25%">
+                <img src="/jspsych-typing/src/coins.jpg" style="height:25%; width:25%">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
                     <p>You reached the target score!</p><span style="font-size: 75px; line-height:90px">+${this.bonus}</span>
                 </div>
@@ -632,7 +632,7 @@ class ContinuousStreak extends Binary {
                 // break a streak
                 this.streak = 0;
                 return `<div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
-                <img src="/src/coins.jpg" style="height:25%; width:25%">
+                <img src="/jspsych-typing/src/coins.jpg" style="height:25%; width:25%">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
                 <p>Your streak was ${this.streak_sofar}</p><span style="font-size: 75px; line-height:90px">+${this.bonus}</span>
                 </div></div>`
@@ -656,7 +656,7 @@ class BinaryStreak extends ContinuousStreak {
                 this.streak = 0;
                 // streak complete: participants earn bonus money
                 return `<div style="position: relative; text-align: center; color: #85BB65; font-weight: bold; text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000">
-                <img src="/src/coins.jpg" style="height:25%; width:25%">
+                <img src="/jspsych-typing/src/coins.jpg" style="height:25%; width:25%">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
                 <p>You achieved a streak of 3!</p><span style="font-size: 75px; line-height:90px">+${this.bonus}</span>
                 </div></div>`;            
