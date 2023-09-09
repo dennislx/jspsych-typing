@@ -132,6 +132,7 @@ export function bonusInstruction({
                 <div class="bonus-4" style="color: red"><span id="target-number">200</span></div>
             </div>
         </div>`;
+        
     pages.push(page_success);
     const page_success_binary = `<div><p class=instruction-title>Then you'll see that you won a 10 cent bonus:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
