@@ -664,12 +664,12 @@ class BinaryStreak extends ContinuousStreak {
         } else {
             if (this.streak_sofar === 0){
                 // fail to initiate (could be after a failure or after a complete streak)
-                return `<p>You missed the target score.</p>Current Streak: 0/3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>`;
+                return `<p>Your streak was less than 3.</p><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>`;
             } else {
                 this.streak = 0; 
                 // fail to break
                 //return `Bonus: + $${this.bonus.toFixed(2)}`
-                return `<p>You missed the target score.</p>Current Streak: 0/3<br><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>`;
+                return `<p>Your streak was less than 3.</p><span style="font-size: 75px; line-height:90px; font-weight: bold">+0</span>`;
             }
         }
     }
