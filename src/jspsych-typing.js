@@ -659,7 +659,7 @@ class BinaryStreak extends ContinuousStreak {
                 </div>`;            
             } else {
                 // streak increase: show streak length
-                return `<p>You reached the target score!</p>Current Streak: ${this.streak}`;  
+                return `<p>You reached the target score!</p>Current Streak: ${this.streak}/3`;  
             }
         } else {
             if (this.streak_sofar === 0){
@@ -674,6 +674,6 @@ class BinaryStreak extends ContinuousStreak {
         }
     }
     score(success){
-        return !success? 0 : ((this.streak_sofar+1)===3) ? 0.3 : 0
+        return !success? 0 : ((this.streak_sofar+1)===3) ? 30 : 0
     }
 }
