@@ -216,6 +216,23 @@ div.sv-action-bar.sv_nav {
     align-items: center;
 }
 
+.feedback-container {
+    position: relative; 
+    text-align: center; 
+    width: 800px; 
+    color: #85BB65; 
+    font-weight: bold; 
+    text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
+}
+
+.feedback-text {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    width: 100%;
+}
+
 textarea#styled {
 	height: 95%;
     width: 95%;
