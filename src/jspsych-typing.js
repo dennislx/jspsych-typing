@@ -208,8 +208,8 @@ export function bonusInstruction({
             <div class="feedback-container">
                 <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.jpg">
                 <div class="feedback-text"><p>Your streak was 3</p><span style="font-size: 75px; line-height:90px">+30</span></div>
-            </div><
-        /div>`,
+            </div>
+        </div>`,
 
         `<div><p class=instruction-title>However, if you miss the target score after failing to start a streak,<br>
         you'll see that you failed to win a bonus:</p></div>
