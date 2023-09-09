@@ -216,8 +216,8 @@
             <div class="feedback-container">
                 <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.jpg">
                 <div class="feedback-text"><p>Your streak was 3</p><span style="font-size: 75px; line-height:90px">+30</span></div>
-            </div><
-        /div>`,`<div><p class=instruction-title>However, if you miss the target score after failing to start a streak,<br>
+            </div>
+        </div>`,`<div><p class=instruction-title>However, if you miss the target score after failing to start a streak,<br>
         you'll see that you failed to win a bonus:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
         <div style="position: relative; text-align: center; width: 800px; height: 150px">
@@ -243,4 +243,4 @@
     <p>Below are a few more questions about the <strong>bonus round</strong> of the typing task.</p><p>Instead of asking about immersion and
     engagement, these questions ask about <strong>enjoyment</strong>.<br>Report how much you <strong>enjoyed</strong> 
     the <strong>bonus round</strong> by answering the following questions.</p></div>`,questions:[{prompt:"How much did you <strong>enjoy</strong> completing the bonus round?",name:"enjoyable",labels:ye},{prompt:"How much did you <strong>like</strong> completing the bonus round?",name:"like",labels:ye},{prompt:"How much did you <strong>dislike</strong> completing the bonus round?",name:"dislike",labels:ye},{prompt:"How much <strong>fun</strong> did you have completing the bonus round?",name:"fun",labels:ye},{prompt:"How <strong>entertaining</strong> was the bonus round?",name:"entertaining",labels:ce}],randomize_question_order:!1,scale_width:500};F.push(ho);const fo=e=>{e.pages=[e.pages]};F.push(oe({args:k.debrief,on_start:fo}));const mo=e=>{const t=G.data.get(),i=+t.filter({phase:"bonus_feedback_score"}).select("bonus").sum().toFixed(2),n=+t.filter({phase:"bonus"}).select("success").sum();e.data={totalBonus:i,totalSuccess:n,phase:"last_page",...e.data},e.preamble=e.preamble.replaceAll("${totalBonus}",i)};F.push(oe({args:k.lastpage,on_start:mo}));k.pipe_data_to_osf&&F.push({type:J,action:"save",experiment_id:k.osf_id,filename:`${wi}.csv`,data_string:()=>{const e=G.data.get(),t=Ds(e);return Fs([t])}});G.opts.show_progress_bar=k.show_progress_bar;G.opts.experiment_width=k.screenwidth;G.opts.on_finish=()=>{document.body.innerHTML=k.thank_you_msg,setTimeout(function(){location.href=`https://app.prolific.co/submissions/complete?cc=${k.prolific_id}`},2e3)};G.run(F);
-//# sourceMappingURL=index-5e6a6044.js.map
+//# sourceMappingURL=index-da626a45.js.map
