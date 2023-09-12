@@ -65,22 +65,22 @@ const flowQs = {
     type: jsPsychSurveyLikert,
     preamble: `<div style='padding-top: 50px; width: 850px; font-size:16px'>
 
-    <p>Thank you for completing the bonus round of the typing task!</strong></p>
+    <p>Thank you for completing the typing task!</strong></p>
 
-    <p>During the <strong>bonus round</strong>, to what extent did you feel immersed 
+    <p>During the typing task, to what extent did you feel immersed 
     and engaged in what you were doing?<br>Report how immersed and engaged you felt by 
     answering the following questions.</p></div>`,
     questions: [
-        {prompt: `During the bonus round, to what extent did you feel <strong>absorbed</strong> in what you were doing?`,
+        {prompt: `During the typing task, to what extent did you feel <strong>absorbed</strong> in what you were doing?`,
         name: `absorbed`,
         labels: zeroToExtremely},
-        {prompt: `During the bonus round, to what extent did you feel <strong>immersed</strong> in what you were doing?`,
+        {prompt: `During the typing task, to what extent did you feel <strong>immersed</strong> in what you were doing?`,
         name: `immersed`,
         labels: zeroToExtremely},
-        {prompt: `During the bonus round, to what extent did you feel <strong>engaged</strong> in what you were doing?`,
+        {prompt: `During the typing task, to what extent did you feel <strong>engaged</strong> in what you were doing?`,
         name: `engaged`,
         labels: zeroToExtremely},
-        {prompt: `During the bonus round, to what extent did you feel <strong>engrossed</strong> in what you were doing?`,
+        {prompt: `During the typing task, to what extent did you feel <strong>engrossed</strong> in what you were doing?`,
         name: `engrossed`,
         labels: zeroToExtremely},
     ],
@@ -94,23 +94,23 @@ const enjoyQs = {
     type: jsPsychSurveyLikert,
     preamble: `<div style='padding-top: 50px; width: 850px; font-size:16px'>
 
-    <p>Below are a few more questions about the <strong>bonus round</strong> of the typing task.</p><p>Instead of asking about immersion and
+    <p>Below are a few more questions about the typing task.</p><p>Instead of asking about immersion and
     engagement, these questions ask about <strong>enjoyment</strong>.<br>Report how much you <strong>enjoyed</strong> 
     the <strong>bonus round</strong> by answering the following questions.</p></div>`,
     questions: [
-        {prompt: `How much did you <strong>enjoy</strong> completing the bonus round?`,
+        {prompt: `How much did you <strong>enjoy</strong> the typing task?`,
         name: `enjoyable`,
         labels: zeroToALot},
-        {prompt: `How much did you <strong>like</strong> completing the bonus round?`,
+        {prompt: `How much did you <strong>like</strong> the typing task?`,
         name: `like`,
         labels: zeroToALot},
-        {prompt: `How much did you <strong>dislike</strong> completing the bonus round?`,
+        {prompt: `How much did you <strong>dislike</strong> the typing task?`,
         name: `dislike`,
         labels: zeroToALot},
-        {prompt: `How much <strong>fun</strong> did you have completing the bonus round?`,
+        {prompt: `How much <strong>fun</strong> did you have completing the typing task?`,
         name: `fun`,
         labels: zeroToALot},
-        {prompt: `How <strong>entertaining</strong> was the bonus round?`,
+        {prompt: `How <strong>entertaining</strong> was the typing task?`,
         name: `entertaining`,
         labels: zeroToExtremely},
     ],
@@ -130,6 +130,7 @@ timeline.push( renderPlugin({args: args.debrief, on_start: survey_start}));
 const lastpage_start = (trial) => {
     const data = jsPsych.data.get()
     const totalBonus = +data.filter({phase: 'bonus_feedback_score'}).select('bonus').sum().toFixed(2);
+    const totalBonus_cents = totalBonus / 10;
     const totalSuccess = +data.filter({phase: 'bonus'}).select('success').sum();
     trial.data = {
         totalBonus: totalBonus,
@@ -137,7 +138,7 @@ const lastpage_start = (trial) => {
         phase: 'last_page',
         ...trial.data,
     }
-    trial.preamble = trial.preamble.replaceAll('${totalBonus}', totalBonus);
+    trial.preamble = trial.preamble.replaceAll('${totalBonus}', totalBonus_cents);
 }
 timeline.push( renderPlugin({args: args.lastpage, on_start: lastpage_start}));
 
@@ -160,7 +161,7 @@ jsPsych.opts.experiment_width = args.screenwidth;
 jsPsych.opts.on_finish = () => {
     document.body.innerHTML = args.thank_you_msg;
     setTimeout(function() { 
-        location.href = `https://app.prolific.co/submissions/complete?cc=${args.prolific_id}`
+        location.href = `https://app.prolific.co/submissions/complete?cc=CXYI9OFD`
     }, 2000); // 2 seconds
 }
 jsPsych.run(timeline);
