@@ -176,6 +176,15 @@ consent:
   required_message: To proceed to the experiment, please ensure that you have checked the checkbox
   button_label: Next
 
+
+practice_p0: &p0 >
+  <div class='instruction'> 
+  <p><strong>What makes some activities more immersive and engaging than others?</strong></p>
+  <p>We're interested in why people feel effortlessly engaged in some activities (such as addictive video games), but find it difficult to devote time and attention to other activities (like tedious chores).</p>
+  <p>To help us, you'll complete a <strong>typing task</strongy>. When you're done, you'll report how immersed and engaged you felt.</p>
+  <p>When you're ready to learn about the typing task, continue to the next page.</p>
+  </div>
+
 practice_p1: &p1 >
   <div class='instruction'> 
   <p>In this study, you'll complete multiple rounds of a typing task.</p>
@@ -196,6 +205,7 @@ practice_p2: &p2 >
 practice_instruction:
   type: instruct
   pages:
+    - *p0
     - *p1
     - *p2
   show_clickable_nav: true
