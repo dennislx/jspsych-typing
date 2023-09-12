@@ -321,6 +321,7 @@ export class practicePhase {
             trial_duration: this.fixation_duration,
             data: { phase: `${this.phase}_fixation` },
         });
+        /*
         timeline.push({
             type: HtmlKeyboardResponsePlugin,
             stimulus: "<div style='font-size: 72px'>+</div>",
@@ -328,6 +329,7 @@ export class practicePhase {
             trial_duration: 1000,
             data: { phase: `${this.phase}_fixation` },
         });
+        */
     }
 
     getFeedback(timeline) {
