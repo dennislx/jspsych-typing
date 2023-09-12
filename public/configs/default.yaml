@@ -187,7 +187,7 @@ practice_p0: &p0 >
 
 practice_p1: &p1 >
   <div class='instruction'> 
-  <p>In this study, you'll complete multiple rounds of a typing task.</p>
+  <pThe typing task takes place over multiple rounds.</p>
   <p>In each round, you'll type two letters—one after the other—as many times as possible in the allotted time. </p>
   <p>For each correct letter you press in sequence, your score will increase by one.</p>
   <p>For instance, if your task is to type <span id=keystroke>a</span> then <span id=keystroke>b</span>, and you type <span id=keystroke>a</span><span id=keystroke>b</span><span id=keystroke>a</span><span id=keystroke>b</span><span id=keystroke>x</span>, your score will increase by <b>4</b>. However, if you type <span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>a</span><span id=keystroke>x</span> your score will increase by <b>1</b>.</p>
