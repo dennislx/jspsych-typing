@@ -141,6 +141,8 @@ const lastpage_start = (trial) => {
     trial.preamble = trial.preamble.replaceAll('${totalBonus}', totalBonus_cents);
 }
 
+timeline.push( renderPlugin({args: args.lastpage, on_start: lastpage_start}));
+
 // save data via DataPiepe
 args.pipe_data_to_osf && timeline.push({
     type: jsPsychPipe,
@@ -154,7 +156,6 @@ args.pipe_data_to_osf && timeline.push({
     },
 })
 
-timeline.push( renderPlugin({args: args.lastpage, on_start: lastpage_start}));
 
 jsPsych.opts.show_progress_bar = args.show_progress_bar;
 // $('div#jspsych-content').css({max-width: `${args.screenwidth} px`}); can achieve similar result
