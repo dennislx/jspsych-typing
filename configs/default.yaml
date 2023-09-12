@@ -295,9 +295,9 @@ bonus_instruction:
 
 debrief_page: &debrief >
   <p>Thank you for participating!</p>
-  <p>In total, you won <b>$${totalBonus}</b> in bonus money!</p>
+  <p>In total, you won <b>$${totalBonus / 10}</b> in bonus money!</p>
   <br>
-  <p>Within one week, you will receive your bonus money</p>
+  <p>Within one week, you will receive your bonus.</p>
   <p>To receive payment, enter your Prolific ID in the space below.</p>
 
 debrief:
