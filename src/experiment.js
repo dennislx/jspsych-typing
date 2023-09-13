@@ -123,10 +123,20 @@ timeline.push(enjoyQs);
 // debrief
 
 const survey_start = (trial) => {
-    trial.pages = [trial.pages]
-}
-timeline.push( renderPlugin({args: args.debrief, on_start: survey_start}));
+    trial.pages = [trial.pages];
+    const data = jsPsych.data.get()
+    const totalBonus = +data.filter({phase: 'bonus_feedback_score'}).select('bonus').sum().toFixed(2);
+    const totalBonus_cents = totalBonus / 100;
+    const totalSuccess = +data.filter({phase: 'bonus'}).select('success').sum();
+    trial.data = {
+        totalBonus: totalBonus,
+        totalSuccess: totalSuccess,
+        phase: 'last_page',
+        ...trial.data,
+    }
+};
 
+/*
 const lastpage_start = (trial) => {
     const data = jsPsych.data.get()
     const totalBonus = +data.filter({phase: 'bonus_feedback_score'}).select('bonus').sum().toFixed(2);
@@ -140,7 +150,9 @@ const lastpage_start = (trial) => {
     }
     trial.preamble = trial.preamble.replaceAll('${totalBonus}', totalBonus_cents);
 }
+*/
 
+timeline.push( renderPlugin({args: args.debrief, on_start: survey_start}));
 
 // save data via DataPiepe
 args.pipe_data_to_osf && timeline.push({
@@ -155,15 +167,18 @@ args.pipe_data_to_osf && timeline.push({
     },
 })
 
-timeline.push( renderPlugin({args: args.lastpage, on_start: lastpage_start}));
+//timeline.push( renderPlugin({args: args.lastpage, on_start: lastpage_start}));
 
 jsPsych.opts.show_progress_bar = args.show_progress_bar;
 // $('div#jspsych-content').css({max-width: `${args.screenwidth} px`}); can achieve similar result
 jsPsych.opts.experiment_width = args.screenwidth;
 jsPsych.opts.on_finish = () => {
-    document.body.innerHTML = args.thank_you_msg;
+    const data = jsPsych.data.get();
+    const totalBonus = +data.filter({phase: 'bonus_feedback_score'}).select('bonus').sum().toFixed(2);
+    const totalBonus_cents = totalBonus / 100;
+    document.body.innerHTML = args.thank_you_msg.replaceAll('${totalBonus}', totalBonus_cents);
     setTimeout(function() { 
         location.href = `https://app.prolific.co/submissions/complete?cc=CXYI9OFD`
-    }, 2000); // 2 seconds
+    }, 3000); // 2 seconds
 }
 jsPsych.run(timeline);
