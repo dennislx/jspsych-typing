@@ -178,7 +178,7 @@ jsPsych.opts.on_finish = () => {
     const totalBonus_cents = totalBonus / 100;
     document.body.innerHTML = args.thank_you_msg.replaceAll('${totalBonus}', totalBonus_cents);
     setTimeout(function() { 
-        location.href = `https://app.prolific.co/submissions/complete?cc=CXYI9OFD`
+        location.href = `https://app.prolific.co/submissions/complete?cc=C1B3XSBB`
     }, 3000); // 2 seconds
 }
 jsPsych.run(timeline);
