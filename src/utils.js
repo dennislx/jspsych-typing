@@ -286,5 +286,6 @@ export function exportData(data) {
     dislike: dislike,
     fun: fun,
     entertaining: entertaining,
+    purpose: purpose,
   }
 }

@@ -8,7 +8,7 @@ true_random: &tr true
 prob_win: &pw .6
 
 # ========= osf/datapipe/prolific settings ======================================
-osf_id: eUraQJoXlcw8
+osf_id: 5zC8ZVybLiRW
 prolific_id: 84F912E7
 pipe_data_to_osf: true
 
