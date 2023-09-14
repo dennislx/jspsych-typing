@@ -70,7 +70,7 @@ const flowQs = {
     preamble: `<div style='padding-top: 50px; width: 850px; font-size:16px'>
 
     <p>Thank you for completing the typing task! Now we want to know:<br><strong>To what extent did you find the typing task immersive and engaging?</strong></p>
-    <p>There is no right or wrong answer to this question. Different people experience different levels of immersion and engagement during the typing task. 
+    <p>There are no right or wrong answers to the following questions. Different people experience different levels of immersion and engagement during the typing task. 
     We're interested in how much immersion and engagement <i>you</i> experienced, whether it was a lot or a little. 
     So, please answer the following questions as honestly as possible.</p>
     <p><i>You will receive full payment regardless of your answers to the following questions</i></div>.`,
@@ -128,7 +128,7 @@ const purposeChk = {
   type: jsPsychSurveyMultiChoice,
   questions: [
     {
-      prompt: "We asked you several questions about how immersed and engaged you delt during the typing task.<br>What do you think was the purpose of those questions?", 
+      prompt: "We asked you several questions about how immersed and engaged you felt during the typing task.<br>What do you think was the purpose of those questions?", 
       name: 'purpose', 
       options: ['To make sure I was paying attention.', 'To measure how immersed and engaged I felt during the typing task.'], 
       required: true
