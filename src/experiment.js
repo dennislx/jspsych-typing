@@ -188,6 +188,6 @@ jsPsych.opts.on_finish = () => {
     document.body.innerHTML = args.thank_you_msg.replaceAll('${totalBonus}', totalBonus);
     setTimeout(function() { 
         location.href = `https://app.prolific.co/submissions/complete?cc=C1B3XSBB`
-    }, 300000); // 2 seconds
+    }, 3000); // 2 seconds
 }
 jsPsych.run(timeline);
