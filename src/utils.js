@@ -265,7 +265,7 @@ export function exportData(data) {
   console.log( data.last().values() );
   const {absorbed, immersed, engaged, engrossed} = data.filter({trial_type: 'survey-likert'}).select('response').values[0];
   const {enjoyable, like, dislike, fun, entertaining} = data.filter({trial_type: 'survey-likert'}).select('response').values[1];
-  const {purpose} = data.filter({trial_type: 'survey-multi-choice'}).select('response').values[1];
+  //const {purpose} = data.filter({trial_type: 'survey-multi-choice'}).select('response').values[1];
 
   return {
     subject_id: id,
@@ -288,6 +288,6 @@ export function exportData(data) {
     dislike: dislike,
     fun: fun,
     entertaining: entertaining,
-    purpose: purpose,
+    //purpose: purpose,
   }
 }

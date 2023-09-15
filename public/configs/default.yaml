@@ -13,7 +13,7 @@ prolific_id: 84F912E7
 pipe_data_to_osf: true
 
 # ========= practice settings ===================================================
-practice_trial_rounds: &ptr 2
+practice_trial_rounds: &ptr 0
 practice_trial_time: &ptt 10
 show_practice_result: &pts false
 number_of_history_keypress: &nhk 4
@@ -235,13 +235,13 @@ bonus_welcome_2: &i2 >
   </div>
 
 i_bianry_streak: &ig1 >
-  To earn bonus money, you must <b>build streaks</b> of three consecutive completions. Specifically, each time you complete <b>three consecutive rounds</b>, you'll earn a <b>30 cent bonus</b>. 
+  To earn bonus money, you must <b>build streaks</b> of three consecutive completions. Specifically, each time you complete <b>three consecutive rounds</b>, you'll earn a <b>15 cent bonus</b>. 
 
 i_continuous_streak: &ig2 >
-  To earn bonus money, you must <b>build streaks</b> by completing as many rounds in a row as possible. Specifically, for <b>every consecutive round you complete</b>, you'll earn a <b>10 cent bonus</b>. 
+  To earn bonus money, you must <b>build streaks</b> by completing as many rounds in a row as possible. Specifically, for <b>every consecutive round you complete</b>, you'll earn a <b>5 cent bonus</b>. 
 
 i_binary_framing: &ig3 >
-  To earn bonus money, you must complete as many rounds as possible. For <b>every round you complete</b>, you'll earn a <b>10 cent bonus</b>. 
+  To earn bonus money, you must complete as many rounds as possible. For <b>every round you complete</b>, you'll earn a <b>5 cent bonus</b>. 
 
 bonus_survey_question1: &q1
   prompt: To complete a round, you must press the two keys…
@@ -255,17 +255,17 @@ bonus_survey_question2: &q2
   prompt: If you complete the first two rounds in a row, then fail to complete the third round, you will have earned…
   options:
     - 0 cents
+    - 5 cents
     - 10 cents
-    - 20 cents
-    - 25 cents
+    - 15 cents
 
 bonus_survey_question3: &q3
   prompt: If you complete the first three rounds in a row, then fail to complete the fourth round, you will have earned…
   options:
     - 0 cents
+    - 5 cents
     - 10 cents
-    - 20 cents
-    - 30 cents
+    - 15 cents
 
 bonus_survey_success: &success >
   <p>Congratulations, you're ready to start earning bonus money!</p>

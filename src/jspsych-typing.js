@@ -135,11 +135,11 @@ export function bonusInstruction({
 
     pages.push(page_success);
 
-    const page_success_binary = `<div><p class=instruction-title>Then you'll see that you won a 10 cent bonus:</p></div>
+    const page_success_binary = `<div><p class=instruction-title>Then you'll see that you won a 5 cent bonus:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
             <div class="feedback-container">
                 <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.jpg">
-                <div class="feedback-text"><p>You reached the target score!</p><span style="font-size: 75px; line-height:90px">+10</span></div>
+                <div class="feedback-text"><p>You reached the target score!</p><span style="font-size: 75px; line-height:90px">+5</span></div>
             </div>
         </div>`;
 
@@ -158,11 +158,11 @@ export function bonusInstruction({
             <p>You reached the target score!</p>Current Streak: 2/3
         </div>`,
 
-        `<div><p class=instruction-title>After three completions, you'll see that you won a 30 cent bonus:</p></div>
+        `<div><p class=instruction-title>After three completions, you'll see that you won a 15 cent bonus:</p></div>
         <div class="bonus-1" style="margin: 40px 0px">
             <div class="feedback-container">
                 <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.jpg">
-                <div class="feedback-text"><p>You got a streak of 3!</p><span style="font-size: 75px; line-height:90px">+30</span></div>
+                <div class="feedback-text"><p>You got a streak of 3!</p><span style="font-size: 75px; line-height:90px">+15</span></div>
             </div>
         </div>`];
 
@@ -207,7 +207,7 @@ export function bonusInstruction({
         <div class="bonus-1" style="margin: 40px 0px">
             <div class="feedback-container">
                 <img src="https://raw.githubusercontent.com/dennislx/jspsych-typing/main/public/img/coins.jpg">
-                <div class="feedback-text"><p>Your streak was 3</p><span style="font-size: 75px; line-height:90px">+30</span></div>
+                <div class="feedback-text"><p>Your streak was 3</p><span style="font-size: 75px; line-height:90px">+15</span></div>
             </div>
         </div>`,
 
@@ -252,8 +252,8 @@ export function bonusInstruction({
             let { Q0, Q1, Q2 } = data.response;
             data.pass = correct = [
                 Q0.includes("At least"),
-                Q1.startsWith(condition === "binary streak" ? '0' : '2'),
-                Q2.startsWith('3')
+                Q1.startsWith(condition === "binary streak" ? '0' : '10'),
+                Q2.startsWith('15')
             ].every(Boolean)
         },
     };
@@ -570,7 +570,7 @@ export class bonusPhase extends practicePhase {
                 ({bonus, streak} = this.reward_agent.property);
                 if (this.condition === "continuous streak" && this.trial_i === this.numOfTrial) {
                     // the bonus in the last round isn't counted when under this condition
-                    bonus = +(10 * this.reward_agent.streak);
+                    bonus = +(5 * this.reward_agent.streak);
                 }
             }
         });
@@ -600,7 +600,7 @@ class Binary {
         //return `Bonus: + $${this.bonus.toFixed(2)}`;
     }
     score(success){
-        return success? 10 : 0
+        return success? 5 : 0
     }
     get property(){
         return {
@@ -640,7 +640,7 @@ class ContinuousStreak extends Binary {
         };
     }
     score(succcess){
-        return succcess? 0 : this.streak_sofar*10
+        return succcess? 0 : this.streak_sofar*5
     }
 }
 
@@ -676,6 +676,6 @@ class BinaryStreak extends ContinuousStreak {
         }
     }
     score(success){
-        return !success? 0 : ((this.streak_sofar+1)===3) ? 30 : 0
+        return !success? 0 : ((this.streak_sofar+1)===3) ? 15 : 0
     }
 }

@@ -63,33 +63,30 @@ timeline.push( new bonusPhase({condition: args.condition, ...args.bonus}).getTri
 
 
 
-const zeroToExtremely = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8<br>Extremely'];
-const zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8<br>A lot'];
+const zeroToExtremely = ["0<br>A little", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"];
+const zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>A lot'];
 const flowQs = {
     type: jsPsychSurveyLikert,
     preamble: `<div style='padding-top: 50px; width: 850px; font-size:16px'>
 
-    <p>Thank you for completing the typing task! Now we want to know:<br><strong>To what extent did you find the typing task immersive and engaging?</strong></p>
-    <p>There are no right or wrong answers to the following questions. Different people experience different levels of immersion and engagement during the typing task. 
-    We're interested in how much immersion and engagement <i>you</i> experienced, whether it was a lot or a little. 
-    So, please answer the following questions as honestly as possible.</p>
-    <p><i>You will receive full payment regardless of your answers to the following questions</i></div>.`,
+    <p>Thank you for completing the typing task! Now we want to know:<br><strong>To what extent did you feel immersed and engaged in the typing task?</strong></p>
+    <p>To report how immersed and engaged you felt in the typing task,<br>please answer the following questions as honestly as possible.</p>`,
     questions: [
-        {prompt: `During the typing task, to what extent did you feel <strong>absorbed</strong> in what you were doing?`,
+        {prompt: `How <strong>absorbed</strong> did you feel in the typing task?`,
         name: `absorbed`,
-        labels: zeroToExtremely},
-        {prompt: `During the typing task, to what extent did you feel <strong>immersed</strong> in what you were doing?`,
+        labels: ["0<br>The least absorbed I've ever felt in a task", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>The most absorbed I've ever felt in a task"]},
+        {prompt: `How <strong>immersed</strong> did you feel in the typing task?`,
         name: `immersed`,
-        labels: zeroToExtremely},
-        {prompt: `During the typing task, to what extent did you feel <strong>engaged</strong> in what you were doing?`,
+        labels: ["0<br>The least immersed I've ever felt in a task", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>The most immersed I've ever felt in a task"]},
+        {prompt: `How <strong>engaged</strong> did you feel in the typing task?`,
         name: `engaged`,
-        labels: zeroToExtremely},
-        {prompt: `During the typing task, to what extent did you feel <strong>engrossed</strong> in what you were doing?`,
+        labels: ["0<br>The least engaged I've ever felt in a task", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>The most engaged I've ever felt in a task"]},
+        {prompt: `How <strong>engrossed</strong> did you feel in the typing task?`,
         name: `engrossed`,
-        labels: zeroToExtremely},
+        labels: ["0<br>The least engrossed I've ever felt in a task", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>The most engrossed I've ever felt in a task"]},
     ],
     randomize_question_order: false,
-    scale_width: 500,
+    scale_width: 700,
 };
 
 timeline.push(flowQs);
@@ -119,7 +116,7 @@ const enjoyQs = {
         labels: zeroToExtremely},
     ],
     randomize_question_order: false,
-    scale_width: 500,
+    scale_width: 700,
 };
 
 timeline.push(enjoyQs);
@@ -136,7 +133,7 @@ const purposeChk = {
   ],
 };
 
-timeline.push(purposeChk);
+//timeline.push(purposeChk);
 
 // debrief
 
