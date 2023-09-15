@@ -8,12 +8,12 @@ true_random: &tr true
 prob_win: &pw .6
 
 # ========= osf/datapipe/prolific settings ======================================
-osf_id: 5zC8ZVybLiRW
+osf_id: 6nF9Xq3T7kAN
 prolific_id: 84F912E7
 pipe_data_to_osf: true
 
 # ========= practice settings ===================================================
-practice_trial_rounds: &ptr 0
+practice_trial_rounds: &ptr 2
 practice_trial_time: &ptt 10
 show_practice_result: &pts false
 number_of_history_keypress: &nhk 4
