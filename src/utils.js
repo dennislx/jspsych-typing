@@ -290,4 +290,38 @@ export function exportData(data) {
     entertaining: entertaining,
     //purpose: purpose,
   }
+};
+
+export function makeMultipliers() {
+
+  function shuffleArray(array) {
+
+    // Fisher-Yates shuffle algorithm
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  // Create an array with 8 ones and 12 negative ones
+  const ones = Array(7).fill(1); // Leave one 1 for the last position
+  const negatives = Array(10).fill(-1);
+
+  // Combine the arrays
+  const resultArray = ones.concat(negatives);
+
+  // Shuffle the combined array except for the last position
+  let shuffledArray = shuffleArray(
+    resultArray.slice(0, resultArray.length - 1)
+  );
+
+  // Add 1 as the last element
+  shuffledArray.push(1);
+
+  // Find a random index to insert a sequence of at least 3 -1s
+  const randomIndex = Math.floor(Math.random() * (shuffledArray.length - 2));
+  shuffledArray.splice(randomIndex, 0, -1, -1, -1);
+  return shuffledArray;
+  
 }

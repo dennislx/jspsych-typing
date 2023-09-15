@@ -1,4 +1,4 @@
-import { twoLetterPair, checkEmpty, createTable, calQuantile } from "./utils";
+import { twoLetterPair, checkEmpty, createTable, calQuantile, makeMultipliers } from "./utils";
 import HtmlKeyboardResponsePlugin from "@jspsych/plugin-html-keyboard-response";
 import PreloadPlugin from "@jspsych/plugin-preload";
 import SurveyMultiSelectPlugin from "@jspsych/plugin-survey-multi-select";
@@ -39,6 +39,10 @@ export const DICT = {
 * @param {html-element} display_html    - html element, i.e., the content of displayed stimulus
 * @param {function} end_trial   - a function to call before the end of this trial
 */
+
+const multiplierArray = makeMultipliers();
+
+console.log(multiplierArray);
 
 function keypressCallback(info, response, trial, response_history, counter, display_html, end_trial) {
 
@@ -489,7 +493,7 @@ export class bonusPhase extends practicePhase {
                 if (response.score <= this.delta) { 
                     this.multiplier = 1;
                 } else if (response.score == this.delta + 1) {                    
-                    this.multiplier = -2 * ( (Math.random() < this.prob_win) - .5) 
+                    this.multiplier = multiplierArray[this.trial_i - 1];
                 };
 
                 // compute new target score and, if true_random = true, make it the real target score 
@@ -497,7 +501,7 @@ export class bonusPhase extends practicePhase {
                 if (this.true_random) { trial.data.target = targetScore };
                 if (this.trial_i == this.numOfTrial) { trial.data.target = response.score + this.delta }; // lose on last trial
 
-                console.log(`Multiplier = ${this.multiplier}`, `Delta = ${this.delta}`, `Target Score = ${trial.data.target}`, `My Score = ${response.score}`);
+                console.log(`Trial Number = ${this.trial_i}`);
 
                 if (response.score >= trial.data.target) {
                     console.log("Success!")

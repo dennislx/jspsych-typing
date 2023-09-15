@@ -142,8 +142,9 @@ const survey_start = (trial) => {
     const data = jsPsych.data.get();
     const totalSuccess = +data.filter({phase: 'bonus'}).select('success').sum();
     let totalBonus;
-    if (condition == 'binary streak') {
-        totalBonus_raw = +data.filter({phase: 'bonus_feedback_score'}).select('bonus').sum().toFixed(2);
+    if (args.condition == 'binary streak') {
+        const totalBonus_raw = +data.filter({phase: 'bonus_feedback_score'}).select('bonus').sum();
+        console.log(data.filter({phase: 'bonus_feedback_score'}).select('bonus'), totalBonus_raw);
         totalBonus = totalBonus_raw / 100;
     } else {
         totalBonus = totalSuccess / 10;
@@ -178,8 +179,8 @@ jsPsych.opts.on_finish = () => {
     const data = jsPsych.data.get();
     const totalSuccess = +data.filter({phase: 'bonus'}).select('success').sum();
     let totalBonus;
-    if (condition == 'binary streak') {
-        totalBonus_raw = +data.filter({phase: 'bonus_feedback_score'}).select('bonus').sum().toFixed(2);
+    if (args.condition == 'binary streak') {
+        const totalBonus_raw = +data.filter({phase: 'bonus_feedback_score'}).select('bonus').sum().toFixed(2);
         totalBonus = totalBonus_raw / 100;
     } else {
         totalBonus = totalSuccess / 10;
@@ -187,6 +188,6 @@ jsPsych.opts.on_finish = () => {
     document.body.innerHTML = args.thank_you_msg.replaceAll('${totalBonus}', totalBonus);
     setTimeout(function() { 
         location.href = `https://app.prolific.co/submissions/complete?cc=C1B3XSBB`
-    }, 3000); // 2 seconds
+    }, 300000); // 2 seconds
 }
 jsPsych.run(timeline);
