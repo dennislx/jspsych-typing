@@ -261,34 +261,46 @@ export function exportData(data) {
   const r_prac = getRecord(data, 'practice', 'practice');
   const r_bonus = getRecord(data, 'bonus', 'round');
   const [{gender, age, suggest}] = data.filter({trial_type: 'survey-demo'}).select('responses').values;
-  const [{date, subject_id: id, condition: cond, PROLIFIC_PID: PROLIFIC_PID, totalSuccess, totalBonus}] = data.last().values();
+  const [{date, subject_id: id, condition: cond, PROLIFIC_PID: PROLIFIC_PID, totalSuccess, totalSuccess_1, totalSuccess_2, totalBonus, game_1, game_2}] = data.last().values();
   console.log( data.last().values() );
-  const {absorbed, immersed, engaged, engrossed} = data.filter({trial_type: 'survey-likert'}).select('response').values[0];
-  const {enjoyable, like, dislike, fun, entertaining} = data.filter({trial_type: 'survey-likert'}).select('response').values[1];
-  //const {purpose} = data.filter({trial_type: 'survey-multi-choice'}).select('response').values[1];
+  const {absorbed_first, immersed_first, engaged_first, engrossed_first} = data.filter({trial_type: 'survey-likert'}).select('response').values[0];
+  const {enjoyable_first, like_first, dislike_first, fun_first, entertaining_first} = data.filter({trial_type: 'survey-likert'}).select('response').values[1];
+  const {absorbed_second, immersed_second, engaged_second, engrossed_second} = data.filter({trial_type: 'survey-likert'}).select('response').values[2];
+  const {enjoyable_second, like_second, dislike_second, fun_second, entertaining_second} = data.filter({trial_type: 'survey-likert'}).select('response').values[3];
 
   return {
     subject_id: id,
     PROLIFIC_PID: PROLIFIC_PID,
     date: getDate(date),
-    condition: cond,
+    game_1: game_1,
+    game_2: game_2,
     ...r_prac,
     ...r_bonus,
     total_earned: totalBonus,
     total_success: totalSuccess,
+    total_success_1: totalSuccess_1,
+    total_success_2: totalSuccess_2,
     gender: gender,
     age: age,
     comment: suggest,
-    absorbed: absorbed,
-    immersed: immersed,
-    engrossed: engrossed,
-    engaged: engaged,
-    enjoyable: enjoyable,
-    like: like,
-    dislike: dislike,
-    fun: fun,
-    entertaining: entertaining,
-    //purpose: purpose,
+    absorbed_1: absorbed_first,
+    immersed_1: immersed_first,
+    engrossed_1: engrossed_first,
+    engaged_1: engaged_first,
+    enjoyable_1: enjoyable_first,
+    like_1: like_first,
+    dislike_1: dislike_first,
+    fun_1: fun_first,
+    entertaining_1: entertaining_first,
+    absorbed_2: absorbed_second,
+    immersed_2: immersed_second,
+    engrossed_2: engrossed_second,
+    engaged_2: engaged_second,
+    enjoyable_2: enjoyable_second,
+    like_2: like_second,
+    dislike_2: dislike_second,
+    fun_2: fun_second,
+    entertaining_2: entertaining_second,
   }
 };
 
@@ -323,5 +335,5 @@ export function makeMultipliers() {
   const randomIndex = Math.floor(Math.random() * (shuffledArray.length - 2));
   shuffledArray.splice(randomIndex, 0, -1, -1, -1);
   return shuffledArray;
-  
+
 }

@@ -14,10 +14,10 @@ const args = await readYaml('configs/default.yaml');
 
 
 // obtain subject id and assign their group condition 
-const subject_id = jsPsych.randomization.randomID(10); 
-const condition = await jsPsychPipe.getCondition(args.osf_id);
-// const condition = jsPsych.randomization.randomInt(0, 2);
-args.condition = ['binary streak', 'continuous streak', 'binary'][condition];
+const subject_id = jsPsych.randomization.randomID(10);
+const streakType = ['binary streak', 'continuous streak'][Math.floor(Math.random() * 2)];
+args.condition = jsPsych.randomization.repeat([streakType, 'binary'], 1);
+console.log(args.condition);
 
 let PROLIFIC_PID = jsPsych.data.getURLVariable("PROLIFIC_PID");
 if (!PROLIFIC_PID) { PROLIFIC_PID = 0}
@@ -25,10 +25,68 @@ if (!PROLIFIC_PID) { PROLIFIC_PID = 0}
 jsPsych.data.addProperties({
     date: new Date(),
     subject_id: subject_id,
-    condition: args.condition,
+    game_1: args.condition[0],
+    game_2: args.condition[1],
     PROLIFIC_PID: PROLIFIC_PID,
 });
 console.log(`you are in group ${args.condition}`);
+
+
+// dv constructor functions
+const zeroToExtremely = ["0<br>A little", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"];
+const zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>A lot'];
+
+const MakeFlowQs = function(order) {
+    this.type = jsPsychSurveyLikert;
+    this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px'>
+
+    <p>Thank you for completing the ${order} version of the typing task! Now we want to know:<br><strong>To what extent did you feel immersed and engaged in the ${order} version of the typing task?</strong></p>
+    <p>To report how immersed and engaged you felt in the ${order} version of the typing task,<br>please answer the following questions as honestly as possible.</p>`;
+    this.questions = [
+        {prompt: `During the ${order} version of the typing task, how <strong>absorbed</strong> did you feel in what you were doing?`,
+        name: `absorbed_${order}`,
+        labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"]},
+        {prompt: `During the ${order} version of the typing task, how <strong>immersed</strong> did you feel in what you were doing?`,
+        name: `immersed_${order}`,
+        labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"]},
+        {prompt: `During the ${order} version of the typing task, how <strong>engaged</strong> did you feel in what you were doing?`,
+        name: `engaged_${order}`,
+        labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged I've ever felt"]},
+        {prompt: `During the ${order} version of the typing task, how <strong>engrossed</strong> did you feel in what you were doing?`,
+        name: `engrossed_${order}`,
+        labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed I've ever felt"]},
+    ];
+    this.randomize_question_order = false;
+    this.scale_width = 700;
+};
+
+const MakeEnjoyQs = function(order) {
+    this.type = jsPsychSurveyLikert;
+    this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px'>
+
+    <p>Below are a few more questions about the ${order} version of the typing task.</p><p>Instead of asking about immersion and
+    engagement, these questions ask about <strong>enjoyment</strong>.<br>Report how much you <strong>enjoyed</strong> 
+    the ${order} version of the typing task by answering the following questions.</p></div>`;
+    this.questions = [
+        {prompt: `How much did you <strong>enjoy</strong> the ${order} version of the typing task?`,
+        name: `enjoyable_${order}`,
+        labels: zeroToALot},
+        {prompt: `How much did you <strong>like</strong> the ${order} version of the typing task?`,
+        name: `like_${order}`,
+        labels: zeroToALot},
+        {prompt: `How much did you <strong>dislike</strong> the ${order} version of the typing task?`,
+        name: `dislike_${order}`,
+        labels: zeroToALot},
+        {prompt: `How much <strong>fun</strong> did you have completing the ${order} version of the typing task?`,
+        name: `fun_${order}`,
+        labels: zeroToALot},
+        {prompt: `How <strong>entertaining</strong> was the ${order} version of the typing task?`,
+        name: `entertaining_${order}`,
+        labels: zeroToExtremely},
+    ];
+    this.randomize_question_order = false;
+    this.scale_width = 700;
+};
 
 // timeline
 const timeline = [];
@@ -52,105 +110,46 @@ timeline.push( renderPlugin({args: args.practice_instruction}))
 // practice phase
 timeline.push( new practicePhase(args.practice).getTrial() )
 
-// bonus phase
-timeline.push( bonusInstruction({condition: args.condition, ...args.bonus_instruction}))
+// bonus phase (first)
+timeline.push( bonusInstruction({condition: args.condition[0], ...args.bonus_instruction}))
 
+// bonus phase trials start here (first)
+timeline.push( new bonusPhase({condition: args.condition[0], ...args.bonus, first_trial_num: 0}).getTrial() )
 
-// bonus phase trials start here
-timeline.push( new bonusPhase({condition: args.condition, ...args.bonus}).getTrial() )
+timeline.push( new MakeFlowQs('first') );
+timeline.push( new MakeEnjoyQs('first') );
 
-// create questionnaires and push to timeline
+// bonus phase (second)
+timeline.push( bonusInstruction({condition: args.condition[1], ...args.bonus_instruction_2}))
 
+// bonus phase trials start here (second)
+timeline.push( new bonusPhase({condition: args.condition[1], ...args.bonus, first_trial_num: 20}).getTrial() )
 
+timeline.push( new MakeFlowQs('second') );
+timeline.push( new MakeEnjoyQs('second') );
 
-const zeroToExtremely = ["0<br>A little", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"];
-const zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>A lot'];
-const flowQs = {
-    type: jsPsychSurveyLikert,
-    preamble: `<div style='padding-top: 50px; width: 850px; font-size:16px'>
-
-    <p>Thank you for completing the typing task! Now we want to know:<br><strong>To what extent did you feel immersed and engaged in the typing task?</strong></p>
-    <p>To report how immersed and engaged you felt in the typing task,<br>please answer the following questions as honestly as possible.</p>`,
-    questions: [
-        {prompt: `How <strong>absorbed</strong> did you feel in the typing task?`,
-        name: `absorbed`,
-        labels: ["0<br>The least absorbed I've ever felt in a task", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>The most absorbed I've ever felt in a task"]},
-        {prompt: `How <strong>immersed</strong> did you feel in the typing task?`,
-        name: `immersed`,
-        labels: ["0<br>The least immersed I've ever felt in a task", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>The most immersed I've ever felt in a task"]},
-        {prompt: `How <strong>engaged</strong> did you feel in the typing task?`,
-        name: `engaged`,
-        labels: ["0<br>The least engaged I've ever felt in a task", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>The most engaged I've ever felt in a task"]},
-        {prompt: `How <strong>engrossed</strong> did you feel in the typing task?`,
-        name: `engrossed`,
-        labels: ["0<br>The least engrossed I've ever felt in a task", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>The most engrossed I've ever felt in a task"]},
-    ],
-    randomize_question_order: false,
-    scale_width: 700,
-};
-
-timeline.push(flowQs);
-
-const enjoyQs = {
-    type: jsPsychSurveyLikert,
-    preamble: `<div style='padding-top: 50px; width: 850px; font-size:16px'>
-
-    <p>Below are a few more questions about the typing task.</p><p>Instead of asking about immersion and
-    engagement, these questions ask about <strong>enjoyment</strong>.<br>Report how much you <strong>enjoyed</strong> 
-    the typing task by answering the following questions.</p></div>`,
-    questions: [
-        {prompt: `How much did you <strong>enjoy</strong> the typing task?`,
-        name: `enjoyable`,
-        labels: zeroToALot},
-        {prompt: `How much did you <strong>like</strong> the typing task?`,
-        name: `like`,
-        labels: zeroToALot},
-        {prompt: `How much did you <strong>dislike</strong> the typing task?`,
-        name: `dislike`,
-        labels: zeroToALot},
-        {prompt: `How much <strong>fun</strong> did you have completing the typing task?`,
-        name: `fun`,
-        labels: zeroToALot},
-        {prompt: `How <strong>entertaining</strong> was the typing task?`,
-        name: `entertaining`,
-        labels: zeroToExtremely},
-    ],
-    randomize_question_order: false,
-    scale_width: 700,
-};
-
-timeline.push(enjoyQs);
-
-const purposeChk = {
-  type: jsPsychSurveyMultiChoice,
-  questions: [
-    {
-      prompt: "We asked you several questions about how immersed and engaged you felt during the typing task.<br>What do you think was the purpose of those questions?", 
-      name: 'purpose', 
-      options: ['To make sure I was paying attention.', 'To measure how immersed and engaged I felt during the typing task.'], 
-      required: true
-    }, 
-  ],
-};
-
-//timeline.push(purposeChk);
 
 // debrief
 
 const survey_start = (trial) => {
     trial.pages = [trial.pages];
     const data = jsPsych.data.get();
-    const totalSuccess = +data.filter({phase: 'bonus'}).select('success').sum();
-    let totalBonus;
-    if (args.condition == 'binary streak') {
-        const totalBonus_raw = +data.filter({phase: 'bonus_feedback_score'}).select('bonus').sum();
-        console.log(data.filter({phase: 'bonus_feedback_score'}).select('bonus'), totalBonus_raw);
-        totalBonus = totalBonus_raw / 100;
-    } else {
-        totalBonus = totalSuccess / 10;
-    };
+    const successArray = data.filter({phase: 'bonus'}).select('success').values;
+    const totalSuccess_1 = successArray.slice(0, 20).reduce((a,b)=>a+b,0);
+    const totalSuccess_2 = successArray.slice(19, 40).reduce((a,b)=>a+b,0);
+    const totalSuccess = totalSuccess_1 + totalSuccess_2;
+    const threesArray = data.filter({phase: 'bonus_feedback_score'}).select('bonus').values;
+    const totalThrees_1 = threesArray.slice(0, 20).reduce((a,b)=>a+b,0);
+    const totalThrees_2 = threesArray.slice(19, 40).reduce((a,b)=>a+b,0);
+    let totalBonus_1 = (totalSuccess_1 * 5) / 100;
+    let totalBonus_2 = (totalSuccess_2 * 5) / 100;
+    if (args.condition[0] == 'binary streak') { totalBonus_1 = totalThrees_1 / 100 };
+    if (args.condition[1] == 'binary streak') { totalBonus_2 = totalThrees_2 / 100 };
+    const totalBonus = totalBonus_1 + totalBonus_2;
     trial.data = {
         totalBonus: totalBonus,
+        totalSuccess_1: totalSuccess_1,
+        totalSuccess_2: totalSuccess_2,
         totalSuccess: totalSuccess,
         phase: 'last_page',
         ...trial.data,
@@ -177,15 +176,19 @@ jsPsych.opts.show_progress_bar = args.show_progress_bar;
 jsPsych.opts.experiment_width = args.screenwidth;
 jsPsych.opts.on_finish = () => {
     const data = jsPsych.data.get();
-    const totalSuccess = +data.filter({phase: 'bonus'}).select('success').sum();
-    let totalBonus;
-    if (args.condition == 'binary streak') {
-        const totalBonus_raw = +data.filter({phase: 'bonus_feedback_score'}).select('bonus').sum().toFixed(2);
-        totalBonus = totalBonus_raw / 100;
-    } else {
-        totalBonus = totalSuccess / 10;
-    };
-    document.body.innerHTML = args.thank_you_msg.replaceAll('${totalBonus}', totalBonus);
+    const successArray = data.filter({phase: 'bonus'}).select('success').values;
+    const totalSuccess_1 = successArray.slice(0, 20).reduce((a,b)=>a+b,0);
+    const totalSuccess_2 = successArray.slice(19, 40).reduce((a,b)=>a+b,0);
+    const threesArray = data.filter({phase: 'bonus_feedback_score'}).select('bonus').values;
+    const totalThrees_1 = threesArray.slice(0, 20).reduce((a,b)=>a+b,0);
+    const totalThrees_2 = threesArray.slice(19, 40).reduce((a,b)=>a+b,0);
+    let totalBonus_1 = (totalSuccess_1 * 5) / 100;
+    let totalBonus_2 = (totalSuccess_2 * 5) / 100;
+    if (args.condition[0] == 'binary streak') { totalBonus_1 = totalThrees_1 / 100 };
+    if (args.condition[1] == 'binary streak') { totalBonus_2 = totalThrees_2 / 100 };
+    console.log(successArray, totalSuccess_1, totalSuccess_2, threesArray, totalThrees_1, totalThrees_2, totalBonus_1, totalBonus_2)
+    const totalBonus = totalBonus_1 + totalBonus_2;
+    document.body.innerHTML = args.thank_you_msg.replaceAll('${totalBonus}', totalBonus.toFixed(2));
     setTimeout(function() { 
         location.href = `https://app.prolific.co/submissions/complete?cc=C1B3XSBB`
     }, 3000); // 2 seconds

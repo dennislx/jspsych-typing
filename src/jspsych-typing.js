@@ -40,7 +40,9 @@ export const DICT = {
 * @param {function} end_trial   - a function to call before the end of this trial
 */
 
-const multiplierArray = makeMultipliers();
+const multiplierArray1 = makeMultipliers();
+const multiplierArray2 = makeMultipliers();
+const multiplierArray = multiplierArray1.concat(multiplierArray2);
 
 console.log(multiplierArray);
 
@@ -449,7 +451,7 @@ function getDist(args){
 }
 
 export class bonusPhase extends practicePhase {
-    constructor({ numOfTrial = 1, fontsize = "", no_prompt = false, list = [], data = {}, target_dist = {}, target_min = 1, condition = undefined, feedback = undefined, early_stop = undefined, time = undefined, true_random = undefined, prob_win = undefined} = {}) {
+    constructor({ numOfTrial = 1, fontsize = "", no_prompt = false, list = [], data = {}, target_dist = {}, target_min = 1, condition = undefined, feedback = undefined, early_stop = undefined, time = undefined, true_random = undefined, prob_win = undefined, first_trial_num = undefined} = {}) {
         const {trial_time, fix_time, score_time, reward_time} = time;
         super({ numOfTrial: numOfTrial, trial_duration: trial_time, fixation_duration: fix_time, fontsize: fontsize, no_prompt: no_prompt, list: list, data: data });
         this.target_dist = getDist(target_dist);
@@ -465,6 +467,7 @@ export class bonusPhase extends practicePhase {
         this.prob_win = prob_win;
         this.multiplier = 1;
         this.delta = 20;
+        this.trial_i = first_trial_num;
         this.reward_agent = (condition === "binary") ?
             new Binary() : (condition === "continuous streak") ?
             new ContinuousStreak() : new BinaryStreak()
