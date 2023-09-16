@@ -8,7 +8,7 @@ true_random: &tr true
 prob_win: &pw .6
 
 # ========= osf/datapipe/prolific settings ======================================
-osf_id: SruEN6Bu4Q7y
+osf_id: HG55wxbcDKIL
 prolific_id: 84F912E7
 pipe_data_to_osf: true
 
@@ -157,7 +157,7 @@ consent_page: &p1 >
       <dd>There are no anticipated risks or discomforts from this research.</dd>
 
       <dt>Costs and Compensation</dt>
-      <dd>If you decide to participate there will be no additional cost to you and you will be compensated $1.70 for your participation, plus any bonus money you earn.</dd>
+      <dd>If you decide to participate there will be no additional cost to you and you will be compensated $1.60 for your participation, plus any bonus money you earn.</dd>
 
       <dt>Participation</dt>
       <dd>Taking part or not in this research study is your decision. You can decide to participate and then change your mind at any point.</dd>
