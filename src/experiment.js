@@ -51,10 +51,10 @@ const MakeFlowQs = function(order) {
         labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"]},
         {prompt: `During the ${order} version of the typing task, how <strong>engaged</strong> did you feel in what you were doing?`,
         name: `engaged_${order}`,
-        labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged I've ever felt"]},
+        labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"]},
         {prompt: `During the ${order} version of the typing task, how <strong>engrossed</strong> did you feel in what you were doing?`,
         name: `engrossed_${order}`,
-        labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed I've ever felt"]},
+        labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"]},
     ];
     this.randomize_question_order = false;
     this.scale_width = 700;

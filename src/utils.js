@@ -317,23 +317,11 @@ export function makeMultipliers() {
   };
 
   // Create an array with 8 ones and 12 negative ones
-  const ones = Array(7).fill(1); // Leave one 1 for the last position
-  const negatives = Array(10).fill(-1);
+  let outcomeArray = Array(18).fill(-1);
+  outcomeArray.push(1);
+  let failureIdx = 3 * (Math.floor(Math.random() * 3 + 1));
+  outcomeArray.splice(failureIdx, 0, 1);
 
-  // Combine the arrays
-  const resultArray = ones.concat(negatives);
-
-  // Shuffle the combined array except for the last position
-  let shuffledArray = shuffleArray(
-    resultArray.slice(0, resultArray.length - 1)
-  );
-
-  // Add 1 as the last element
-  shuffledArray.push(1);
-
-  // Find a random index to insert a sequence of at least 3 -1s
-  const randomIndex = Math.floor(Math.random() * (shuffledArray.length - 2));
-  shuffledArray.splice(randomIndex, 0, -1, -1, -1);
-  return shuffledArray;
+  return outcomeArray;
 
 }
